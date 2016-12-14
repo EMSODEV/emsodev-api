@@ -49,7 +49,7 @@ import eu.emsodev.observations.model.Parameter;
 import eu.emsodev.observations.model.Parameters;
 
 @Configuration
-@PropertySource("${api.properties.home}")
+//@PropertySource("${api.properties.home}")
 @RestController
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class,
 		WebMvcAutoConfiguration.class })
