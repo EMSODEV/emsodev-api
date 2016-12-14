@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>emsodev-api</name>
-	<description>RestFull api to retrieve oceans observations</description>
+	<description>RestFull api to retrieve the oceans observations</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
