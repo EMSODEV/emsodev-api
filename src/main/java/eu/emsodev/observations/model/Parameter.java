@@ -20,10 +20,7 @@ import java.util.Objects;
 public class Parameter   {
   private String name = null;
 
-  public Parameter(String name) {
-	super();
-	this.name = name;
-}
+ 
 
 public Parameter name(String name) {
     this.name = name;

@@ -21,9 +21,7 @@ import java.util.Objects;
 public class Parameters   {
   private List<Parameter> parameters = new ArrayList<Parameter>();
 
-  public Parameters(String parameter) {
-	// TODO Auto-generated constructor stub
-}
+ 
 
 public Parameters parameters(List<Parameter> parameters) {
     this.parameters = parameters;
