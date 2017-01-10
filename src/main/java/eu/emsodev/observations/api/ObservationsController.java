@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -49,7 +50,7 @@ import eu.emsodev.observations.model.Parameter;
 import eu.emsodev.observations.model.Parameters;
 
 @Configuration
-//@PropertySource("${api.properties.home}")
+@PropertySource("${api.properties.home}")
 @RestController
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class,
 		WebMvcAutoConfiguration.class })
@@ -58,6 +59,12 @@ public class ObservationsController implements ObservationsApi {
 	//Test	comment
 	@Value("${emsodev.global.setting.urlToCall.observatoriesGet}")
 	private String urlToCallObservatoriesGet;
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoryInstrumentsGet}")
+	private String urlToCallObservatoryInstrumentsGet;
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentParametersGet}")
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
 	
 	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentParametersParameterGet}")
 	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet;
@@ -116,8 +123,9 @@ public class ObservationsController implements ObservationsApi {
 			// iterate the JSON array to read the value of the EGIMSnode
 			for (int i = 0; i < arr.length(); i++) {
 				test = arr.getJSONObject(i).getJSONObject("tags");
-				// add the EGIMnode value to the list
+				// add the EGIMnode value to the list				
 				set.add(test.getString("EGIMNode"));
+				
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -154,8 +162,50 @@ public class ObservationsController implements ObservationsApi {
 			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
 
 			) {
-		// do some magic!
-		return new ResponseEntity<Instruments>(HttpStatus.OK);
+		//Create the restTemplate object with or without proxy
+		istantiateRestTemplate();
+		String params = "{SensorID=*,EGIMNode="+observatory+"}";
+
+		String response = restTemplate.getForObject(urlToCallObservatoryInstrumentsGet, String.class, params);
+		
+
+		// Declare a list that not allow duplicate values
+				Set<String> set = new HashSet<String>();
+				try {
+					// Create a JSONObject by the response
+					JSONObject obj = new JSONObject(response);
+
+					// Create a JSONArray that rapresent the "results" tag nested into
+					// the JSON
+					JSONArray arr = obj.getJSONArray("results");
+					// The JSON object used into the loop to extract the value of the
+					// "tags" tag
+					JSONObject test = new JSONObject();
+
+					// iterate the JSON array to read the value of the EGIMSnode
+					for (int i = 0; i < arr.length(); i++) {
+						test = arr.getJSONObject(i).getJSONObject("tags");
+						// add the EGIMnode value to the list				
+						set.add(test.getString("SensorID"));
+						
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+				// Istantiate the Observatories object
+				Instruments instrs = new Instruments();
+				// For each value of the list create an Observatory object to add to the
+				// Observatoriers object
+				for (String s : set) {
+					Instrument instrument = new Instrument();
+					instrument.setName(s);
+					instrs.addInstrumentsItem(instrument);
+				}
+		
+		return new ResponseEntity<Instruments>(instrs,HttpStatus.OK);
 	}
 
 	public ResponseEntity<Instrument> observatoriesObservatoryInstrumentsInstrumentGet(
@@ -180,10 +230,51 @@ public class ObservationsController implements ObservationsApi {
 			) {
 		// 
 		
+		//Create the restTemplate object with or without proxy
+		istantiateRestTemplate();
+		String params = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
 
+		String response = restTemplate.getForObject(urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet, String.class, params);
 		
-		System.out.println("***************test instrument parameters  observatory passed: "+observatory+"******instrument passed:" + instrument +"********");
-		return new ResponseEntity<Parameters>(HttpStatus.OK);
+
+		// Declare a list that not allow duplicate values
+				Set<String> set = new HashSet<String>();
+				Parameters parameters = new Parameters();
+				try {
+					// Create a JSONObject by the response
+					JSONObject obj = new JSONObject(response);
+
+					// Create a JSONArray that rapresent the "results" tag nested into
+					// the JSON
+					JSONArray arr = obj.getJSONArray("results");
+					// The JSON object used into the loop to extract the value of the
+					// "tags" tag
+					
+					String observatoryParameter = "";
+					// iterate the JSON array to read the value of the EGIMSnode
+					for (int i = 0; i < arr.length(); i++) {
+						observatoryParameter = arr.getJSONObject(i).getString("metric");
+						// add the EGIMnode value to the list				
+						set.add(observatoryParameter);
+						
+					}
+					
+										
+					// For each value of the list create an Observatory object to add to the
+					// Observatoriers object
+					for (String s : set) {
+						Parameter parameter = new Parameter();
+						parameter.setName(s);
+						parameters.addParametersItem(parameter);
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		
+		return new ResponseEntity<Parameters>(parameters,HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -205,91 +296,91 @@ public class ObservationsController implements ObservationsApi {
 			@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
 			) {
-		// do some magic!
 		
 		//Create the restTemplate object with or without proxy
 		istantiateRestTemplate();
 		
-//		MultiValueMap<String, String> variables = new LinkedMultiValueMap<String, String>();;
-//		
-//		variables.set("EGIMNode", observatory);
-//		variables.set("SensorID", instrument);
-//		
-//		URI targetUrl= UriComponentsBuilder.fromUriString(urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet)
-//			    .path(startDate +"&m=sum:" + parameter)
-//			    .queryParams(variables)
-//			    .build()
-//			    .toUri();
-		
+		//Create a map of params to pass add as placeholder after parameter value in the following compositeUrl
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("EGIMNode", observatory);
 		params.put("SensorID",instrument);
 		
-		//String parametri  = params.toString().replace(" ", "");
-		//String pulito = parametri.replace(" ", "");
-		//System.out.println("Pulito : "+pulito);
-		//System.out.println("Params : "+params.toString().trim());
-		
-		
-		//String egimNode = "{EGIMNode="+observatory+",SensorID="+instrument+"}";
-		//System.out.println("EgimNode : " + egimNode);
-		//String egimNode = "{EGIMNode="+observatory;
-		//String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{egimNode}";
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}";
-		// The response as string of the urlToCall																								
+		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																								
 		String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-		
-		
-		 	 
-		 if (response.startsWith("[")){
-			 response = response.substring(1);
-		 }
-		 if (response.endsWith("]")){
-			 response = response.substring(0, (response.length() - 1));
-		 }
-		
-		  Observations obts = new Observations();
-		 try {
-				// Create a JSONObject by the response
-				JSONObject obj = new JSONObject(response);
 
-				// Create a JSONArray that rapresent the "results" tag nested into
-				// the JSON
-				JSONObject dps = obj.getJSONObject("dps");
-
-				String dpsCleaned = dps.toString().replace("\"", "").replace("{", "").replace("}", "");
-				
-				System.out.println(dpsCleaned);
-			
-				String[] array = dpsCleaned.split(",");
-              
-                Instrument inst = new Instrument();
-                inst.setName(instrument);
-                Parameter par = new Parameter(parameter);
+		//Declare the final response object outside the loop
+		Observations observations = new Observations();
+		
+		try {
+			//Convert the response as string to a JSONArray
+			JSONArray jarray = new JSONArray(response);
+			//Declare a JSONObject for the timeseries 
+			JSONObject jobjDps = new JSONObject();
+			String egimNode = "";
+			String sensorId= "";
+			String metric = "" ;
+			// iterate the JSON array to read the value of the Response
+			for (int i = 0; i < jarray.length(); i++) {
+				//Read the EGIMNode value
+				egimNode = jarray.getJSONObject(i).getJSONObject("tags").getString("EGIMNode");
+				//Read the SensorID value
+				sensorId = jarray.getJSONObject(i).getJSONObject("tags").getString("SensorID");
+				//Read the parameter (metric) value
+				metric   = jarray.getJSONObject(i).getString("metric");
+				//Populate the JSONOObject related the timeseries 
+				jobjDps = jarray.getJSONObject(i).getJSONObject("dps");
+				//Remove double " and brace from the string rapresentation of the object
+				String dpsCleaned = jobjDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+				//Create an array with the value of the dpsCleaned string				
+				String[] array = dpsCleaned.split(",");				
+				//set the instrument name with the value previous saved
+				Instrument inst = new Instrument();
+                inst.setName(sensorId);
+                //set the parameter name with the value previous saved
+                Parameter par = new Parameter();
+                par.setName(metric);
+                //set the observatory name with the value previous saved
                 Observatory observ = new Observatory();
-                observ.setName(observatory);
+                observ.setName(egimNode);
                 
                 ArrayList<Observation> list = new ArrayList<Observation>();
                 
-				for (int i = 0, n = array.length; i < n; i++) {
-				    String c = array[i];
-				    Observation obt = new Observation();
-				    obt.setPhenomenonTime(Long.valueOf(c.substring(0, c.indexOf(":"))));
-				    obt.setValue(Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
-				    list.add(obt);
+                Map<Long, Double> map = new TreeMap<Long, Double>();
+                
+				for (int index = 0, n = array.length; index < n; index++) {
+				    String c = array[index];
+				    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
 				}
 				
-				obts.setObservations(list);
-				obts.setParameter(par);
-				obts.setInstrument(inst);
-				obts.setObservatory(observ);
 				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				for(Map.Entry<Long,Double> entry : map.entrySet()) {
+					  Long key = entry.getKey();
+					  Double value = entry.getValue();
+					  System.out.println(key + " => " + value);
+					  
+					  Observation obt = new Observation();
+					  obt.setPhenomenonTime(key);
+					  obt.setValue(value);
+					  list.add(obt);
+					  
+					}
+				
+				map.clear();
+
+				observations.setObservations(list);
+				observations.setParameter(par);
+				observations.setInstrument(inst);
+				observations.setObservatory(observ);
 			}
+			
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		
+		
 		 
-		return new ResponseEntity<Observations>(obts,HttpStatus.OK);
+		return new ResponseEntity<Observations>(observations,HttpStatus.OK);
 	}
 
 	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterStatsGet(
