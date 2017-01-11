@@ -2,7 +2,6 @@ package eu.emsodev.observations.api;
 
 import io.swagger.annotations.ApiParam;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,13 +30,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import eu.emsodev.observations.model.Instrument;
 import eu.emsodev.observations.model.Instruments;
@@ -407,33 +403,7 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
 	}
 
-	public String getPhoenixConnection() {
-
-		/*
-		 * 
-		 * @SuppressWarnings("unused") Statement stmt = null; ResultSet rset =
-		 * null;
-		 * 
-		 * try { Class.forName("org.apache.phoenix.jdbc.PhoenixDriver"); } catch
-		 * (ClassNotFoundException e1) {
-		 * System.out.println("Exception Loading Driver"); e1.printStackTrace();
-		 * } try { //Connection con = DriverManager.getConnection(
-		 * "jdbc:phoenix:90.147.170.237,90.147.170.236,90.147.170.241:2181:/hbase-unsecure"
-		 * ); Connection con = DriverManager.getConnection(
-		 * "jdbc:phoenix:90.147.170.241:8765:/hbase-unsecure"); stmt =
-		 * con.createStatement(); System.out.println(
-		 * "****************************************eccomi*****************************"
-		 * ); PreparedStatement statement =
-		 * con.prepareStatement("select * from javatest"); rset =
-		 * statement.executeQuery(); while (rset.next()) {
-		 * System.out.println(rset.getString("mycolumn")); } statement.close();
-		 * con.close(); } catch(Exception e) {
-		 * System.out.println(e.getMessage()); }
-		 */
-
-		return "only to save code";
-	}
-	
+		
 	
 	private void istantiateRestTemplate(){
 		//Setting for proxy, please modify proxy parameter into the createRestTemplate() method
