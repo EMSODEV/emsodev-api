@@ -404,7 +404,7 @@ public class ObservationsController implements ObservationsApi {
 	}
 
 		
-	//Method to set the proxy is needed or not  and create the rest template
+	//Method to set the proxy 
 	private void istantiateRestTemplate(){
 		//Setting for proxy, please modify proxy parameter into the createRestTemplate() method
 		if (enableProxy) {		
