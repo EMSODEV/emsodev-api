@@ -186,7 +186,6 @@ public class ObservationsController implements ObservationsApi {
 						
 					}
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
