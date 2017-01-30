@@ -301,15 +301,17 @@ public class ObservationsController implements ObservationsApi {
 		params.put("SensorID",instrument);
 		
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}";
+		
 		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																								
-		String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-
+		//String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+		Object response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
+		
 		//Declare the final response object outside the loop
 		Observations observations = new Observations();
 		
 		try {
-			//Convert the response as string to a JSONArray
-			JSONArray jarray = new JSONArray(response);
+			//Convert the response as string to a JSONArray	
+			JSONArray jarray = new JSONArray(response.toString());
 			//Declare a JSONObject for the timeseries 
 			JSONObject jobjDps = new JSONObject();
 			String egimNode = "";
@@ -341,14 +343,15 @@ public class ObservationsController implements ObservationsApi {
                 
                 ArrayList<Observation> list = new ArrayList<Observation>();
                 
+                //Declare a TreeMap to order the array that conteins the dpsCleaned value 
                 Map<Long, Double> map = new TreeMap<Long, Double>();
-                
+                //Populate the map with the array values before and after the ":" character as key and value
 				for (int index = 0, n = array.length; index < n; index++) {
 				    String c = array[index];
 				    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
 				}
 				
-				
+				//For each value of the map populate the Observarion bean
 				for(Map.Entry<Long,Double> entry : map.entrySet()) {
 					  Long key = entry.getKey();
 					  Double value = entry.getValue();
@@ -362,7 +365,7 @@ public class ObservationsController implements ObservationsApi {
 					}
 				
 				map.clear();
-
+                //Compose the final bean to return 
 				observations.setObservations(list);
 				observations.setParameter(par);
 				observations.setInstrument(inst);
