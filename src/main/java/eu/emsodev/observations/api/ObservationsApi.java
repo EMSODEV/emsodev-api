@@ -119,7 +119,7 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "Statistics of time-series of a specific parameter.", notes = "Gets the statistics (average, maximum and minimum value) of time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an observatory.", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiOperation(value = "Statistics of time-series of a specific parameter.", notes = "Gets the statistics over a selected time range (average, maximum and minimum value) from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/stats",

@@ -3,6 +3,8 @@ package eu.emsodev.observations.api;
 import io.swagger.annotations.ApiParam;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -351,6 +353,7 @@ public class ObservationsController implements ObservationsApi {
 				    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
 				}
 				
+								
 				//For each value of the map populate the Observarion bean
 				for(Map.Entry<Long,Double> entry : map.entrySet()) {
 					  Long key = entry.getKey();
@@ -400,7 +403,7 @@ public class ObservationsController implements ObservationsApi {
 
 			) {
 		// do some magic!
-		
+
 		
 		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
 	}
