@@ -32,15 +32,15 @@ public interface ObservationsApi {
 	ResponseEntity<Observatories> observatoriesGet();
 
 
-	@ApiOperation(value = "The specified EGIM observatory.", notes = "Get `EGIM observatory` resource.", response = Observatory.class, tags={ "observatory", })
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Details of an EGIM observatory.", response = Observatory.class) })
-	@RequestMapping(value = "/observatories/{observatory}", produces = { "application/json" }, method = RequestMethod.GET)
-	ResponseEntity<Observatory> observatoriesObservatoryGet(
-			@ApiParam(value = "EGIM observatory name",required=true ) @PathVariable("observatory") String observatory
-
-
-			);
+//	@ApiOperation(value = "The specified EGIM observatory.", notes = "Get `EGIM observatory` resource.", response = Observatory.class, tags={ "observatory", })
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 200, message = "Details of an EGIM observatory.", response = Observatory.class) })
+//	@RequestMapping(value = "/observatories/{observatory}", produces = { "application/json" }, method = RequestMethod.GET)
+//	ResponseEntity<Observatory> observatoriesObservatoryGet(
+//			@ApiParam(value = "EGIM observatory name",required=true ) @PathVariable("observatory") String observatory
+//
+//
+//			);
 
 
 	@ApiOperation(value = "It represents the instruments deployed in an EGIM observatory.", notes = "Get a list of `instruments` for an `EGIM observatory`.", response = Instruments.class, tags={ "instrument", })
@@ -119,13 +119,13 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "Statistics of time-series of a specific parameter.", notes = "Gets the statistics over a selected time range (average, maximum and minimum value) from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiOperation(value = "Minimum values of time-series of a specific parameter.", notes = "Gets the minimum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
-	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/stats",
+	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/min",
 	produces = { "application/json" }, 
 	method = RequestMethod.GET)
-	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterStatsGet(
+	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMinsGet(
 			@ApiParam(value = "The observatory name.",required=true ) @PathVariable("observatory") String observatory
 
 
@@ -144,7 +144,70 @@ public interface ObservationsApi {
 			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
 
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+
+
+			);
+	
+
+	@ApiOperation(value = "Maximum values of time-series of a specific parameter.", notes = "Gets the maximum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
+	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/max",
+	produces = { "application/json" }, 
+	method = RequestMethod.GET)
+	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMaxsGet(
+			@ApiParam(value = "The observatory name.",required=true ) @PathVariable("observatory") String observatory
+
+
+			,
+			@ApiParam(value = "The instrument name.",required=true ) @PathVariable("instrument") String instrument
+
+
+			,
+			@ApiParam(value = "The parameter name.",required=true ) @PathVariable("parameter") String parameter
+
+
+			,@ApiParam(value = "The start time for the query. This may be an absolute or relative time. The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>-ago` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a start time of `1h-ago` and leave out the end time, the query will return data start at 1 hour ago to the current time.", required = true) @RequestParam(value = "startDate", required = true) String startDate
+
+
+
+			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
+
+
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+
 
 			);
 
+	
+	@ApiOperation(value = "Average values of time-series of a specific parameter.", notes = "Gets the average value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
+	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/avg",
+	produces = { "application/json" }, 
+	method = RequestMethod.GET)
+	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterAvgsGet(
+			@ApiParam(value = "The observatory name.",required=true ) @PathVariable("observatory") String observatory
+
+
+			,
+			@ApiParam(value = "The instrument name.",required=true ) @PathVariable("instrument") String instrument
+
+
+			,
+			@ApiParam(value = "The parameter name.",required=true ) @PathVariable("parameter") String parameter
+
+
+			,@ApiParam(value = "The start time for the query. This may be an absolute or relative time. The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>-ago` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a start time of `1h-ago` and leave out the end time, the query will return data start at 1 hour ago to the current time.", required = true) @RequestParam(value = "startDate", required = true) String startDate
+
+
+
+			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
+
+
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+
+
+			);
 }

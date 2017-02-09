@@ -146,15 +146,15 @@ public class ObservationsController implements ObservationsApi {
 
 	
 
-	public ResponseEntity<Observatory> observatoriesObservatoryGet(
-			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
-
-			) {
-		// do some magic!
-		
-		System.out.println("***************test parameters observatory passed: "+observatory+"**************");
-		return new ResponseEntity<Observatory>(HttpStatus.OK);
-	}
+//	public ResponseEntity<Observatory> observatoriesObservatoryGet(
+//			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
+//
+//			) {
+//		// do some magic!
+//		
+//		System.out.println("***************test parameters observatory passed: "+observatory+"**************");
+//		return new ResponseEntity<Observatory>(HttpStatus.OK);
+//	}
 
 	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGet(
 			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
@@ -358,7 +358,7 @@ public class ObservationsController implements ObservationsApi {
 				for(Map.Entry<Long,Double> entry : map.entrySet()) {
 					  Long key = entry.getKey();
 					  Double value = entry.getValue();
-					  System.out.println(key + " => " + value);
+					//  System.out.println(key + " => " + value);
 					  
 					  Observation obt = new Observation();
 					  obt.setPhenomenonTime(key);
@@ -384,7 +384,7 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<Observations>(observations,HttpStatus.OK);
 	}
 
-	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterStatsGet(
+	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMinsGet(
 			@ApiParam(value = "The observatory name.", required = true) @PathVariable("observatory") String observatory
 
 			,
@@ -401,6 +401,36 @@ public class ObservationsController implements ObservationsApi {
 			,
 			@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
+			,
+			@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+			) {
+		// do some magic!
+
+		
+		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
+	}
+	
+	
+	
+	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMaxsGet(
+			@ApiParam(value = "The observatory name.", required = true) @PathVariable("observatory") String observatory
+
+			,
+
+			@ApiParam(value = "The instrument name.", required = true) @PathVariable("instrument") String instrument
+
+			,
+
+			@ApiParam(value = "The parameter name.", required = true) @PathVariable("parameter") String parameter
+
+			,
+			@ApiParam(value = "The start time for the query. This may be an absolute or relative time. The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>-ago` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a start time of `1h-ago` and leave out the end time, the query will return data start at 1 hour ago to the current time.", required = true) @RequestParam(value = "startDate", required = true) String startDate
+
+			,
+			@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
+
+			,
+			@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
 			) {
 		// do some magic!
 
@@ -408,6 +438,33 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
 	}
 
+	
+	
+	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterAvgsGet(
+			@ApiParam(value = "The observatory name.", required = true) @PathVariable("observatory") String observatory
+
+			,
+
+			@ApiParam(value = "The instrument name.", required = true) @PathVariable("instrument") String instrument
+
+			,
+
+			@ApiParam(value = "The parameter name.", required = true) @PathVariable("parameter") String parameter
+
+			,
+			@ApiParam(value = "The start time for the query. This may be an absolute or relative time. The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>-ago` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a start time of `1h-ago` and leave out the end time, the query will return data start at 1 hour ago to the current time.", required = true) @RequestParam(value = "startDate", required = true) String startDate
+
+			,
+			@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
+
+			,
+			@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+			) {
+		// do some magic!
+
+		
+		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
+	}
 		
 	//Method to set the proxy if enable= true or false
 	private void istantiateRestTemplate(){
