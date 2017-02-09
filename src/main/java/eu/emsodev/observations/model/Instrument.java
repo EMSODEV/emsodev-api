@@ -3,7 +3,10 @@ package eu.emsodev.observations.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
 import java.util.Objects;
+
+import org.json.JSONObject;
 
 
 
@@ -18,8 +21,11 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-10-04T09:41:08.096Z")
 
 public class Instrument   {
-  private String name = null;
-
+  
+private String name = null;  
+  
+private ArrayList<String> metadataList = null; 
+  
  
 public Instrument name(String name) {
     this.name = name;
@@ -39,8 +45,18 @@ public Instrument name(String name) {
     this.name = name;
   }
 
+ 
 
-  @Override
+ @ApiModelProperty(value = "Metadata of an Instrument")
+public ArrayList<String> getMetadataList() {
+		return metadataList;
+	}
+
+	public void setMetadataList(ArrayList<String> metadataList) {
+		this.metadataList = metadataList;
+	}
+
+@Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;

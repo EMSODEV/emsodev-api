@@ -61,6 +61,13 @@ public class ObservationsController implements ObservationsApi {
 	@Value("${emsodev.global.setting.urlToCall.observatoryInstrumentsGet}")
 	private String urlToCallObservatoryInstrumentsGet;
 	
+	
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentGet}")
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;              
+	
+	
+	
 	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentParametersGet}")
 	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
 	
@@ -214,7 +221,52 @@ public class ObservationsController implements ObservationsApi {
 
 			) {
 		// do some magic!
-		return new ResponseEntity<Instrument>(HttpStatus.OK);
+		
+		//Create the restTemplate object with or without proxy
+		istantiateRestTemplate();
+		
+		String url = "";
+		url = urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" + instrument ;
+		String response = restTemplate.getForObject(url + "?op=LISTSTATUS", String.class);
+		System.out.println(response);
+		
+		String type = "";
+		String nameDir = ""; 
+		Instrument instr = new Instrument();
+		ArrayList<String> arrayMeta = new ArrayList<String>();
+		// Create a JSONObject by the response
+		try {
+			JSONObject obj = new JSONObject(response);
+			// Create a JSONArray that rapresent the "FileStatus" tag nested into
+			// the JSON
+			//obj.getJSONObject("FileStatuses").getString("type");
+			JSONArray arr = obj.getJSONObject("FileStatuses").getJSONArray("FileStatus");
+			
+			for (int i = 0; i < arr.length(); i++) {
+				type = arr.getJSONObject(i).getString("type");
+				nameDir = arr.getJSONObject(i).getString("pathSuffix");
+				
+				if (type != null && "DIRECTORY".equals(type)){
+					String resp = restTemplate.getForObject(url + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
+					System.out.println(resp);
+										
+					arrayMeta.add(resp);					
+				}
+				
+				// add the EGIMnode value to the list				
+				System.out.println("TYPE = " + type +"   DIR-NAME = " + nameDir);
+				
+			}
+			instr.setName(instrument);
+			instr.setMetadataList(arrayMeta);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+				
+		return new ResponseEntity<Instrument>(instr,HttpStatus.OK);
 	}
 
 	public ResponseEntity<Parameters> observatoriesObservatoryInstrumentsInstrumentParametersGet(
