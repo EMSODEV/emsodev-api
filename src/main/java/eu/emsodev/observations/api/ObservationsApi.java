@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import eu.emsodev.observations.model.Instrument;
+import eu.emsodev.observations.model.InstrumentMetadataList;
 import eu.emsodev.observations.model.Instruments;
 import eu.emsodev.observations.model.Observations;
 import eu.emsodev.observations.model.ObservationsStats;
@@ -58,11 +59,11 @@ public interface ObservationsApi {
 
 	@ApiOperation(value = "An EGIM observatory instrument", notes = "Get `EGIM observatory instrument` resource.", response = Instrument.class, tags={ "instrument", })
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Details of an EGIM observatory instrument", response = Instrument.class) })
+			@ApiResponse(code = 200, message = "Details of an EGIM observatory instrument", response = InstrumentMetadataList.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}",
 	produces = { "application/json" }, 
 	method = RequestMethod.GET)
-	ResponseEntity<Instrument> observatoriesObservatoryInstrumentsInstrumentGet(
+	ResponseEntity<InstrumentMetadataList> observatoriesObservatoryInstrumentsInstrumentGet(
 			@ApiParam(value = "EGIM observatory name.",required=true ) @PathVariable("observatory") String observatory
 
 
@@ -144,7 +145,7 @@ public interface ObservationsApi {
 			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
 
-			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time.The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a downsample time of `1h` the query will return data aggregated at 1 hour", required = true) @RequestParam(value = "downSample", required = true) String downSample
 
 
 			);
@@ -175,7 +176,7 @@ public interface ObservationsApi {
 			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
 
-			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time.The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a downsample time of `1h` the query will return data aggregated at 1 hour", required = true) @RequestParam(value = "downSample", required = true) String downSample
 
 
 			);
@@ -206,7 +207,7 @@ public interface ObservationsApi {
 			,@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
 
 
-			,@ApiParam(value = "The downsample. This may be an absolute or relative time. ", required = true) @RequestParam(value = "downSample", required = true) String downSample
+			,@ApiParam(value = "The downsample. This may be an absolute or relative time.The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a downsample time of `1h` the query will return data aggregated at 1 hour", required = true) @RequestParam(value = "downSample", required = true) String downSample
 
 
 			);

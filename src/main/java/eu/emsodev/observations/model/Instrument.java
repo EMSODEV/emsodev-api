@@ -24,7 +24,7 @@ public class Instrument   {
   
 private String name = null;  
   
-private ArrayList<String> metadataList = null; 
+//private ArrayList<String> metadataList = null; 
   
  
 public Instrument name(String name) {
@@ -47,14 +47,14 @@ public Instrument name(String name) {
 
  
 
- @ApiModelProperty(value = "Metadata of an Instrument")
-public ArrayList<String> getMetadataList() {
-		return metadataList;
-	}
-
-	public void setMetadataList(ArrayList<String> metadataList) {
-		this.metadataList = metadataList;
-	}
+// @ApiModelProperty(value = "Metadata of an Instrument")
+//public ArrayList<String> getMetadataList() {
+//		return metadataList;
+//	}
+//
+//	public void setMetadataList(ArrayList<String> metadataList) {
+//		this.metadataList = metadataList;
+//	}
 
 @Override
   public boolean equals(java.lang.Object o) {

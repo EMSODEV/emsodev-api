@@ -3,8 +3,6 @@ package eu.emsodev.observations.api;
 import io.swagger.annotations.ApiParam;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,6 +16,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import eu.emsodev.observations.model.Instrument;
+import eu.emsodev.observations.model.InstrumentMetadata;
+import eu.emsodev.observations.model.InstrumentMetadataList;
 import eu.emsodev.observations.model.Instruments;
 import eu.emsodev.observations.model.Observation;
 import eu.emsodev.observations.model.Observations;
@@ -212,7 +213,7 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<Instruments>(instrs,HttpStatus.OK);
 	}
 
-	public ResponseEntity<Instrument> observatoriesObservatoryInstrumentsInstrumentGet(
+	public ResponseEntity<InstrumentMetadataList> observatoriesObservatoryInstrumentsInstrumentGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory
 
 			,
@@ -231,9 +232,11 @@ public class ObservationsController implements ObservationsApi {
 		System.out.println(response);
 		
 		String type = "";
-		String nameDir = ""; 
-		Instrument instr = new Instrument();
-		ArrayList<String> arrayMeta = new ArrayList<String>();
+		String nameDir = "";
+		String dateValidity = "";
+		InstrumentMetadataList instrMetadataList = new InstrumentMetadataList();
+		instrMetadataList.setInstrumentName(instrument);
+		//InstrumentMetadata instrMetadata = new InstrumentMetadata();
 		// Create a JSONObject by the response
 		try {
 			JSONObject obj = new JSONObject(response);
@@ -245,20 +248,25 @@ public class ObservationsController implements ObservationsApi {
 			for (int i = 0; i < arr.length(); i++) {
 				type = arr.getJSONObject(i).getString("type");
 				nameDir = arr.getJSONObject(i).getString("pathSuffix");
+				dateValidity = arr.getJSONObject(i).getString("modificationTime");
 				
 				if (type != null && "DIRECTORY".equals(type)){
 					String resp = restTemplate.getForObject(url + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
 					System.out.println(resp);
+					InstrumentMetadata instrMetadata = new InstrumentMetadata();
+					instrMetadata.setValidityDate(dateValidity);				
+					ObjectMapper mapper = new ObjectMapper();
+					try {
+						Object json = mapper.readValue(resp, Object.class);
+						instrMetadata.setMetadata(json.toString());				
+					} catch (Exception e) {
+						e.printStackTrace();
+					}					
 										
-					arrayMeta.add(resp);					
+					instrMetadataList.addInstrumentsMetadataItem(instrMetadata);
 				}
-				
-				// add the EGIMnode value to the list				
-				System.out.println("TYPE = " + type +"   DIR-NAME = " + nameDir);
-				
 			}
-			instr.setName(instrument);
-			instr.setMetadataList(arrayMeta);
+						
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -266,7 +274,7 @@ public class ObservationsController implements ObservationsApi {
 		}
 		
 				
-		return new ResponseEntity<Instrument>(instr,HttpStatus.OK);
+		return new ResponseEntity<InstrumentMetadataList>(instrMetadataList,HttpStatus.OK);
 	}
 
 	public ResponseEntity<Parameters> observatoriesObservatoryInstrumentsInstrumentParametersGet(
@@ -436,6 +444,85 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<Observations>(observations,HttpStatus.OK);
 	}
 
+	
+	
+//	public Object getTimeSeries(Object response){
+//		
+//		
+//		//Declare the final response object outside the loop
+//				Observations observations = new Observations();
+//				
+//				try {
+//					//Convert the response as string to a JSONArray	
+//					JSONArray jarray = new JSONArray(response.toString());
+//					//Declare a JSONObject for the timeseries 
+//					JSONObject jobjDps = new JSONObject();
+//					String egimNode = "";
+//					String sensorId= "";
+//					String metric = "" ;
+//					// iterate the JSON array to read the value of the Response
+//					for (int i = 0; i < jarray.length(); i++) {
+//						//Read the EGIMNode value
+//						egimNode = jarray.getJSONObject(i).getJSONObject("tags").getString("EGIMNode");
+//						//Read the SensorID value
+//						sensorId = jarray.getJSONObject(i).getJSONObject("tags").getString("SensorID");
+//						//Read the parameter (metric) value
+//						metric   = jarray.getJSONObject(i).getString("metric");
+//						//Populate the JSONOObject related the timeseries 
+//						jobjDps = jarray.getJSONObject(i).getJSONObject("dps");
+//						//Remove double " and brace from the string rapresentation of the object
+//						String dpsCleaned = jobjDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+//						//Create an array with the value of the dpsCleaned string				
+//						String[] array = dpsCleaned.split(",");				
+//						//set the instrument name with the value previous saved
+//						Instrument inst = new Instrument();
+//		                inst.setName(sensorId);
+//		                //set the parameter name with the value previous saved
+//		                Parameter par = new Parameter();
+//		                par.setName(metric);
+//		                //set the observatory name with the value previous saved
+//		                Observatory observ = new Observatory();
+//		                observ.setName(egimNode);
+//		                
+//		                ArrayList<Observation> list = new ArrayList<Observation>();
+//		                
+//		                //Declare a TreeMap to order the array that conteins the dpsCleaned value 
+//		                Map<Long, Double> map = new TreeMap<Long, Double>();
+//		                //Populate the map with the array values before and after the ":" character as key and value
+//						for (int index = 0, n = array.length; index < n; index++) {
+//						    String c = array[index];
+//						    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
+//						}
+//						
+//										
+//						//For each value of the map populate the Observarion bean
+//						for(Map.Entry<Long,Double> entry : map.entrySet()) {
+//							  Long key = entry.getKey();
+//							  Double value = entry.getValue();
+//							//  System.out.println(key + " => " + value);
+//							  
+//							  Observation obt = new Observation();
+//							  obt.setPhenomenonTime(key);
+//							  obt.setValue(value);
+//							  list.add(obt);
+//							  
+//							}
+//						
+//						map.clear();
+//		                //Compose the final bean to return 
+//						observations.setObservations(list);
+//						observations.setParameter(par);
+//						observations.setInstrument(inst);
+//						observations.setObservatory(observ);
+//					}
+//					
+//				} catch (JSONException e1) {
+//					e1.printStackTrace();
+//				}
+//		
+//		return observations;
+//	} 
+	
 	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMinsGet(
 			@ApiParam(value = "The observatory name.", required = true) @PathVariable("observatory") String observatory
 
