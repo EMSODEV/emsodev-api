@@ -29,7 +29,7 @@ public interface ObservationsApi {
 	@ApiOperation(value = "It represents the EGIM observatories accessible through the EMSODEV Data Management Platform API.", notes = "Get a list of `EGIM observartories`.", response = Observatories.class, tags={ "observatory", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "EGIM observatories list.", response = Observatories.class) })
-	@RequestMapping(value = "/observatories", produces = { "application/json" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/observatories", produces = {"application/json", "text/csv"}, method = RequestMethod.GET)
 	ResponseEntity<Observatories> observatoriesGet();
 
 

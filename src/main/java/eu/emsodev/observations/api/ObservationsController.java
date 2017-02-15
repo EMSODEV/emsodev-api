@@ -16,7 +16,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +35,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import eu.emsodev.observations.model.Instrument;
 import eu.emsodev.observations.model.InstrumentMetadata;
@@ -103,8 +110,9 @@ public class ObservationsController implements ObservationsApi {
      public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
      }
-	
+     
 	public ResponseEntity<Observatories> observatoriesGet() {
+		
 		//Create the restTemplate object with or without proxy
 		istantiateRestTemplate();
 
@@ -255,14 +263,21 @@ public class ObservationsController implements ObservationsApi {
 					System.out.println(resp);
 					InstrumentMetadata instrMetadata = new InstrumentMetadata();
 					instrMetadata.setValidityDate(dateValidity);				
+					
+					
 					ObjectMapper mapper = new ObjectMapper();
+					mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 					try {
 						Object json = mapper.readValue(resp, Object.class);
-						instrMetadata.setMetadata(json.toString());				
+						instrMetadata.setMetadata(json.toString());						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}					
-										
+					
+					
+//					JSONObject metaJson = new JSONObject(resp);
+//					instrMetadata.setMetadataJson(metaJson);
+					
 					instrMetadataList.addInstrumentsMetadataItem(instrMetadata);
 				}
 			}
@@ -367,11 +382,75 @@ public class ObservationsController implements ObservationsApi {
 		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																								
 		//String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 		Object response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
-		
+		//String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 		//Declare the final response object outside the loop
 		Observations observations = new Observations();
 		
 		try {
+			
+			String egimNodeName = "";
+			String sensorIdName = "";
+			String metricName = "" ;			
+			
+			String jobjectDpsCleaned = null;
+			
+			Gson gson = new Gson();
+			JsonElement jelement = gson.fromJson (response.toString(), JsonElement.class);
+			JsonArray jsonarray = jelement.getAsJsonArray();
+			JsonObject pippolo = jsonarray.get(0).getAsJsonObject();
+			
+			JsonObject  jobject = pippolo.getAsJsonObject();
+			metricName = jobject.get("metric").toString().replace("\"", "");
+						
+			
+			jobject = jobject.getAsJsonObject("tags");			
+			sensorIdName = jobject.get("SensorID").toString().replace("\"", "");
+			egimNodeName = jobject.get("EGIMNode").toString().replace("\"", "");
+			
+			JsonObject  jobjectDps = pippolo.getAsJsonObject();
+			jobjectDps = jobjectDps.getAsJsonObject("dps");
+			jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+			String[] arrayDps = jobjectDpsCleaned.split(",");	
+			
+			//set the instrument name with the value previous saved
+			Instrument inst = new Instrument();
+            inst.setName(sensorIdName);
+            //set the parameter name with the value previous saved
+            Parameter par = new Parameter();
+            par.setName(metricName);
+            //set the observatory name with the value previous saved
+            Observatory observ = new Observatory();
+            observ.setName(egimNodeName);
+            
+            ArrayList<Observation> observationsList = new ArrayList<Observation>();
+			
+            for (int index = 0, n = arrayDps.length; index < n; index++) {
+         		 String item = arrayDps[index];
+			    
+				Observation obt = new Observation();
+				obt.setPhenomenonTime(Long.valueOf(item.substring(0, item.indexOf(":"))));
+				obt.setValue(Double.valueOf(item.substring((item.indexOf(":") + 1), item.length())));
+				observationsList.add(obt);
+            }
+            
+            //Compose the final bean to return 
+			observations.setObservations(observationsList);
+			observations.setParameter(par);
+			observations.setInstrument(inst);
+			observations.setObservatory(observ);
+            
+//			for (int i = 0; i < jsonGoogleArray.size(); i++) {
+//				JsonObject egimnode = element.getAsJsonObject("tags").getAsJsonObject("EGIMNode");
+//				JsonObject tags = jsonGoogleArray.get(i).getAsJsonObject().getAsJsonObject("tags").getAsJsonObject("SensorID");
+//			}
+			
+			
+			
+			
+			
+			
+			/*
+			
 			//Convert the response as string to a JSONArray	
 			JSONArray jarray = new JSONArray(response.toString());
 			//Declare a JSONObject for the timeseries 
@@ -418,7 +497,6 @@ public class ObservationsController implements ObservationsApi {
 				for(Map.Entry<Long,Double> entry : map.entrySet()) {
 					  Long key = entry.getKey();
 					  Double value = entry.getValue();
-					//  System.out.println(key + " => " + value);
 					  
 					  Observation obt = new Observation();
 					  obt.setPhenomenonTime(key);
@@ -434,8 +512,8 @@ public class ObservationsController implements ObservationsApi {
 				observations.setInstrument(inst);
 				observations.setObservatory(observ);
 			}
-			
-		} catch (JSONException e1) {
+			*/
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		

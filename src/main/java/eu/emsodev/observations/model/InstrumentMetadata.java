@@ -3,11 +3,14 @@ package eu.emsodev.observations.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
 
 
 /**
@@ -16,14 +19,13 @@ import org.json.JSONObject;
 @ApiModel(description = "Definition of the Instrument Metadata")
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-10-04T09:41:08.096Z")
 
-public class InstrumentMetadata   {
+public class InstrumentMetadata  {
 
 
 private String validityDate;
   
 private String metadata; 
  
-
 
 public String getValidityDate() {
 	return validityDate;

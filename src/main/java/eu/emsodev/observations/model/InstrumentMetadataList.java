@@ -3,6 +3,7 @@ package eu.emsodev.observations.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
 @ApiModel(description = "Array of instrument metadata")
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-10-04T09:41:08.096Z")
 
-public class InstrumentMetadataList   {
+public class InstrumentMetadataList  implements Serializable {
   private List<InstrumentMetadata> metadataList = new ArrayList<InstrumentMetadata>();
   private String instrumentName;
   
