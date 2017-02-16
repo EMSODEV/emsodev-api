@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -349,7 +348,7 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<Parameters>(parameters,HttpStatus.OK);
 	}
 
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory
 
@@ -379,58 +378,64 @@ public class ObservationsController implements ObservationsApi {
 		
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}";
 		
-		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																								
-		//String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																							
 		Object response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
 		//String response = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+
 		//Declare the final response object outside the loop
 		Observations observations = new Observations();
 		
 		try {
-			
+			//Properties to pass to the outpout object
 			String egimNodeName = "";
 			String sensorIdName = "";
 			String metricName = "" ;			
-			
+			//Property that contain the readed timeseries without brackets and quotes and that will be used to create an array of timeseries
 			String jobjectDpsCleaned = null;
-			
+			//Gson google object is used insteaf og JSONObject becouse  let the result sorted by timestamp
 			Gson gson = new Gson();
+			//Create a jelement that contains the response 
 			JsonElement jelement = gson.fromJson (response.toString(), JsonElement.class);
+			//The response is an array. Create an jsonArray that contain the response
 			JsonArray jsonarray = jelement.getAsJsonArray();
-			JsonObject pippolo = jsonarray.get(0).getAsJsonObject();
-			
-			JsonObject  jobject = pippolo.getAsJsonObject();
-			metricName = jobject.get("metric").toString().replace("\"", "");
+			//Get the first and last item of the array
+			JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+			//The value of metric attribute
+			JsonObject  jobject = jarrayItem.getAsJsonObject();
+			metricName = jobject.get("metric").getAsString();
 						
+			//Get the an jsonObject with that rapresent the "tags" branche
+			jobject = jobject.getAsJsonObject("tags");
+			//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
+			sensorIdName = jobject.get("SensorID").getAsString();
+			egimNodeName = jobject.get("EGIMNode").getAsString();
 			
-			jobject = jobject.getAsJsonObject("tags");			
-			sensorIdName = jobject.get("SensorID").toString().replace("\"", "");
-			egimNodeName = jobject.get("EGIMNode").toString().replace("\"", "");
-			
-			JsonObject  jobjectDps = pippolo.getAsJsonObject();
-			jobjectDps = jobjectDps.getAsJsonObject("dps");
-			jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-			String[] arrayDps = jobjectDpsCleaned.split(",");	
-			
-			//set the instrument name with the value previous saved
+			//set the instrument name with the previous extract value
 			Instrument inst = new Instrument();
             inst.setName(sensorIdName);
-            //set the parameter name with the value previous saved
+            //set the parameter name with with the previous extract value
             Parameter par = new Parameter();
             par.setName(metricName);
-            //set the observatory name with the value previous saved
+            //set the observatory name with with the previous extract value
             Observatory observ = new Observatory();
             observ.setName(egimNodeName);
-            
-            ArrayList<Observation> observationsList = new ArrayList<Observation>();
 			
+			//Get the an jsonObject with that rapresent the "dps" branche
+			JsonObject  jobjectDps = jarrayItem.getAsJsonObject();
+			jobjectDps = jobjectDps.getAsJsonObject("dps");
+			jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+			//Array of timeseries key: timestamp, value: value
+			String[] arrayDps = jobjectDpsCleaned.split(",");	
+			//Declare a List of Observation 
+            ArrayList<Observation> observationsList = new ArrayList<Observation>();
+			//For each array item extract the key and value to set to a new Observation object in the loop
             for (int index = 0, n = arrayDps.length; index < n; index++) {
-         		 String item = arrayDps[index];
-			    
-				Observation obt = new Observation();
-				obt.setPhenomenonTime(Long.valueOf(item.substring(0, item.indexOf(":"))));
-				obt.setValue(Double.valueOf(item.substring((item.indexOf(":") + 1), item.length())));
-				observationsList.add(obt);
+         		String item = arrayDps[index];
+			    //
+				Observation obs = new Observation();
+				obs.setPhenomenonTime(Long.valueOf(item.substring(0, item.indexOf(":"))));
+				obs.setValue(Double.valueOf(item.substring((item.indexOf(":") + 1), item.length())));
+				observationsList.add(obs);
             }
             
             //Compose the final bean to return 
@@ -446,160 +451,16 @@ public class ObservationsController implements ObservationsApi {
 			
 			
 			
-			
-			
-			
-			/*
-			
-			//Convert the response as string to a JSONArray	
-			JSONArray jarray = new JSONArray(response.toString());
-			//Declare a JSONObject for the timeseries 
-			JSONObject jobjDps = new JSONObject();
-			String egimNode = "";
-			String sensorId= "";
-			String metric = "" ;
-			// iterate the JSON array to read the value of the Response
-			for (int i = 0; i < jarray.length(); i++) {
-				//Read the EGIMNode value
-				egimNode = jarray.getJSONObject(i).getJSONObject("tags").getString("EGIMNode");
-				//Read the SensorID value
-				sensorId = jarray.getJSONObject(i).getJSONObject("tags").getString("SensorID");
-				//Read the parameter (metric) value
-				metric   = jarray.getJSONObject(i).getString("metric");
-				//Populate the JSONOObject related the timeseries 
-				jobjDps = jarray.getJSONObject(i).getJSONObject("dps");
-				//Remove double " and brace from the string rapresentation of the object
-				String dpsCleaned = jobjDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-				//Create an array with the value of the dpsCleaned string				
-				String[] array = dpsCleaned.split(",");				
-				//set the instrument name with the value previous saved
-				Instrument inst = new Instrument();
-                inst.setName(sensorId);
-                //set the parameter name with the value previous saved
-                Parameter par = new Parameter();
-                par.setName(metric);
-                //set the observatory name with the value previous saved
-                Observatory observ = new Observatory();
-                observ.setName(egimNode);
-                
-                ArrayList<Observation> list = new ArrayList<Observation>();
-                
-                //Declare a TreeMap to order the array that conteins the dpsCleaned value 
-                Map<Long, Double> map = new TreeMap<Long, Double>();
-                //Populate the map with the array values before and after the ":" character as key and value
-				for (int index = 0, n = array.length; index < n; index++) {
-				    String c = array[index];
-				    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
-				}
-				
-								
-				//For each value of the map populate the Observarion bean
-				for(Map.Entry<Long,Double> entry : map.entrySet()) {
-					  Long key = entry.getKey();
-					  Double value = entry.getValue();
-					  
-					  Observation obt = new Observation();
-					  obt.setPhenomenonTime(key);
-					  obt.setValue(value);
-					  list.add(obt);
-					  
-					}
-				
-				map.clear();
-                //Compose the final bean to return 
-				observations.setObservations(list);
-				observations.setParameter(par);
-				observations.setInstrument(inst);
-				observations.setObservatory(observ);
-			}
-			*/
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		
+			} catch (Exception e1) {
+			       e1.printStackTrace();
+		    }
 		 
 		return new ResponseEntity<Observations>(observations,HttpStatus.OK);
 	}
 
 	
 	
-//	public Object getTimeSeries(Object response){
-//		
-//		
-//		//Declare the final response object outside the loop
-//				Observations observations = new Observations();
-//				
-//				try {
-//					//Convert the response as string to a JSONArray	
-//					JSONArray jarray = new JSONArray(response.toString());
-//					//Declare a JSONObject for the timeseries 
-//					JSONObject jobjDps = new JSONObject();
-//					String egimNode = "";
-//					String sensorId= "";
-//					String metric = "" ;
-//					// iterate the JSON array to read the value of the Response
-//					for (int i = 0; i < jarray.length(); i++) {
-//						//Read the EGIMNode value
-//						egimNode = jarray.getJSONObject(i).getJSONObject("tags").getString("EGIMNode");
-//						//Read the SensorID value
-//						sensorId = jarray.getJSONObject(i).getJSONObject("tags").getString("SensorID");
-//						//Read the parameter (metric) value
-//						metric   = jarray.getJSONObject(i).getString("metric");
-//						//Populate the JSONOObject related the timeseries 
-//						jobjDps = jarray.getJSONObject(i).getJSONObject("dps");
-//						//Remove double " and brace from the string rapresentation of the object
-//						String dpsCleaned = jobjDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-//						//Create an array with the value of the dpsCleaned string				
-//						String[] array = dpsCleaned.split(",");				
-//						//set the instrument name with the value previous saved
-//						Instrument inst = new Instrument();
-//		                inst.setName(sensorId);
-//		                //set the parameter name with the value previous saved
-//		                Parameter par = new Parameter();
-//		                par.setName(metric);
-//		                //set the observatory name with the value previous saved
-//		                Observatory observ = new Observatory();
-//		                observ.setName(egimNode);
-//		                
-//		                ArrayList<Observation> list = new ArrayList<Observation>();
-//		                
-//		                //Declare a TreeMap to order the array that conteins the dpsCleaned value 
-//		                Map<Long, Double> map = new TreeMap<Long, Double>();
-//		                //Populate the map with the array values before and after the ":" character as key and value
-//						for (int index = 0, n = array.length; index < n; index++) {
-//						    String c = array[index];
-//						    map.put(Long.valueOf(c.substring(0, c.indexOf(":"))), Double.valueOf(c.substring((c.indexOf(":") + 1), c.length())));
-//						}
-//						
-//										
-//						//For each value of the map populate the Observarion bean
-//						for(Map.Entry<Long,Double> entry : map.entrySet()) {
-//							  Long key = entry.getKey();
-//							  Double value = entry.getValue();
-//							//  System.out.println(key + " => " + value);
-//							  
-//							  Observation obt = new Observation();
-//							  obt.setPhenomenonTime(key);
-//							  obt.setValue(value);
-//							  list.add(obt);
-//							  
-//							}
-//						
-//						map.clear();
-//		                //Compose the final bean to return 
-//						observations.setObservations(list);
-//						observations.setParameter(par);
-//						observations.setInstrument(inst);
-//						observations.setObservatory(observ);
-//					}
-//					
-//				} catch (JSONException e1) {
-//					e1.printStackTrace();
-//				}
-//		
-//		return observations;
-//	} 
+
 	
 	public ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMinsGet(
 			@ApiParam(value = "The observatory name.", required = true) @PathVariable("observatory") String observatory
