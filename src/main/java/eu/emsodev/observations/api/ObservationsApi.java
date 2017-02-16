@@ -26,7 +26,7 @@ import eu.emsodev.observations.model.Parameters;
 @Api(value = "observatories", description = "the observatories API")
 public interface ObservationsApi {
 
-	@ApiOperation(value = "It represents the EGIM observatories accessible through the EMSODEV Data Management Platform API.", notes = "Get a list of `EGIM observartories`.", response = Observatories.class, tags={ "observatory", })
+	@ApiOperation(value = "It represents the EGIM observatories accessible through the EMSODEV Data Management Platform API.", notes = "Get a list of `EGIM observartories`.", response = Observatories.class, tags={ "Observatories list", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "EGIM observatories list.", response = Observatories.class) })
 	@RequestMapping(value = "/observatories", produces = {"application/json", "text/csv"}, method = RequestMethod.GET)
@@ -44,7 +44,7 @@ public interface ObservationsApi {
 //			);
 
 
-	@ApiOperation(value = "It represents the instruments deployed in an EGIM observatory.", notes = "Get a list of `instruments` for an `EGIM observatory`.", response = Instruments.class, tags={ "instrument", })
+	@ApiOperation(value = "It represents the instruments deployed in an EGIM observatory.", notes = "Get a list of `instruments` for an `EGIM observatory`.", response = Instruments.class, tags={ "Instruments and metadata list", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "List of instruments for an EGIM observatory", response = Instruments.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments",
@@ -57,7 +57,7 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "An EGIM observatory instrument", notes = "Get `EGIM observatory instrument` resource.", response = Instrument.class, tags={ "instrument", })
+	@ApiOperation(value = "An EGIM observatory instrument", notes = "Get `EGIM observatory instrument` resource.", response = Instrument.class, tags={ "Instruments and metadata list", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Details of an EGIM observatory instrument", response = InstrumentMetadataList.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}",
@@ -74,7 +74,7 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "It represents the parametres observed by an instrument.", notes = "Gets the list of `EGIM parameters` for a specific `EGIM instrument` of an `EGIM Observatory`.", response = Parameters.class, tags={ "parameter", })
+	@ApiOperation(value = "It represents the parametres observed by an instrument.", notes = "Gets the list of `EGIM parameters` for a specific `EGIM instrument` of an `EGIM Observatory`.", response = Parameters.class, tags={ "Parameters list and related Time-series", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "List of parameters for a specific EGIM Instrument of an EGIM Observatory.", response = Parameters.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters",
@@ -91,7 +91,7 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "Time-series of a specific EGIM parameter.", notes = "Gets the time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags={ "parameter", })
+	@ApiOperation(value = "Time-series of a specific EGIM parameter.", notes = "Gets the time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags={ "Parameters list and related Time-series", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}",
@@ -120,7 +120,7 @@ public interface ObservationsApi {
 			);
 
 
-	@ApiOperation(value = "Minimum values of time-series of a specific parameter.", notes = "Gets the minimum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiOperation(value = "Minimum values of time-series of a specific parameter.", notes = "Gets the minimum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "Parameters list and related Time-series", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/min",
@@ -151,7 +151,7 @@ public interface ObservationsApi {
 			);
 	
 
-	@ApiOperation(value = "Maximum values of time-series of a specific parameter.", notes = "Gets the maximum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiOperation(value = "Maximum values of time-series of a specific parameter.", notes = "Gets the maximum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "Parameters list and related Time-series", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/max",
@@ -182,7 +182,7 @@ public interface ObservationsApi {
 			);
 
 	
-	@ApiOperation(value = "Average values of time-series of a specific parameter.", notes = "Gets the average value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "parameter", })
+	@ApiOperation(value = "Average values of time-series of a specific parameter.", notes = "Gets the average value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags={ "Parameters list and related Time-series", })
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/avg",
