@@ -3,6 +3,7 @@ package eu.emsodev.observations.api;
 import java.io.File;
 
 import io.swagger.annotations.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,18 +16,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
-@Api(value = "files NETCDF", description = "the files API")
-public interface NetCDFgetFilesApi {
+@Api(value = "files ODV", description = "the files API")
+public interface ODVgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as ODV", notes = "Get ODV file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Time series list.", response = File.class) })
-    @RequestMapping(value = "/fileasnetcdf",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<File> netcdfFilesGet();
+    @RequestMapping(value = "/fileasodv",  method = RequestMethod.GET)
+    ResponseEntity<File> odvFilesGet(HttpServletResponse response);
 
     
     //Some example of spring method that return file
