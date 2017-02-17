@@ -1,119 +1,111 @@
 package eu.emsodev.observations.model;
 
-import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Objects;
-
-
-
-
 /**
  * ObservationsStatsStats
  */
-//@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-10-04T09:41:08.096Z")
+// @javax.annotation.Generated(value =
+// "class io.swagger.codegen.languages.SpringCodegen", date =
+// "2016-10-04T09:41:08.096Z")
 
-public class ObservationsStatsStats   {
-  private Double avg = null;
+public class ObservationsStatsStats {
 
-  private Double min = null;
+	private Double statValue = null;
+	private Long phenomenonTime = null;
 
-  private Double max = null;
+	/**
+	 * @return the statValue
+	 */
+	public Double getStatValue() {
+		return statValue;
+	}
 
-  public ObservationsStatsStats avg(Double avg) {
-    this.avg = avg;
-    return this;
-  }
+	/**
+	 * @param statValue
+	 *            the statValue to set
+	 */
+	public void setStatValue(Double statValue) {
+		this.statValue = statValue;
+	}
 
-   /**
-   * average value
-   * @return avg
-  **/
-  @ApiModelProperty(value = "average value")
-  public Double getAvg() {
-    return avg;
-  }
+	/**
+	 * @return the phenomenonTime
+	 */
+	public Long getPhenomenonTime() {
+		return phenomenonTime;
+	}
 
-  public void setAvg(Double avg) {
-    this.avg = avg;
-  }
+	/**
+	 * @param phenomenonTime
+	 *            the phenomenonTime to set
+	 */
+	public void setPhenomenonTime(Long phenomenonTime) {
+		this.phenomenonTime = phenomenonTime;
+	}
 
-  public ObservationsStatsStats min(Double min) {
-    this.min = min;
-    return this;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((phenomenonTime == null) ? 0 : phenomenonTime.hashCode());
+		result = prime * result
+				+ ((statValue == null) ? 0 : statValue.hashCode());
+		return result;
+	}
 
-   /**
-   * minimum value
-   * @return min
-  **/
-  @ApiModelProperty(value = "minimum value")
-  public Double getMin() {
-    return min;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ObservationsStatsStats other = (ObservationsStatsStats) obj;
+		if (phenomenonTime == null) {
+			if (other.phenomenonTime != null)
+				return false;
+		} else if (!phenomenonTime.equals(other.phenomenonTime))
+			return false;
+		if (statValue == null) {
+			if (other.statValue != null)
+				return false;
+		} else if (!statValue.equals(other.statValue))
+			return false;
+		return true;
+	}
 
-  public void setMin(Double min) {
-    this.min = min;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ObservationsStatsStats ["
+				+ (statValue != null ? "statValue=" + statValue + ", " : "")
+				+ (phenomenonTime != null ? "phenomenonTime=" + phenomenonTime
+						: "") + "]";
+	}
 
-  public ObservationsStatsStats max(Double max) {
-    this.max = max;
-    return this;
-  }
-
-   /**
-   * maximum value
-   * @return max
-  **/
-  @ApiModelProperty(value = "maximum value")
-  public Double getMax() {
-    return max;
-  }
-
-  public void setMax(Double max) {
-    this.max = max;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ObservationsStatsStats observationsStatsStats = (ObservationsStatsStats) o;
-    return Objects.equals(this.avg, observationsStatsStats.avg) &&
-        Objects.equals(this.min, observationsStatsStats.min) &&
-        Objects.equals(this.max, observationsStatsStats.max);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(avg, min, max);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ObservationsStatsStats {\n");
-    
-    sb.append("    avg: ").append(toIndentedString(avg)).append("\n");
-    sb.append("    min: ").append(toIndentedString(min)).append("\n");
-    sb.append("    max: ").append(toIndentedString(max)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

@@ -8,13 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
 //import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +22,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +45,7 @@ import eu.emsodev.observations.model.Observatories;
 import eu.emsodev.observations.model.Observatory;
 import eu.emsodev.observations.model.Parameter;
 import eu.emsodev.observations.model.Parameters;
+import eu.emsodev.observations.utilities.EmsodevUtility;
 
 @Configuration
 @PropertySource("${api.properties.home}")
@@ -112,8 +105,11 @@ public class ObservationsController implements ObservationsApi {
      
 	public ResponseEntity<Observatories> observatoriesGet() {
 		
+		
 		//Create the restTemplate object with or without proxy
-		istantiateRestTemplate();
+		//istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+		
 
 		String egimNode = "{EGIMNode=*}";
 		// The response as string of the urlToCall
@@ -176,7 +172,8 @@ public class ObservationsController implements ObservationsApi {
 
 			) {
 		//Create the restTemplate object with or without proxy
-		istantiateRestTemplate();
+		//istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		String params = "{SensorID=*,EGIMNode="+observatory+"}";
 
 		String response = restTemplate.getForObject(urlToCallObservatoryInstrumentsGet, String.class, params);
@@ -231,7 +228,8 @@ public class ObservationsController implements ObservationsApi {
 		// do some magic!
 		
 		//Create the restTemplate object with or without proxy
-		istantiateRestTemplate();
+		//istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		String url = "";
 		url = urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" + instrument ;
@@ -302,7 +300,8 @@ public class ObservationsController implements ObservationsApi {
 		// 
 		
 		//Create the restTemplate object with or without proxy
-		istantiateRestTemplate();
+		//istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		String params = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
 
 		String response = restTemplate.getForObject(urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet, String.class, params);
@@ -369,14 +368,15 @@ public class ObservationsController implements ObservationsApi {
 			) {
 		
 		//Create the restTemplate object with or without proxy
-		istantiateRestTemplate();
+		//istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		//Create a map of params to pass add as placeholder after parameter value in the following compositeUrl
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("EGIMNode", observatory);
 		params.put("SensorID",instrument);
 		
-		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}";
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}"+"&end="+EmsodevUtility.replaceNull(endDate);
 		
 		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																							
 		Object response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
@@ -544,42 +544,42 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<ObservationsStats>(HttpStatus.OK);
 	}
 		
-	//Method to set the proxy if enable= true or false
-	private void istantiateRestTemplate(){
-		//Setting for proxy, please modify proxy parameter into the createRestTemplate() method
-		if (enableProxy) {		
-			try {
-				restTemplate = createRestTemplate();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}		
-		}else{
-			  restTemplate = new RestTemplate();
-		}
-		//End setting for proxy
-	}
-
-	private RestTemplate createRestTemplate() throws Exception {
-		
-		int port = Integer.valueOf(proxyPort).intValue();
-
-		CredentialsProvider credsProvider = new BasicCredentialsProvider();
-		credsProvider.setCredentials(new AuthScope(proxyUrl, port),
-				new UsernamePasswordCredentials(username, password));
-
-		HttpHost myProxy = new HttpHost(proxyUrl, port);
-		HttpClientBuilder clientBuilder = HttpClientBuilder.create();
-
-		clientBuilder.setProxy(myProxy)
-		.setDefaultCredentialsProvider(credsProvider)
-		.disableCookieManagement();
-
-		HttpClient httpClient = clientBuilder.build();
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		factory.setHttpClient(httpClient);
-
-		return new RestTemplate(factory);
-	}
+//	//Method to set the proxy if enable= true or false
+//	private void istantiateRestTemplate(){
+//		//Setting for proxy, please modify proxy parameter into the createRestTemplate() method
+//		if (enableProxy) {		
+//			try {
+//				restTemplate = createRestTemplate();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}		
+//		}else{
+//			  restTemplate = new RestTemplate();
+//		}
+//		//End setting for proxy
+//	}
+//
+//	private RestTemplate createRestTemplate() throws Exception {
+//		
+//		int port = Integer.valueOf(proxyPort).intValue();
+//
+//		CredentialsProvider credsProvider = new BasicCredentialsProvider();
+//		credsProvider.setCredentials(new AuthScope(proxyUrl, port),
+//				new UsernamePasswordCredentials(username, password));
+//
+//		HttpHost myProxy = new HttpHost(proxyUrl, port);
+//		HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+//
+//		clientBuilder.setProxy(myProxy)
+//		.setDefaultCredentialsProvider(credsProvider)
+//		.disableCookieManagement();
+//
+//		HttpClient httpClient = clientBuilder.build();
+//		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+//		factory.setHttpClient(httpClient);
+//
+//		return new RestTemplate(factory);
+//	}
 	
 }
