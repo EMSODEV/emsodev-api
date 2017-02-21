@@ -131,7 +131,7 @@
 
 	<build>
 		<plugins>
-		<!--Decommentare il blocco plugin per fare build DOCKER  -->
+		<!--Uncomment plugin block to do DOCKER build -->
 			<!-- <plugin>
 	            <groupId>com.spotify</groupId>
 	            <artifactId>docker-maven-plugin</artifactId>
@@ -151,7 +151,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				 <!--Commentare solo il blocco execution per fare build DOCKER  -->
+				 <!--Comment only the execution block to do DOCKER build  -->
 				 <executions>
                     <execution>
                         <goals>
