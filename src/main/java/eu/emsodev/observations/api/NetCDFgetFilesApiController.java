@@ -57,7 +57,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
 		
-		  	
+		
     	    	
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }

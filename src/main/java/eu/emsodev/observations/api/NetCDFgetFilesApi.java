@@ -31,7 +31,7 @@ public interface NetCDFgetFilesApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
-        produces = { "application/json" }, 
+        produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
     ResponseEntity<String> netcdfFilesGet();
 
