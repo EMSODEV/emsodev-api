@@ -5,6 +5,7 @@ import java.io.File;
 
 import io.swagger.annotations.*;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
@@ -47,7 +51,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity<String> netcdfFilesGet() {
+    public ResponseEntity<String> netcdfFilesGet()  {
         // do some magic!
     	//creo l'oggetto restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -56,7 +60,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		// The response as string of the urlToCall
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
+		 
 		
+		try {
+			JSONObject obj = new JSONObject(response);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
     	    	
         return new ResponseEntity<String>(response, HttpStatus.OK);
