@@ -27,7 +27,7 @@ import java.util.List;
 
 public interface NetCDFgetFilesApi {
 
-    @ApiOperation(value = "I rents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
