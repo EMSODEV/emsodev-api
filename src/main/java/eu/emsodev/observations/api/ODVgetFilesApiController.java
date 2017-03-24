@@ -112,13 +112,15 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			// Ready to read the scala source code to execute
 			try {
 
-				File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
-				content = FileUtils.readFileToString(file);
-							
+				//File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
+				
+				
+				//content = FileUtils.readFileToString(file);
+				content = EmsodevUtility.getFileFromResourcesFolder("odvsparkcode.txt");			
 				contentWithParameters = content.replace("egimNodeVar", observatory).replace("instrumentIdVar", instrument).replace("startDateVar", EmsodevUtility.getDateToStringScalaFormat(startDate)).replace("endDateVar", EmsodevUtility.getDateToStringScalaFormat(endDate));
 				System.out.println(contentWithParameters);
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				System.out.println("Input Failure: " + e.getMessage());
 			}
 			String statement = contentWithParameters;
