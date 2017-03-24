@@ -18,15 +18,22 @@ import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
 @Api(value = "files NETCDF", description = "the files API")
+
+
+
+
+
+
+
 public interface NetCDFgetFilesApi {
 
     @ApiOperation(value = "I rents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = File.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<File> netcdfFilesGet();
+    ResponseEntity<String> netcdfFilesGet();
 
     
     //Some example of spring method that return file

@@ -2,8 +2,10 @@ package eu.emsodev.observations.api;
 
 import java.io.File;
 
+
 import io.swagger.annotations.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import eu.emsodev.observations.utilities.EmsodevUtility;
 
 import java.util.List;
 
@@ -21,10 +26,40 @@ import java.util.List;
 
 @Controller
 public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
+	@Value("${emsodev.global.setting.proxyUser}")
+	private String username;
+	 
+	 @Value("${emsodev.global.setting.proxyPassword}")
+	private String password;
+	 
+	 @Value("${emsodev.global.setting.proxyUrl}")
+    private String proxyUrl;
+	 
+	 @Value("${emsodev.global.setting.proxyPort}")
+    private String proxyPort;
+	 
+	@Value("${emsodev.global.setting.proxy.enable}") 
+	private boolean enableProxy; 
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesGet}")
+	private String urlToCallObservatoriesGet;
+	
+	protected RestTemplate restTemplate;
+				
 
-    public ResponseEntity<File> netcdfFilesGet() {
+    public ResponseEntity<String> netcdfFilesGet() {
         // do some magic!
-        return new ResponseEntity<File>(HttpStatus.OK);
+    	//creo l'oggetto restTemplate
+    	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+    	
+    	String egimNode = "{EGIMNode=*}";
+		// The response as string of the urlToCall
+		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
+				egimNode);
+		
+		  	
+    	    	
+        return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
 }
