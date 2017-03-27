@@ -96,7 +96,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(response_1, HttpStatus.OK);
+        return new ResponseEntity<String>(Data, HttpStatus.OK);
     }
 
 }
