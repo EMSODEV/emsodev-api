@@ -76,7 +76,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//inizio
 			 JSONArray arr = obj.getJSONArray("results"); //nuovo JSON solo con results
 			 for (int i = 0; i < arr.length(); i++) {
-				 	//Data_1=" "+ obj.getString("metric")+ ",";
+				 	Data_1=" "+ obj.getString("metric")+ ",";
 					result = arr.getJSONObject(i).getJSONObject("tags");
 					// add the EGIMnode value to the list				
 					set.add(Data=Data+ " "+ result.getString("EGIMNode")+",");
