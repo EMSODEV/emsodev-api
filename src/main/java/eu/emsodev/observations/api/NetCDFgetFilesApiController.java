@@ -69,7 +69,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 obj = new JSONObject(response);
 			//inizio
 			 result= obj.getJSONObject("results");
-			ob = result.getString("tsuid");  
+			ob = result.getString("tags");  
 		 //fine   
 			
 		} catch (JSONException e) {
