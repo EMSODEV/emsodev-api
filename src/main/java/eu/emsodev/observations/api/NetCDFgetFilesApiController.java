@@ -100,7 +100,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  }
 			  
 			  //Prendo i dati del singolo strumento
-			  String URL_2= "http://dmpnode5.emsodev.eu:9991/api/query?start="+ "1111111111" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
+			  String URL_2= "http://dmpnode5.emsodev.eu:9991/api/query?start="+ "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
 			  response_2 = restTemplate.getForObject(URL, String.class);
 			  
 			 
