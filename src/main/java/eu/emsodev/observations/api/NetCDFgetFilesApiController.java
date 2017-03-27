@@ -56,9 +56,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity<Object> netcdfFilesGet()  {
+    public ResponseEntity <String> netcdfFilesGet()  {
         // do some mgic!
-    	//reo l'oggetto restTemplate
+    	//reo l'oggettdo restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
     	
     	String egimNode = "{EGIMNode=*}";
@@ -73,7 +73,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String Data_2 ="";
 		String response_1 ="";
 		String response_2 ="";
-		Object response_3 = null;
+		String response_3 = " ";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -103,12 +103,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  }
 			  
 			  //Prendo i dati del singolo strumento
-			  Map<String,String> params = new HashMap<String,String>();
+		  Map<String,String> params = new HashMap<String,String>();
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
 			  
 			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
-			   response_3 = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
+			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
 			 
 		} catch (JSONException e) {
@@ -117,7 +117,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<Object>(response_3, HttpStatus.OK);
+        return new ResponseEntity<String>(response_3, HttpStatus.OK);
     }
 
 }

@@ -27,16 +27,16 @@ import java.util.List;
 
 public interface NetCDFgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = String.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = Object.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Object> netcdfFilesGet();
+    ResponseEntity<String> netcdfFilesGet();
 
     
-    //Some example of spring method that return file
+    //Some example of spring mdethod that return file
     // https://twilblog.github.io/java/spring/rest/file/stream/2015/08/14/return-a-file-stream-from-spring-rest.html
     // http://stackoverflow.com/questions/5673260/downloading-a-file-from-spring-controllers
     // 
