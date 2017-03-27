@@ -106,7 +106,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  
 			  //metadati oss
 			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +"EMSODEV-EGIM-node00001" +"/" + "Workhorse_ADCP_21582" ;
-			  response_4 = restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
+			  response_4 = restTemplate.getForObject(Url_3, String.class);
 			  
 			  
 			  //Prendo i dati (serie temporali) del singolo strumento per parametro
