@@ -107,7 +107,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
 			  
-			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "10d-ago" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
+			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
 			   response_3 = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
 			 
 			 
