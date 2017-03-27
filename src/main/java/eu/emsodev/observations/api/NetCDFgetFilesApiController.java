@@ -78,11 +78,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 for (int i = 0; i < arr.length(); i++) {
 				 	//Data_1=" "+ obj.getString("metric")+ ",";
 					result = arr.getJSONObject(i).getJSONObject("tags");
-					Data_1 = arr.getJSONObject(i).getString("metric");
+					Data_1 = Data_1+ " "+ arr.getJSONObject(i).getString("metric");
 					// add the EGIMnode value to the list				
 					set.add(Data=Data+ " "+ result.getString("EGIMNode")+",");
 					set.add(Data=Data+ " "+ result.getString("SensorID")+",");
-					Data_1=Data_1+ " ";
 					//lavorare per le metriche
 				}
 		 //fine   
