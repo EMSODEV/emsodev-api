@@ -68,6 +68,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JSONObject result_1 = null;
 		//inizio
 		String Data ="";
+		String Data_2 ="";
 		String response_1 ="";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
@@ -86,10 +87,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					
 				}
 		 //fine 
+			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
 			 String params = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
 			  response_1 = restTemplate.getForObject(URL, String.class, params);
+			  obj = new JSONObject(response_1);
+			  JSONArray arr_1 = obj.getJSONArray("results");
+			  for (int i = 0; i < arr.length(); i++) {
+				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
+			  }
+			  
 			 
 			 
 		} catch (JSONException e) {
@@ -98,7 +106,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(response_1, HttpStatus.OK);
+        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
     }
 
 }
