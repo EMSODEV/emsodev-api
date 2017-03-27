@@ -105,11 +105,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
 			  
-		/*	  //metadati osserv
+		  //metadati osserv
 			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +"EMSODEV-EGIM-node00001" +"/" + "Workhorse_ADCP_21582" ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
 			  response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
-		*/	  
+		  
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
