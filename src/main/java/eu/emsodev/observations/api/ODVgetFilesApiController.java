@@ -50,8 +50,8 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 	@Value("${emsodev.global.setting.urlToCall.odvFilesPath}")
 	private String odvFilesPathPart;
 	private String contentWithParameters;
-//	@Value("${emsodev.global.scalacode.createodv}")
-//	private String scalacodeforodv;
+	@Value("${emsodev.global.scalacode.createodv.filepath}")
+	private String scalacodeforodvpath;
 	
 	/**
      * Property placeholder configurer needed to process @Value annotations
@@ -83,17 +83,6 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			e.printStackTrace();
 		}
 
-		//*********************************
-		
-		  ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-	        URL[] urls = ((URLClassLoader)cl).getURLs();
-
-	        for(URL url: urls){
-	        	System.out.println(url.getFile());
-	        }
-		
-		
 		
 		
 		
@@ -141,7 +130,8 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			// Ready to read the scala source code to execute
 			try {
 
-				File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
+				//File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
+				File file = ResourceUtils.getFile(scalacodeforodvpath);
 				
 				content = FileUtils.readFileToString(file);
 				
