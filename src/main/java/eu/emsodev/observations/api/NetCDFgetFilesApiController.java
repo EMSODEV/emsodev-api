@@ -76,7 +76,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 for (int i = 0; i < arr.length(); i++) {
 					result = arr.getJSONObject(i).getJSONObject("tags");
 					// add the EGIMnode value to the list				
-					set.add(ob=ob+result.getString("SensorID"));
+					set.add(ob=ob+ " "+ result.getString("SensorID"));
 				}
 		 //fine   
 			
