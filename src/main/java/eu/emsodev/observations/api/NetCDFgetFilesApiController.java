@@ -57,7 +57,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				
 
     public ResponseEntity <String> netcdfFilesGet()  {
-        // do some mgic!
+        // do some magic!
     	//reo l'oggettdo restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
     	
