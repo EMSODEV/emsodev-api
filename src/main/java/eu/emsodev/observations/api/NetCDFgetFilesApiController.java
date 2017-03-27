@@ -70,6 +70,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String Data ="";
 		String Data_2 ="";
 		String response_1 ="";
+		String response_2 ="";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -98,6 +99,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
 			  
+			  //Prendo i dati del singolo strumento
+			  String URL_2= "http://dmpnode5.emsodev.eu:9991/api/query?start="+ "1111111111" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
+			  response_2 = restTemplate.getForObject(URL, String.class);
+			  
 			 
 			 
 		} catch (JSONException e) {
@@ -106,7 +111,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>(response_2, HttpStatus.OK);
     }
 
 }
