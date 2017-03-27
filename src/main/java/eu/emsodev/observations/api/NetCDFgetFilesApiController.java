@@ -102,7 +102,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
 			  
-			  //Prendo i dati del singolo strumento
+			  //Prendo i dati del singlo strumento
 		  Map<String,String> params = new HashMap<String,String>();
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
