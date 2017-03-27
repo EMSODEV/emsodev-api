@@ -67,7 +67,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		try {
 			 obj = new JSONObject(response);
 			//inizio
-			ob = obj.getString("SensorID");  
+			ob = obj.getString("type");  
 		 //fine   
 			
 		} catch (JSONException e) {
