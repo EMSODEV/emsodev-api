@@ -68,31 +68,36 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JSONObject result_1 = null;
 		//inizio
 		String Data ="";
+		String response_1 ="";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
 		try {
 			 obj = new JSONObject(response);
-			//inizio
+			//Ricavo i metadati dal file di risposta: strumenti, nome del nodo e nome strumento nella stringa data dove ogni campo è separato da , e spazio
 			 JSONArray arr = obj.getJSONArray("results"); //nuovo JSON solo con results
 			 for (int i = 0; i < arr.length(); i++) {
 				 	//Data_1=" "+ obj.getString("metric")+ ",";
 					result = arr.getJSONObject(i).getJSONObject("tags");
-					Data = Data+ " "+ arr.getJSONObject(i).getString("metric");
+					Data = Data+ " "+ arr.getJSONObject(i).getString("metric")+ ",";
 					// add the EGIMnode value to the list				
-					set.add(Data=Data+ " "+ result.getString("EGIMNode")+",");
-					set.add(Data=Data+ " "+ result.getString("SensorID")+",");
-					//lavorare per le metriche
+					Data=Data+ " "+ result.getString("EGIMNode")+",";
+					Data=Data+ " "+ result.getString("SensorID")+",";
+					
 				}
-		 //fine   
-			
+		 //fine 
+			 String URL="http://api.emsodev.eu/observatories/EMSODEV-EGIM-node00001/instruments/Workhorse_ADCP_21582/parameters/sea_water_temperature?startDate=10d-ago"; 
+			 response_1 = restTemplate.getForObject(URL, String.class,
+						egimNode);
+			 
+			 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 
     	    	
-        return new ResponseEntity<String>(Data, HttpStatus.OK);
+        return new ResponseEntity<String>(response_1, HttpStatus.OK);
     }
 
 }
