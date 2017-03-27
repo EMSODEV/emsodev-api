@@ -65,6 +65,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		// The response as string of the urlToCall
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
+		
+		/*
+		
+		
 		JSONObject obj = null;
 		JSONObject result = null;
 		JSONObject result_1 = null;
@@ -92,7 +96,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					Data=Data+ " "+ result.getString("EGIMNode")+",";
 					Data=Data+ " "+ result.getString("SensorID")+",";
 					
-				}
+		
+			 
+			 	}
 		 //fine 
 			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
@@ -125,7 +131,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		 
-    	    	
+    	*/    	
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
