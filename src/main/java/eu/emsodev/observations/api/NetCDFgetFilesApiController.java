@@ -68,8 +68,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		try {
 			 obj = new JSONObject(response);
 			//inizio
-			 result= obj.getJSONObject("results");
-			ob = obj.getString("metric");  
+			 //result= obj.getJSONObject("results");
+			ob = obj.getString("type");  
 		 //fine   
 			
 		} catch (JSONException e) {
