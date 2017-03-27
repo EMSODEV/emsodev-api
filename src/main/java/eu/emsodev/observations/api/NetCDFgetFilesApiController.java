@@ -87,8 +87,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				}
 		 //fine 
 			 String URL="http://api.emsodev.eu/observatories/EMSODEV-EGIM-node00001/instruments/Workhorse_ADCP_21582/parameters/sea_water_temperature?startDate=10d-ago"; 
-			 response_1 = restTemplate.getForObject(URL, String.class,
-						egimNode);
+			 response_1 = restTemplate.getForObject(URL, String.class);
 			 
 			 
 		} catch (JSONException e) {
