@@ -61,13 +61,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
 		JSONObject obj = null;
+		JSONObject result = null;
 		//inizio
 		String ob = ""; 
 		
 		try {
 			 obj = new JSONObject(response);
 			//inizio
-			ob = obj.getString("type");  
+			 result= obj.getJSONObject("results");
+			ob = result.getString("SensorID");  
 		 //fine   
 			
 		} catch (JSONException e) {
