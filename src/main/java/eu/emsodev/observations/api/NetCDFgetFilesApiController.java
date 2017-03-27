@@ -20,7 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,12 +67,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JSONObject result = null;
 		//inizio
 		String ob = ""; 
+		Set<String> set = new HashSet<String>();
 		
 		try {
 			 obj = new JSONObject(response);
 			//inizio
-			 //result= obj.getJSONObject("results");
-			ob = obj.getString("type");  
+			 JSONArray arr = obj.getJSONArray("results"); //nuovo JSON solo con results
+			 for (int i = 0; i < arr.length(); i++) {
+					result = arr.getJSONObject(i).getJSONObject("tags");
+					// add the EGIMnode value to the list				
+					set.add(ob=ob+result.getString("SensorID"));
+				}
 		 //fine   
 			
 		} catch (JSONException e) {
