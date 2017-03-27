@@ -4,7 +4,10 @@ import io.swagger.annotations.ApiParam;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -12,7 +15,9 @@ import java.util.GregorianCalendar;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,7 @@ import eu.emsodev.observations.spark.livy.client.InteractiveSessionConf;
 import eu.emsodev.observations.spark.livy.client.LivyException;
 import eu.emsodev.observations.spark.livy.client.LivyInteractiveClient;
 import eu.emsodev.observations.spark.livy.client.Session;
+import eu.emsodev.observations.spark.livy.client.SessionEventListener;
 import eu.emsodev.observations.spark.livy.client.SessionKind;
 import eu.emsodev.observations.spark.livy.client.StatementResult;
 import eu.emsodev.observations.spark.livy.client.StatementResultListener;
@@ -44,6 +50,8 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 	@Value("${emsodev.global.setting.urlToCall.odvFilesPath}")
 	private String odvFilesPathPart;
 	private String contentWithParameters;
+//	@Value("${emsodev.global.scalacode.createodv}")
+//	private String scalacodeforodv;
 	
 	/**
      * Property placeholder configurer needed to process @Value annotations
@@ -75,6 +83,23 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			e.printStackTrace();
 		}
 
+		//*********************************
+		
+		  ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+	        URL[] urls = ((URLClassLoader)cl).getURLs();
+
+	        for(URL url: urls){
+	        	System.out.println(url.getFile());
+	        }
+		
+		
+		
+		
+		
+		/////////**************************
+		
+		
 		//Create a new interactive Livy session (kind : spark)
 		InteractiveSessionConf sc = new InteractiveSessionConf(
 				SessionKind.SPARK);
@@ -83,6 +108,7 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 		// path[0] = "/usr/hdp/2.5.0.0-1245/livy/jars/spark-csv_2.10-1.5.0.jar";
 		// sc.setJars(path);
 
+		//*********************************************************
 		// Set session listener
 		try {
 			client.createSession(sc);
@@ -91,7 +117,7 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 		} catch (LivyException e) {
 			e.printStackTrace();
 		}
-
+//
 		while (true) {
 			try {
 				session_status = client.getSession().getState();
@@ -106,17 +132,20 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 				e.printStackTrace();
 			}
 		}
+		
+		//*************************************************************************
+		
 
 		while (tryExecSparkJob) {
 			String content = null;
 			// Ready to read the scala source code to execute
 			try {
 
-				//File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
+				File file = ResourceUtils.getFile("src/main/resources/odvsparkcode.txt");
 				
+				content = FileUtils.readFileToString(file);
 				
-				//content = FileUtils.readFileToString(file);
-				content = EmsodevUtility.getFileFromResourcesFolder("/odvsparkcode.txt");			
+				//content = EmsodevUtility.getFileFromResourcesFolder("/odvsparkcode.txt");
 				contentWithParameters = content.replace("egimNodeVar", observatory).replace("instrumentIdVar", instrument).replace("startDateVar", EmsodevUtility.getDateToStringScalaFormat(startDate)).replace("endDateVar", EmsodevUtility.getDateToStringScalaFormat(endDate));
 				System.out.println(contentWithParameters);
 
@@ -139,7 +168,7 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			// Call the execution of the statement
 			try {
 
-				System.out.println(statement);
+				System.out.println("Try to execute the statement: " + statement);
 				client.submitStatement(statement, 1000,
 						new StatementResultListener() {
 
@@ -166,9 +195,22 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 				}
 			}
 		}
-		tryExecSparkJob = true;
+		System.out.println("Statement executed. The ODV file with the following id is mande : " + sparkResult);
+		
+		
 		String odvFilePath = odvFilesPathPart + sparkResult;
 
+		tryExecSparkJob = true;
+		sparkResult = null;
+		
+		//Try to delete the livy session
+		try {
+			client.deleteSession();
+			System.out.println("Session deleted");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return new ResponseEntity<String>(odvFilePath, HttpStatus.OK);
 	}
 
