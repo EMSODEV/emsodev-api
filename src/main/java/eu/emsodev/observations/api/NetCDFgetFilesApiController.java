@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -54,7 +56,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity<String> netcdfFilesGet()  {
+    public ResponseEntity<Object> netcdfFilesGet()  {
         // do some mgic!
     	//reo l'oggetto restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -71,6 +73,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String Data_2 ="";
 		String response_1 ="";
 		String response_2 ="";
+		Object response_3 = null;
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -90,9 +93,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 //fine 
 			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
-			 String params = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
+			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
-			  response_1 = restTemplate.getForObject(URL, String.class, params);
+			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
 			  obj = new JSONObject(response_1);
 			  JSONArray arr_1 = obj.getJSONArray("results");
 			  for (int i = 0; i < arr.length(); i++) {
@@ -100,9 +103,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  }
 			  
 			  //Prendo i dati del singolo strumento
-			  String URL_2= "http://dmpnode5.emsodev.eu:9991/api/query?start="+ "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
-			  response_2 = restTemplate.getForObject(URL, String.class);
+			  Map<String,String> params = new HashMap<String,String>();
+				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
+				params.put("SensorID","Workhorse_ADCP_21582");
 			  
+			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+EmsodevUtility.replaceNull(null);
+			   response_3 = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
 			 
 			 
 		} catch (JSONException e) {
@@ -111,7 +117,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(response_2, HttpStatus.OK);
+        return new ResponseEntity<Object>(response_3, HttpStatus.OK);
     }
 
 }

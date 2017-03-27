@@ -29,11 +29,11 @@ public interface NetCDFgetFilesApi {
 
     @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = Object.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<String> netcdfFilesGet();
+    ResponseEntity<Object> netcdfFilesGet();
 
     
     //Some example of spring method that return file
