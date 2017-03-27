@@ -86,8 +86,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					
 				}
 		 //fine 
-			 String URL="http://api.emsodev.eu/observatories/EMSODEV-EGIM-node00001/instruments/Workhorse_ADCP_21582/parameters/sea_water_temperature?startDate=10d-ago"; 
+			 String URL="http://api.emsodev.eu/observatories/EMSODEV-EGIM-node00001/instruments/Workhorse_ADCP_21582/parameters/"; 
+			 String params = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
 			 //response_1 = restTemplate.getForObject(URL, String.class);
+			  response_1 = restTemplate.getForObject(URL, String.class, params);
 			 
 			 
 		} catch (JSONException e) {
@@ -96,7 +98,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(Data, HttpStatus.OK);
+        return new ResponseEntity<String>(response_1, HttpStatus.OK);
     }
 
 }
