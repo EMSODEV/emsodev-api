@@ -68,7 +68,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JSONObject result_1 = null;
 		//inizio
 		String Data ="";
-		String Data_1 ="";
+		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
 		try {
@@ -78,7 +78,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 for (int i = 0; i < arr.length(); i++) {
 				 	//Data_1=" "+ obj.getString("metric")+ ",";
 					result = arr.getJSONObject(i).getJSONObject("tags");
-					Data_1 = Data_1+ " "+ arr.getJSONObject(i).getString("metric");
+					Data = Data+ " "+ arr.getJSONObject(i).getString("metric");
 					// add the EGIMnode value to the list				
 					set.add(Data=Data+ " "+ result.getString("EGIMNode")+",");
 					set.add(Data=Data+ " "+ result.getString("SensorID")+",");
@@ -92,7 +92,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(Data_1, HttpStatus.OK);
+        return new ResponseEntity<String>(Data, HttpStatus.OK);
     }
 
 }
