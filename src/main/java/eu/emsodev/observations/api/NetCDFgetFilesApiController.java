@@ -111,7 +111,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 			  
 			  
-			  //Prendo i dati (serie temporali) del singolo strumento per parametro
+			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
