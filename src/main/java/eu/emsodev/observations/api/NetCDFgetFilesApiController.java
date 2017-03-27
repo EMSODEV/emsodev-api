@@ -64,12 +64,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		try {
 			JSONObject obj = new JSONObject(response);
+			//inizio
+			String ob = obj.getString("SensorID");  
+			
+			response=ob;
+		 //fine   
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		 
     	    	
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }
