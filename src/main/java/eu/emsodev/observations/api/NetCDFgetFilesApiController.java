@@ -121,7 +121,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 
 			 
 		} catch (JSONException e) {
-			// TODO Auto-geerated catch block
+			// TODO Auto-geerate catch block
 			e.printStackTrace();
 		}
 		 
