@@ -60,14 +60,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		// The response as string of the urlToCall
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
-		 
+		JSONObject obj = null;
+		//inizio
+		String ob = ""; 
 		
 		try {
-			JSONObject obj = new JSONObject(response);
+			 obj = new JSONObject(response);
 			//inizio
-			String ob = obj.getString("SensorID");  
-			
-			response=ob;
+			ob = obj.getString("SensorID");  
 		 //fine   
 			
 		} catch (JSONException e) {
@@ -76,7 +76,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
     	    	
-        return new ResponseEntity<String>(response, HttpStatus.OK);
+        return new ResponseEntity<String>(ob, HttpStatus.OK);
     }
 
 }
