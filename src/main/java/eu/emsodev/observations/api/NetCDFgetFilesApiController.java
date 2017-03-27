@@ -86,7 +86,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					
 				}
 		 //fine 
-			 String URL="http://api.emsodev.eu/observatories/EMSODEV-EGIM-node00001/instruments/Workhorse_ADCP_21582/parameters/"; 
+			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
 			 String params = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
 			  response_1 = restTemplate.getForObject(URL, String.class, params);
