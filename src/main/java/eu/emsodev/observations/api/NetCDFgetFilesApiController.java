@@ -66,7 +66,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String response = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
 				egimNode);
 		
-		/*
+	
 		
 		
 		JSONObject obj = null;
@@ -114,7 +114,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  //metadati osserv
 			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +"EMSODEV-EGIM-node00001" +"/" + "Workhorse_ADCP_21582" ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
-			  response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
+			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 		  
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
@@ -131,8 +131,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		 
-    	*/    	
-        return new ResponseEntity<String>(response, HttpStatus.OK);
+        	
+        return new ResponseEntity<String>(response_3, HttpStatus.OK);
     }
 
 }
