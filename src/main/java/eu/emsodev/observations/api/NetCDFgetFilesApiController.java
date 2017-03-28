@@ -103,7 +103,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 //fine 
 			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
-			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
+			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+observatory+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
 			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
 			  obj = new JSONObject(response_1);
