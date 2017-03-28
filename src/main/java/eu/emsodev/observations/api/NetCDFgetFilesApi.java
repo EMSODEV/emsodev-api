@@ -37,7 +37,7 @@ public interface NetCDFgetFilesApi {
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
     ResponseEntity<String> netcdfFilesGet(
-    		 @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    		// @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
     		
     		);
 

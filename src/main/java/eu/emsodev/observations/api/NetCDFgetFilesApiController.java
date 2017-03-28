@@ -58,7 +58,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
     public ResponseEntity <String> netcdfFilesGet(
     		
-    		@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
+    		//@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
     		
     		)  {
         // do some magic!
@@ -123,7 +123,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
-				params.put("EGIMNode", observatory);
+				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
 			  
 			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
