@@ -58,7 +58,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
 	public ResponseEntity <String> netcdfFilesGet( @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory)  {
    		 
-        // do some mgic!
+        // do some magic!
     	//reo l'oggetto restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
     	
