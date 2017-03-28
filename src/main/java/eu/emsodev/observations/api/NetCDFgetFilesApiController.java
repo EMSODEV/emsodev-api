@@ -56,11 +56,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity <String> netcdfFilesGet(
-    		
-    		
-    		)  {
-        // do some magic!
+	public ResponseEntity <String> netcdfFilesGet( @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory)  {
+   		 
+        // do some mgic!
     	//reo l'oggetto restTemplate
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
     	
@@ -135,7 +133,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
         	
-        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>(response_5, HttpStatus.OK);
     }
 
 }
