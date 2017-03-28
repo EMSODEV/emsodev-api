@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import eu.emsodev.observations.model.Instruments;
+import eu.emsodev.observations.model.Observatories;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
@@ -33,9 +36,11 @@ public interface NetCDFgetFilesApi {
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<String> netcdfFilesGet();
+    ResponseEntity<String> netcdfFilesGet(
+    		 @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    		
+    		);
 
-    
     //Some example of spring method that return file
     // https://twilblog.github.io/java/spring/rest/file/stream/2015/08/14/return-a-file-stream-from-spring-rest.html
     // http://stackoverflow.com/questions/5673260/downloading-a-file-from-spring-controllers
