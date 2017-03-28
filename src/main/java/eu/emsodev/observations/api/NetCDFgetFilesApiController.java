@@ -106,7 +106,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 //fine 
 			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
-			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+observatory+"}";
+			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+"EMSODEV-EGIM-node00001"+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
 			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
 			  obj = new JSONObject(response_1);
@@ -123,7 +123,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
-				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
+				params.put("EGIMNode", observatory);
 				params.put("SensorID","Workhorse_ADCP_21582");
 			  
 			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
