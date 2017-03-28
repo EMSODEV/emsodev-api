@@ -179,13 +179,16 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			boolean loop = true;
 			while (loop) {
 				if (sparkResult == null ) {
+					System.out.println("Inside loop result = " + sparkResult + " flag value = " + loop);
 					continue;
 				}else{
 					loop = false;
+					System.out.println("Inside loop result = " + sparkResult + " flag value = " + loop);
 				}
 			}
+			System.out.println("Exit loop = " + sparkResult + " flag value = " + loop);
 		}
-		System.out.println("Statement executed. The ODV file with the following id is mande : " + sparkResult);
+		System.out.println("Statement executed with result ID : " + sparkResult);
 		
 		
 		String odvFilePath = odvFilesPathPart + sparkResult;
