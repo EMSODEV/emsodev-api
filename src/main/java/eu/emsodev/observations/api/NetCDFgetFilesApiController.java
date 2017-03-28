@@ -7,6 +7,7 @@ import io.swagger.annotations.*;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +58,19 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-	public ResponseEntity <String> netcdfFilesGet( @ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory)  {
+	public ResponseEntity <String> netcdfFilesGet( 
+			@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+
+			,
+			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
+
+			,
+			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
+
+			,
+			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+			
+			)  {
    		 
         // do some magic!
     	//reo l'oggetto restTemplate
