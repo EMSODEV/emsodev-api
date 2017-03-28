@@ -58,7 +58,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
     public ResponseEntity <String> netcdfFilesGet(
     		
-    		//@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
     		
     		)  {
         // do some magic!
