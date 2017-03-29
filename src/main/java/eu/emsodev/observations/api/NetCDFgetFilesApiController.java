@@ -142,6 +142,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				params.put("SensorID","Workhorse_ADCP_21582");
 				
 				//DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
+				//
 				long unixTime = (long) startDate.getTime()/1000;
 				 strDate= strDate.valueOf(unixTime);
 				 long unixTime_1 = (long) endDate.getTime()/1000;
