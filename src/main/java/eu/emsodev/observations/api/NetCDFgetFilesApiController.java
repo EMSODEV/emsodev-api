@@ -98,6 +98,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String Url_3 = "";
 		String response_4 = "";
 		String response_5 = "";
+		//String strDate ="";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -139,11 +140,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
 				
-				DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
-				//String strDate = dateFormat.format(StartDate);
+				//DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
+				long unixTime = (long) startDate.getTime()/1000;
+				//String strDate = dateFormat.format(startDate);
+				//Date date = dateFormat.parse(strDate);
+				//long unixTime = (long) date.getTime()/1000;
 				
 				
-			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + dateFormat.format(startDate) +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
+			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + String.valueOf(unixTime)  +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
 			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
 			 
