@@ -1,7 +1,9 @@
 package eu.emsodev.observations.api;
 
 import java.io.File;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import io.swagger.annotations.*;
 
@@ -136,8 +138,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  Map<String,String> params = new HashMap<String,String>();
 				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
 				params.put("SensorID","Workhorse_ADCP_21582");
-			  
-			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + "1489763412" +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
+				
+				DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
+				//String strDate = dateFormat.format(StartDate);
+				
+				
+			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + dateFormat.format(startDate) +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
 			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
 			 
@@ -147,7 +153,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
         	
-        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>(response_3, HttpStatus.OK);
     }
 
 }
+
