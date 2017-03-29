@@ -99,6 +99,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String response_4 = "";
 		String response_5 = "";
 		String strDate ="";
+		String strDate_1 ="";
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -143,11 +144,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				//DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
 				long unixTime = (long) startDate.getTime()/1000;
 				 strDate= strDate.valueOf(unixTime);
+				 long unixTime_1 = (long) endDate.getTime()/1000;
+				 strDate_1= strDate.valueOf(unixTime_1);
 				//Date date = dateFormat.parse(strDate);
 				//long unixTime = (long) date.getTime()/1000;
 				
 				
-			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + strDate  +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ "1490623812";
+			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + strDate  +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ strDate_1;
 			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
 			 
