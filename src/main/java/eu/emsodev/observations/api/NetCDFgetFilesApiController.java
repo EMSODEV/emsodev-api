@@ -70,7 +70,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
 
 			,
-			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy.") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
 			
 			)  {
    		 
