@@ -136,7 +136,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  for (int i = 0; i < arr.length(); i++) {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
-			  
+			  //Per separarsi le strighe fai così per generarti variabili o cose così: fai. 
+			  /*
+			  String [] splits = Data_2.split(",");
+				for(String s:splits){
+				//fai operazioni su file netcdf	
+				}
+				*/
 		  //metadati osserv
 			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
@@ -154,6 +160,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					
 			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 			  }
+			  
 			  
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
