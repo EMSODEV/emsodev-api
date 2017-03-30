@@ -121,7 +121,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 //fine 
 			 //Prendo i parametri del singolo strumento
 			 String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
-			 String paramss = "{SensorID="+"Workhorse_ADCP_21582"+",EGIMNode="+observatory+"}";
+			 String paramss = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
 			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
 			  obj = new JSONObject(response_1);
@@ -131,15 +131,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  }
 			  
 		  //metadati osserv
-			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +"EMSODEV-EGIM-node00001" +"/" + "Workhorse_ADCP_21582" ;
+			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
 			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 		  
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
-				params.put("EGIMNode", "EMSODEV-EGIM-node00001");
-				params.put("SensorID","Workhorse_ADCP_21582");
+				params.put("EGIMNode", observatory);
+				params.put("SensorID", instrument);
 				
 				//DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
 				//
@@ -161,7 +161,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
         	
-        return new ResponseEntity<String>(response_3, HttpStatus.OK);
+        return new ResponseEntity<String>(response_5, HttpStatus.OK);
     }
 
 }
