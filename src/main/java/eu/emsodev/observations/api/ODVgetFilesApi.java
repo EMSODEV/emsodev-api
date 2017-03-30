@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Api(value = "files ODV", description = "the files API")
 public interface ODVgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as ODV", notes = "Get ODV file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as ODV", notes = "Get ODV representation of a dataset for a specific observatory,"
+    		+ " instrument and time range. The output is a link which will start the download of the text file.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Time series list.", response = File.class) })
     @RequestMapping(value = "/fileasodv",  method = RequestMethod.GET)
