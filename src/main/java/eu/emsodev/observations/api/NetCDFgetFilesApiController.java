@@ -143,9 +143,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  obj_2 = new JSONObject(response_5);
 			  JSONArray arr_2 = obj_2.getJSONObject("FileStatuses").getJSONArray("FileStatus");
 			  for (int i = 0; i < arr.length(); i++) {
-					type = arr.getJSONObject(i).getString("type");
-					nameDir = arr.getJSONObject(i).getString("pathSuffix");
-					dateValidity = arr.getJSONObject(i).getString("modificationTime");
+					type = arr_2.getJSONObject(i).getString("type");
+					nameDir = arr_2.getJSONObject(i).getString("pathSuffix");
+					dateValidity = arr_2.getJSONObject(i).getString("modificationTime");
 					
 					if (type != null && "DIRECTORY".equals(type)){
 						 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
