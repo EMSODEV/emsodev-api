@@ -87,6 +87,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		
 		JSONObject obj = null;
+		JSONObject obj_2 = null;
 		JSONObject result = null;
 		JSONObject result_1 = null;
 		//inizio
@@ -100,6 +101,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String response_5 = "";
 		String strDate ="";
 		String strDate_1 ="";
+		String type = "";
+		String nameDir ="";
+		String dateValidity ="";
+		String resp ="";
+		
+		
 		//String Data_1 ="";
 		Set<String> set = new HashSet<String>();
 		
@@ -133,8 +140,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  //metadati osserv
 			  Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
+			  obj_2 = new JSONObject(response_5);
+			  JSONArray arr_2 = obj_2.getJSONObject("FileStatuses").getJSONArray("FileStatus");
+			  for (int i = 0; i < arr.length(); i++) {
+					type = arr.getJSONObject(i).getString("type");
+					nameDir = arr.getJSONObject(i).getString("pathSuffix");
+					dateValidity = arr.getJSONObject(i).getString("modificationTime");
+					
+					if (type != null && "DIRECTORY".equals(type)){
+						 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
+						//System.out.println(resp);
+					}
+					
 			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
-		  
+			  }
+			  
 			  
 			  //Prendo i dati (series temporali) del singolo strumento per parametro
 		  Map<String,String> params = new HashMap<String,String>();
@@ -161,7 +181,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 
         	
-        return new ResponseEntity<String>(response_5, HttpStatus.OK);
+        return new ResponseEntity<String>(resp, HttpStatus.OK);
     }
 
 }
