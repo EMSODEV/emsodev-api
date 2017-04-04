@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import io.swagger.annotations.*;
-import ucar.nc2.NetcdfFileWriter;
+//import ucar.nc2.NetcdfFileWriter;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,7 +110,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
-		NetcdfFileWriter writer = null;
+		//NetcdfFileWriter writer = null;
 		String location = "gino.nc";
 		
 		
