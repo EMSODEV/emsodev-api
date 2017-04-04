@@ -201,13 +201,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		
 		 
-			 try {
-			 writer = writer.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		 
 				
 		/*try {
 			  writer.create();
