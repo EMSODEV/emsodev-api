@@ -37,13 +37,13 @@ import ucar.nc2.*;
 
 public interface NetCDFgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = NetcdfFileWriteable.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = String.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = NetcdfFileWriteable.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<NetcdfFileWriteable> netcdfFilesGet(
+    ResponseEntity<String> netcdfFilesGet(
     		@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
     		,
