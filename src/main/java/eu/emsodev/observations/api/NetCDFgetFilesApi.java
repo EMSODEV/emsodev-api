@@ -60,7 +60,7 @@ public interface NetCDFgetFilesApi {
 
     //Some example of spring method that return file
     // https://twilblog.github.io/java/spring/rest/file/stream/2015/08/14/return-a-file-stream-from-spring-rest.html
-    // http://stackoverflow.com/questions/5673260/downloading-a-file-from-spring-controllers
+    // http://stackoverlow.com/questions/5673260/downloading-a-file-from-spring-controllers
     // 
     // For batch mode see:  http://projects.spring.io/spring-batch/
     // 
