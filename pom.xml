@@ -138,7 +138,7 @@
 	<repositories>
 	<repository>
         <id>netcdf</id>
-        <name>Repository hosting arctifact netcdf</name>
+        <name>Repository hosting actifact netcdf</name>
         <url>http://repo.boundlessgeo.com/main/</url>
     </repository>
 	
