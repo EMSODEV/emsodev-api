@@ -129,26 +129,26 @@
 			<version>2.4</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.sis.storage/sis-netcdf--> 
+<!-- https://mvnrepository.com/artifact/org.apache.sis.storage/sis-netcdf
 
 <dependency>
     <groupId>edu.ucar</groupId>
     <artifactId>netcdf</artifactId>
     <version>4.3.22</version>
-</dependency> 
+</dependency> --> 
 
 
 
 	</dependencies>
-	
+<!-- https://mvnrepository.com/artifact/org.apache.sis.storage/sis-netcdf	
 	<repositories>
 	<repository>
         <id>netcdf</id>
         <name>Repository hosting acrtifact netcdf</name>
         <url>http://repo.boundlessgeo.com/main/</url>
-    </repository> 
+    </repository>   
 	
-	</repositories> 
+	</repositories>  -->
 
 	<build>
 		<plugins>
