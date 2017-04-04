@@ -129,11 +129,14 @@
 			<version>2.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>edu.ucar</groupId>
-			<artifactId>netcdf</artifactId>
-			<version>4.2</version>
-		</dependency> 
+<!-- https://mvnrepository.com/artifact/org.apache.sis.storage/sis-netcdf -->
+<dependency>
+    <groupId>org.apache.sis.storage</groupId>
+    <artifactId>sis-netcdf</artifactId>
+    <version>0.7</version>
+</dependency>
+
+
 	</dependencies>
 	<!--Uncomment plugin block to do DOCKER build
 	<repositories>
