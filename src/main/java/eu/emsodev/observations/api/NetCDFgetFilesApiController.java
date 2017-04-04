@@ -36,8 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ucar.ma2.*; 
-import ucar.nc2.*; 
+//import ucar.ma2.*; 
+//import ucar.nc2.*; 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
@@ -109,7 +109,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
-		NetcdfFileWriteable writer = null;
+		//NetcdfFileWriteable writer = null;
 		String location = "gino.nc";
 		
 		
@@ -196,28 +196,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		
-		try {
-			writer= writer.createNew(location);
-			Dimension latDim = writer.addDimension("lat", 64);
-			Dimension lonDim = writer.addDimension("lon", 128);
-			ArrayList dims = new ArrayList();
-			   dims.add( latDim);
-			   dims.add( lonDim);
-			   writer.addVariable("temperatures", DataType.DOUBLE, dims);
-			   writer.addVariableAttribute("temperatures", "units", "K");
-			   
-			   
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//writer= writer.createNew(location);
+		//Dimension latDim = writer.addDimension("lat", 64);
+		//Dimension lonDim = writer.addDimension("lon", 128);
+		//ArrayList dims = new ArrayList();
+		  // dims.add( latDim);
+		   //dims.add( lonDim);
+		   //writer.addVariable("temperatures", DataType.DOUBLE, dims);
+		   //writer.addVariableAttribute("temperatures", "units", "K");
 		
-		try {
+		/*try {
 			  writer.create();
 			    } catch (IOException e) {
 			    	e.printStackTrace();
 			    }
-		
+		*/
         	
         return new ResponseEntity<String>("pippo", HttpStatus.OK);
     }

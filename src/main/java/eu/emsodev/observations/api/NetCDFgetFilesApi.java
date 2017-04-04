@@ -22,8 +22,8 @@ import eu.emsodev.observations.model.Observatories;
 import java.util.Date;
 import java.util.List;
 
-import ucar.ma2.*; 
-import ucar.nc2.*; 
+//import ucar.ma2.*; 
+//import ucar.nc2.*; 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
