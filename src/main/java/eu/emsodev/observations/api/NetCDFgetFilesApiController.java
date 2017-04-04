@@ -1,9 +1,10 @@
 package eu.emsodev.observations.api;
 
 import java.io.File;
-
+import java.io.IOException;
 
 import io.swagger.annotations.*;
+import ucar.nc2.NetcdfFileWriter;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,10 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import ucar.ma2.*; 
+import ucar.nc2.*;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
@@ -73,6 +78,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			)  {
         // do some magic!
     	//reo l'oggetto restTemplate
+    	String location = "Umberto.nc";
+    	NetcdfFileWriter writer = null;
+			  try {
+				writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	
 		 
         	
