@@ -128,12 +128,12 @@
 			<artifactId>org.apache.commons.io</artifactId>
 			<version>2.4</version>
 		</dependency>
-<!--NETCDF
+
 		<dependency>
 			<groupId>edu.ucar</groupId>
 			<artifactId>netcdf</artifactId>
 			<version>4.2</version>
-		</dependency> -->
+		</dependency> 
 	</dependencies>
 	<!--Uncomment plugin block to do DOCKER build
 	<repositories>
