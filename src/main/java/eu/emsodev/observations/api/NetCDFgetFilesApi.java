@@ -2,6 +2,7 @@ package eu.emsodev.observations.api;
 
 import java.io.File;
 
+
 import io.swagger.annotations.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +22,9 @@ import eu.emsodev.observations.model.Observatories;
 import java.util.Date;
 import java.util.List;
 
+import ucar.ma2.*; 
+import ucar.nc2.*; 
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
 @Api(value = "files NETCDF", description = "the files API")
@@ -33,13 +37,13 @@ import java.util.List;
 
 public interface NetCDFgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = String.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = NetcdfFileWriteable.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = NetcdfFileWriteable.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<String> netcdfFilesGet(
+    ResponseEntity<NetcdfFileWriteable> netcdfFilesGet(
     		@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
     		,

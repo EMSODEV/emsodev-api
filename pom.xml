@@ -50,6 +50,9 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+
+
 
 		<!-- <dependency> <groupId>org.apache.hbase</groupId> <artifactId>hbase-client</artifactId> 
 			<version>1.1.2</version> </dependency> <dependency> <groupId>org.apache.phoenix</groupId> 
@@ -125,7 +128,21 @@
 			<artifactId>org.apache.commons.io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>edu.ucar</groupId>
+			<artifactId>netcdf</artifactId>
+			<version>4.2</version>
+		</dependency>
 	</dependencies>
+	<!--Uncomment plugin block to do DOCKER build
+	<repositories>
+	<repository>
+        <id>netcdf</id>
+        <name>Repository hosting arctifact netcdf</name>
+        <url>http://repo.boundlessgeo.com/main/</url>
+    </repository>
+	
+	</repositories> -->
 
 	<build>
 		<plugins>

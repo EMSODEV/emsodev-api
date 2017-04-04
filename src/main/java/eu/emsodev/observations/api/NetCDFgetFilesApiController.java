@@ -1,6 +1,7 @@
 package eu.emsodev.observations.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ucar.ma2.*; 
+import ucar.nc2.*; 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
@@ -60,7 +64,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-	public ResponseEntity <String> netcdfFilesGet( 
+	public ResponseEntity <NetcdfFileWriteable> netcdfFilesGet( 
 			@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
@@ -105,6 +109,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
+		NetcdfFileWriteable writer = null;
+		String location = "gino.nc";
 		
 		
 		//String Data_1 ="";
@@ -181,14 +187,39 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  String compositeUrl = "http://dmpnode5.emsodev.eu:9991/api/query?start=" + strDate  +"&m=sum:" + "sea_water_temperature"+"{params}"+"&end="+ strDate_1;
 			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
-			 
+			   
+			    
+			   
+			   
 		} catch (JSONException e) {
 			// TODO Auto-geerate catch block
 			e.printStackTrace();
 		}
-		 
+		
+		try {
+			writer= writer.createNew(location);
+			Dimension latDim = writer.addDimension("lat", 64);
+			Dimension lonDim = writer.addDimension("lon", 128);
+			ArrayList dims = new ArrayList();
+			   dims.add( latDim);
+			   dims.add( lonDim);
+			   writer.addVariable("temperatures", DataType.DOUBLE, dims);
+			   writer.addVariableAttribute("temperatures", "units", "K");
+			   
+			   
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			  writer.create();
+			    } catch (IOException e) {
+			    	e.printStackTrace();
+			    }
+		
         	
-        return new ResponseEntity<String>(resp, HttpStatus.OK);
+        return new ResponseEntity<NetcdfFileWriteable>(writer, HttpStatus.OK);
     }
 
 }
