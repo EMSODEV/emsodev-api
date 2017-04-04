@@ -1,17 +1,12 @@
 package eu.emsodev.observations.api;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 
 import io.swagger.annotations.*;
-//import ucar.nc2.NetcdfFileWriter;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,12 +30,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import ucar.ma2.*; 
-//import ucar.nc2.*; 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
-
+@Controller
 public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	@Value("${emsodev.global.setting.proxyUser}")
 	private String username;
@@ -65,25 +56,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-	public ResponseEntity <String> netcdfFilesGet( 
-			@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
-
-			,
-			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
-
-			,
-			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
-
-			,
-			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
-			
-			)  {
-   		 
+    public ResponseEntity <String> netcdfFilesGet()  {
         // do some magic!
+    	//reo l'oggetto restTemplate
     	
+		 
         	
-        return new ResponseEntity<String>("pippo", HttpStatus.OK);
+        return new ResponseEntity<String>("ag", HttpStatus.OK);
     }
 
 }
-
