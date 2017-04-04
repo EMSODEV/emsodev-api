@@ -111,7 +111,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String dateValidity ="";
 		String resp ="";
 		//NetcdfFileWriter writer = null;
-		String location = "gino.nc";
+		//String location = "gino.nc";
 		
 		
 		//String Data_1 ="";
