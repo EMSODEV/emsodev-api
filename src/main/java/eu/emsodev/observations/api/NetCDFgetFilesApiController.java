@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import io.swagger.annotations.*;
+import ucar.nc2.NetcdfFileWriter;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,12 +37,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import ucar.ma2.*; 
-//import ucar.nc2.*; 
+import ucar.ma2.*; 
+import ucar.nc2.*; 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
-@Controller
+
 public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	@Value("${emsodev.global.setting.proxyUser}")
 	private String username;
@@ -109,7 +110,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
-		//NetcdfFileWriteable writer = null;
+		NetcdfFileWriter writer = null;
 		String location = "gino.nc";
 		
 		
@@ -188,6 +189,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			 
 			   
+				
 			    
 			   
 			   
@@ -196,15 +198,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		
-		//writer= writer.createNew(location);
-		//Dimension latDim = writer.addDimension("lat", 64);
-		//Dimension lonDim = writer.addDimension("lon", 128);
-		//ArrayList dims = new ArrayList();
-		  // dims.add( latDim);
-		   //dims.add( lonDim);
-		   //writer.addVariable("temperatures", DataType.DOUBLE, dims);
-		   //writer.addVariableAttribute("temperatures", "units", "K");
 		
+		
+		 
+			 try {
+			 writer = writer.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
+				
 		/*try {
 			  writer.create();
 			    } catch (IOException e) {
