@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Api(value = "files ODV", description = "the files API")
 public interface ODVgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as ODV", notes = "Get ODV file of a specific Observatory`.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as ODV", notes = "Get ODV representation of a dataset for a specific observatory,"
+    		+ " instrument and time range. The output is a link which will start the download of the text file.", response = File.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Time series list.", response = File.class) })
     @RequestMapping(value = "/fileasodv",  method = RequestMethod.GET)
@@ -34,10 +35,10 @@ public interface ODVgetFilesApi {
 	@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
 
 	,
-	@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
+	@ApiParam(value = "The start time for the query. The Date format is dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
 
 	,
-	@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+	@ApiParam(value = "The end time for the query. The Date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
 
 	);
     //Some example of spring method that return file
