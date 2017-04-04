@@ -129,7 +129,7 @@
 			<version>2.4</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.sis.storage/sis-netcdf
+<!-- https://mvnreository.com/artifact/org.apache.sis.storage/sis-netcdf
 
 <dependency>
     <groupId>edu.ucar</groupId>
