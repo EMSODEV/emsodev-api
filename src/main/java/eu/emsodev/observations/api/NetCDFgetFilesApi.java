@@ -52,7 +52,7 @@ public interface NetCDFgetFilesApi {
     		@ApiResponse(code = 200, message = "Time series list.") })
     		//@ApiResponse(code = 200, message = "Time series list.", response = String.class) })
     @RequestMapping(value = "/fileasnetcdf",
-        produces = { "application/x-netcdf" }, 
+        //produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
 	//inizio
 	void netcdfFilesGet(
