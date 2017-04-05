@@ -93,6 +93,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				//Add Group Attributes
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
+			    writer.addGroupAttribute(null, new Attribute("versionF", (float) 1.2));
+			    writer.addGroupAttribute(null, new Attribute("versionI", 1));
+			    writer.addGroupAttribute(null, new Attribute("versionS", (short) 2));
+			    writer.addGroupAttribute(null, new Attribute("versionB", (byte) 3));
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
