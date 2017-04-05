@@ -123,16 +123,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
 			  try {
-				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
+				  java.nio.file.Path file = Paths.get(".");
 				  Files.copy(file, response.getOutputStream());
 				  response.getOutputStream().flush();
 				  //is = new FileInputStream ("./Umberto.nc");
-				try {
+			/*	try {
 					org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+*/
 			    //response.flushBuffer();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
