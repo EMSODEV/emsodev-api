@@ -86,7 +86,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	Variable t = null;
     	Array data = null;
 			  try {
-				writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
+			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
 			/*	latDim=writer.addDimension(null, "lat", 64);
 				lonDim=writer.addDimension(null, "lat", 64);
