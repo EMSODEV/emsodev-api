@@ -3,10 +3,12 @@ package eu.emsodev.observations.api;
 import io.swagger.annotations.ApiParam;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 
 //import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
@@ -20,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -340,12 +343,11 @@ public class ObservationsController implements ObservationsApi {
 			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter
 
 			,
-			@ApiParam(value = "The start time for the query. This may be an absolute or relative time. The **Absolute time** follows the Unix (or POSIX) style timestamp. The **Relative time** follows the format `<amount><time unit>-ago` where `<amount>` is the number of time units and `<time unit>` is the unit of time *(ms->milliseconds, s->seconds, h->hours, d->days, w->weeks, n->months, y->years)*. For example, if we provide a start time of `1h-ago` and leave out the end time, our query will return data start at 1 hour ago to the current time.", required = true) @RequestParam(value = "startDate", required = true) String startDate
+			@ApiParam(value = "Beginning date for the time series range. The date format is dd/MM/yyyy.", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate
 
 			,
-			@ApiParam(value = "The end time for the query in Unix (or POSIX) style. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) String endDate
+			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) {
 
-			) {
 		
 		//Create the restTemplate object with or without proxy
 		//istantiateRestTemplate();
@@ -356,7 +358,11 @@ public class ObservationsController implements ObservationsApi {
 		params.put("EGIMNode", observatory);
 		params.put("SensorID",instrument);
 		
-		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet + startDate +"&m=sum:" + parameter+"{params}"+"&end="+EmsodevUtility.replaceNull(endDate);
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
+				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
+				+ parameter+"{params}"
+				+"&end="
+				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		
 		// The response as string of the urlToCall - This Url do not allows blanck spaces beetwen the params, for this reason is trimmed																							
 		Object response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
