@@ -125,4 +125,15 @@ public final class EmsodevUtility {
 		return dateToScalaFormat; 
 	}
 	
+	public static String getDateAsStringTimestampFormat (Date date){
+		String dateAsStringTimestampFormat = "";
+		
+		if (date == null){
+			date = GregorianCalendar.getInstance().getTime();
+		}
+	    
+		dateAsStringTimestampFormat = String.valueOf(date.getTime());
+		
+		return dateAsStringTimestampFormat; 
+	}
 }
