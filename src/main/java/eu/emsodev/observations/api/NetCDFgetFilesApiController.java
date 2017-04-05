@@ -1,7 +1,10 @@
 package eu.emsodev.observations.api;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import io.swagger.annotations.*;
 
@@ -26,6 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,8 +68,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	
 	protected RestTemplate restTemplate;
 				
-
-    public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+	public void netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    //public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
@@ -74,6 +79,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
 			,
 			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+			,
+			HttpServletResponse response
 			)  {
         // do some magic!
     	//reo l'oggetto restTemplate
@@ -86,6 +93,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	Array data = null;
     	//Dimension names= null;
     	Dimension svar_len = null;
+    	InputStream is = null;
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
@@ -106,12 +114,29 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
 			  try {
 				writer.create();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	
-        return new ResponseEntity<String>("pippo-String", HttpStatus.OK);
+			  try {
+				is = new FileInputStream ("Umberto.nc");
+				try {
+					org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    response.flushBuffer();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	  
+			  
+        //return new ResponseEntity<String>("pippo-String", HttpStatus.OK);
     }
 
 }
