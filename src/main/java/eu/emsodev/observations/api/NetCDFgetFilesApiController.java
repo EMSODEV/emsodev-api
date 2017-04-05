@@ -88,14 +88,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
-			latDim=writer.addDimension(null, "lat", 64);
-				lonDim=writer.addDimension(null, "lat", 64);
-				dims=new ArrayList<Dimension>();
-				dims.add(latDim);
-				t = writer.addVariable(null, "temperature", DataType.DOUBLE, dims);
-				t.addAttribute(new Attribute("units", "K"));   // add a 1D attribute of length 3
-				data = Array.factory(int.class, new int[]{3}, new int[]{1, 2, 3});
-				t.addAttribute(new Attribute("scale", data));
 				writer.addVariable(null, "scalar", DataType.DOUBLE, new ArrayList<Dimension>());
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
