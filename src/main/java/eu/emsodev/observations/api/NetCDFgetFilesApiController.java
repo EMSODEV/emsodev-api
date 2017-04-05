@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import io.swagger.annotations.*;
-import ucar.nc2.NetcdfFileWriter;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,10 +84,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	List<Dimension> dims = null;
     	Variable t = null;
     	Array data = null;
+    	Dimension names= null;
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
-				//writer.addVariable(null, "scalar", DataType.DOUBLE, new ArrayList<Dimension>());
+				names = writer.addDimension(null, "names", 3);
+				writer.addVariable(null, "names", DataType.CHAR, "names svar_len");
+				//Add Group Attributes
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
 				
