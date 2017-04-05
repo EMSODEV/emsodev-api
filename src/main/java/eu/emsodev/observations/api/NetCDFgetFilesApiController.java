@@ -105,13 +105,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
     	
-			 /* try {
+			  try {
 				writer.create();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	*/
+        	
         return new ResponseEntity<String>("ag", HttpStatus.OK);
     }
 
