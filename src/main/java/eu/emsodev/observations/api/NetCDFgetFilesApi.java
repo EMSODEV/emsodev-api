@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import ucar.ma2.*; 
+import ucar.nc2.*;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-02-14T13:31:28.991Z")
 
@@ -41,13 +43,13 @@ import java.util.Set;
 
 public interface NetCDFgetFilesApi {
 
-    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = String.class, tags={ "Observations Time-series as NetCDF or ODV", })
+    @ApiOperation(value = "It represents the Time Series retrieved as NETCDF", notes = "Get NetCDF file of a specific Observatory`.", response = NetcdfFileWriter.class, tags={ "Observations Time-series as NetCDF or ODV", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Time series list.", response = String.class) })
+        @ApiResponse(code = 200, message = "Time series list.", response = NetcdfFileWriter.class) })
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-    ResponseEntity<String> netcdfFilesGet(
+    ResponseEntity<NetcdfFileWriter> netcdfFilesGet(
     		@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,

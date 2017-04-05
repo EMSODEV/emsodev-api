@@ -64,7 +64,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    public ResponseEntity <NetcdfFileWriter> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
@@ -88,8 +88,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
-				names = writer.addDimension(null, "names", 3);
-				writer.addVariable(null, "names", DataType.CHAR, "names svar_len");
+				//names = writer.addDimension(null, "names", 3);
+				//writer.addVariable(null, "names", DataType.CHAR, "names svar_len");
 				//Add Group Attributes
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
@@ -106,7 +106,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
         	
-        return new ResponseEntity<String>("ag", HttpStatus.OK);
+        return new ResponseEntity<NetcdfFileWriter>(writer, HttpStatus.OK);
     }
 
 }
