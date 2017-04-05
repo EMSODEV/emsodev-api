@@ -88,7 +88,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
-			/*	latDim=writer.addDimension(null, "lat", 64);
+			latDim=writer.addDimension(null, "lat", 64);
 				lonDim=writer.addDimension(null, "lat", 64);
 				dims=new ArrayList<Dimension>();
 				dims.add(latDim);
@@ -99,7 +99,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				writer.addVariable(null, "scalar", DataType.DOUBLE, new ArrayList<Dimension>());
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
-				*/
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
