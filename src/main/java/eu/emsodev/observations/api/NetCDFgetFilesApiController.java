@@ -87,7 +87,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			)  {
         // do some magic!
     	//reo l'oggetto restTemplate
-    	String location = "Umberto.nc";
+    	String location = "./Umberto.nc";
     	NetcdfFileWriter writer = null;
     	Dimension lonDim = null;
     	Dimension latDim = null;
