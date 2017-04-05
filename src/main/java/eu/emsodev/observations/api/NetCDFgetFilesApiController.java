@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import io.swagger.annotations.*;
+import io.swagger.models.Path;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,7 +123,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
 			  try {
-				is=new FileInputStream (new File("./Umberto.nc"));
+				  java.nio.file.Path file = Paths.get("./", "Umberto.nc");
+				  Files.copy(file, response.getOutputStream());
+				  response.getOutputStream().flush();
 				  //is = new FileInputStream ("./Umberto.nc");
 				try {
 					org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
@@ -128,7 +133,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			    response.flushBuffer();
+			    //response.flushBuffer();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
