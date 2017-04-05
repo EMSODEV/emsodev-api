@@ -84,7 +84,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	List<Dimension> dims = null;
     	Variable t = null;
     	Array data = null;
-    	Dimension names= null;
+    	//Dimension names= null;
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
