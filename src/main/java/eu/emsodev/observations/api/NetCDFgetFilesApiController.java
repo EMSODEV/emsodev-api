@@ -64,7 +64,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 
-    public ResponseEntity <NetcdfFileWriter> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
@@ -106,7 +106,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
         	
-        return new ResponseEntity<NetcdfFileWriter>(writer, HttpStatus.OK);
+        return new ResponseEntity<String>("prova", HttpStatus.OK);
     }
 
 }
