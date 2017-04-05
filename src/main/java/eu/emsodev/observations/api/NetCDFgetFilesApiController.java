@@ -123,7 +123,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
 			  try {
-				  java.nio.file.Path file = Paths.get("./", "Umberto.nc");
+				  java.nio.file.Path file = Paths.get("fileasnetcdf", "Umberto.nc");
 				  Files.copy(file, response.getOutputStream());
 				  response.getOutputStream().flush();
 				  //is = new FileInputStream ("./Umberto.nc");
