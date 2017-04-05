@@ -120,7 +120,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}
 			  try {
-				is = new FileInputStream ("./Umberto.nc");
+				is=new FileInputStream (new File("./Umberto.nc"));
+				  //is = new FileInputStream ("./Umberto.nc");
 				try {
 					org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
 				} catch (IOException e) {
