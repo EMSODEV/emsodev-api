@@ -75,7 +75,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			,
 			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
 			)  {
-        // do some maigic!
+        // do some magic!
     	//reo l'oggetto restTemplate
     	String location = "Umberto.nc";
     	NetcdfFileWriter writer = null;
