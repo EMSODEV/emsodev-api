@@ -88,8 +88,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add variable
-				names = writer.addDimension(null, "names", 3);
-				writer.addVariable(null, "names", DataType.CHAR, "names svar_len");
+				//names = writer.addDimension(null, "names", 3);
+				//writer.addVariable(null, "names", DataType.CHAR, "names svar_len");
 				//Add Group Attributes
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
 			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
