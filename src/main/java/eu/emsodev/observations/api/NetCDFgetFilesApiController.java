@@ -87,7 +87,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			)  {
         // do some magic!
     	//reo l'oggetto restTemplate
-    	String location = "./Umberto.nc";
+    	String location = "Umberto.nc";
     	NetcdfFileWriter writer = null;
     	Dimension lonDim = null;
     	Dimension latDim = null;
@@ -121,6 +121,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			  try {
+				writer.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
