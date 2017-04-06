@@ -128,7 +128,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			  try {
+			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
 				  Files.copy(file, response.getOutputStream());
 				  response.getOutputStream().flush();
@@ -148,7 +148,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	  
-			  
+			  */
         //return new ResponseEntity<String>("pippo-String", HttpStatus.OK);
     }
 
