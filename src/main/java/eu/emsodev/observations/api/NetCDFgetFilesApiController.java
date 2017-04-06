@@ -71,8 +71,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	
 	protected RestTemplate restTemplate;
 				
-	public void netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
-    //public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+	//public void netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
@@ -97,6 +97,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	//Dimension names= null;
     	Dimension svar_len = null;
     	InputStream is = null;
+    	String absolutePath= null;
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
@@ -128,6 +129,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			  
+			  absolutePath= new File("Umberto.nc").getAbsolutePath();
+			  
+			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
 				  Files.copy(file, response.getOutputStream());
@@ -149,7 +154,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}	  
 			  */
-        //return new ResponseEntity<String>("pippo-String", HttpStatus.OK);
+        return new ResponseEntity<String>(absolutePath, HttpStatus.OK);
     }
 
 }
