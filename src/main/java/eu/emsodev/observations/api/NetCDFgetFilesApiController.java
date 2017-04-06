@@ -89,6 +89,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	//reo l'oggetto restTemplate
     	String location = "Umberto.nc";
     	NetcdfFileWriter writer = null;
+    	NetcdfFileWriter ncfile = null;
     	Dimension lonDim = null;
     	Dimension latDim = null;
     	List<Dimension> dims = null;
@@ -98,7 +99,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	Dimension svar_len = null;
     	InputStream is = null;
     	String absolutePath= null;
-    	String warn= null;
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
@@ -128,11 +128,19 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				writer.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				warn="attenzione non creo file";
+				
 				e1.printStackTrace();
 			}
 			  
-			  
+			  try {
+				ncfile=NetcdfFileWriter.openExisting(location);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			  if (ncfile==null){
+				  absolutePath="error";
+			  }
 			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
@@ -155,7 +163,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				e.printStackTrace();
 			}	  
 			  */
-        return new ResponseEntity<String>(warn, HttpStatus.OK);
+        return new ResponseEntity<String>(absolutePath, HttpStatus.OK);
     }
 
 }
