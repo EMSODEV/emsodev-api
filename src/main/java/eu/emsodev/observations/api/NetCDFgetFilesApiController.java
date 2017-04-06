@@ -113,8 +113,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			    writer.addGroupAttribute(null, new Attribute("versionB", (byte) 3));
 				
 			} catch (IOException e) {
+				return new ResponseEntity<String>("error", HttpStatus.OK);
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
     	
 			  try {
@@ -122,14 +123,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return new ResponseEntity<String>("error", HttpStatus.OK);
+				//e.printStackTrace();
 			}
 			  try {
 				writer.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				
-				e1.printStackTrace();
+				return new ResponseEntity<String>("error", HttpStatus.OK);
+				//e1.printStackTrace();
 			}
 			  
 			  try {
