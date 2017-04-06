@@ -133,7 +133,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				return new ResponseEntity<String>("error", HttpStatus.OK);
 				//e1.printStackTrace();
 			}
-			  
+			  //test esistenza file NETCDF
 			  try {
 				ncfile=NetcdfFileWriter.openExisting(location);
 			} catch (IOException e) {
@@ -141,9 +141,18 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				 return new ResponseEntity<String>("error", HttpStatus.OK);	
 				//e.printStackTrace();
 			}
+			//
+			  try {
+				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
+				  Files.copy(file, response.getOutputStream());
+				  response.getOutputStream().flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					 return new ResponseEntity<String>("error_path", HttpStatus.OK);	
+					//e.printStackTrace();
+				}
 			  
-			  
-			  
+						  
 			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
