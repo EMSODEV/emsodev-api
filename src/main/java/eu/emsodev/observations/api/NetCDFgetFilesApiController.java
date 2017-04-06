@@ -98,7 +98,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	//Dimension names= null;
     	Dimension svar_len = null;
     	InputStream is = null;
-    	String absolutePath= null;
+    	String absolutePath= "ok";
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
@@ -136,14 +136,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				ncfile=NetcdfFileWriter.openExisting(location);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 return new ResponseEntity<String>("error", HttpStatus.OK);	
+				//e.printStackTrace();
 			}
-			  if (ncfile==null){
-				  absolutePath="error";
-			  }
-			  if (ncfile !=null){
-				  absolutePath="ok";
-			  }
 			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
