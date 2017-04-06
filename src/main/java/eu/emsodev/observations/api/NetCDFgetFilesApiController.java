@@ -144,6 +144,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//
 			  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
+				  if (Files.exists(file))
+			        {
+			            response.setContentType("application/x-netcdf");
+			            response.addHeader("Content-Disposition", "attachment; filename=\"Umberto.nc\"");
+			        }
 				  Files.copy(file, response.getOutputStream());
 				  response.getOutputStream().flush();
 				} catch (IOException e) {
