@@ -141,6 +141,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  if (ncfile==null){
 				  absolutePath="error";
 			  }
+			  if (ncfile !=null){
+				  absolutePath="ok";
+			  }
 			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
