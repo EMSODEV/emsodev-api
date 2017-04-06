@@ -102,7 +102,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
-				svar_len = writer.addDimension(null, "svar_len", 2);
+				svar_len = writer.addDimension(null, "svar_len", 80);
 				writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
 				//Add Group Attributes
 				writer.addGroupAttribute(null, new Attribute("yo", "face"));
@@ -141,6 +141,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				 return new ResponseEntity<String>("error", HttpStatus.OK);	
 				//e.printStackTrace();
 			}
+			  
+			  
+			  
 			  
 			/*  try {
 				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
