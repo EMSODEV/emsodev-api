@@ -157,15 +157,22 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					Data=Data+ " "+ result.getString("EGIMNode")+",";
 					Data=Data+ " "+ result.getString("SensorID")+",";			
 			 		}
-			//I receive the information (Parameters for single instruments) with same techinque previous described 
-			 String URL= urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
-			 //String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
-			 String paramss = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
-			 //response_1 = retTemplate.getForObject(URL, String.class);
-			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
-			  obj = new JSONObject(response_1);
-			  JSONArray arr_1 = obj.getJSONArray("results");
-			  for (int i = 0; i < arr.length(); i++) {
+			
+    	} catch (JSONException e) {
+					// TODO Auto-generate catch block
+					e.printStackTrace();
+				}
+    	
+    	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+    	String URL= urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
+		 //String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
+		String paramss = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
+		 //response_1 = retTemplate.getForObject(URL, String.class);
+		response_1 = restTemplate.getForObject(URL, String.class, paramss);
+		try {
+			obj = new JSONObject(response_1);
+			JSONArray arr_1 = obj.getJSONArray("results");
+			  for (int i = 0; i < arr_1.length(); i++) {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
 			  //To separe string's fields uncomment this 
@@ -175,34 +182,40 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				//Do some operations on NETCDF File	
 				}
 				*/
-			//I receive the information (metadata) by using API 
-			  Url_3=urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" +instrument ;
-			  //Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
-			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
-			  obj_2 = new JSONObject(response_5);
-			  JSONArray arr_2 = obj_2.getJSONObject("FileStatuses").getJSONArray("FileStatus");
-			  for (int i = 0; i < arr.length(); i++) {
-					type = arr_2.getJSONObject(i).getString("type");
-					nameDir = arr_2.getJSONObject(i).getString("pathSuffix");
-					dateValidity = arr_2.getJSONObject(i).getString("modificationTime");
-					
-					if (type != null && "DIRECTORY".equals(type)){
-						//resp is the string you have to considerer to obtain the metadata for observatory
-						 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
-						//System.out.println(resp);
-					}
-					
-			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
-			  }
-			
-    	} catch (JSONException e) {
-					// TODO Auto-generate catch block
-					e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+		//I receive the information (metadata) by using API
+		Url_3=urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" +instrument ;
+		  //Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
+		 response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
+		 try {
+			obj_2 = new JSONObject(response_5);
+			JSONArray arr_2 = obj_2.getJSONObject("FileStatuses").getJSONArray("FileStatus");
+			for (int i = 0; i < arr_2.length(); i++) {
+				type = arr_2.getJSONObject(i).getString("type");
+				nameDir = arr_2.getJSONObject(i).getString("pathSuffix");
+				dateValidity = arr_2.getJSONObject(i).getString("modificationTime");
+				
+				if (type != null && "DIRECTORY".equals(type)){
+					//resp is the string you have to considerer to obtain the metadata for observatory
+					 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
+					//System.out.println(resp);
 				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	//Information for Time series for instrument
     	
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
-		//Create a map of params to pass add as placeholder after parameter value in the following compositeUrl
+		
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("EGIMNode", observatory);
 		params.put("SensorID",instrument);
@@ -214,8 +227,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
     	
-    	// I receive the information (time series) 
-		  
+    	//qui poi per riordinare il file farai come sopra
+		//try {
+			//obj_7 = new JSONObject(response_3);
+			//JSONArray arr_7 = ecc.... e poi il for. 
 			
 		
 		  
@@ -282,7 +297,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(response_3, HttpStatus.OK);
+        return new ResponseEntity<String>("obs"+Data+"parametri"+Data_2+"metadati"+resp+"serie_temp"+response_3, HttpStatus.OK);
     }
 
 }
