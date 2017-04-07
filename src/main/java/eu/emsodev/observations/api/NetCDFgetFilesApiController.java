@@ -69,6 +69,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	@Value("${emsodev.global.setting.urlToCall.observatoriesGet}")
 	private String urlToCallObservatoriesGet;
 	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentGet}")
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;  
+	
 	protected RestTemplate restTemplate;
 				
 	//public void netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
@@ -128,22 +131,41 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	String response_rest = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
     					egimNode);
     	
-    	//I collect the information (Node name) by using JSON object from rest responce with for cycle. 
+    	//I receive the information (Node name) by using JSON object from rest responce with for cycle. The received string will have field separated by ,  
     	try {
 			 obj = new JSONObject(response_rest);	
-			 JSONArray arr = obj.getJSONArray("results"); //nuovo JSON solo con results
+			 JSONArray arr = obj.getJSONArray("results"); 
 			 for (int i = 0; i < arr.length(); i++) {
 				 	//ata_1=" "+ obj.getString("metric")+ ",";
 					result = arr.getJSONObject(i).getJSONObject("tags");
 					Data = Data+ " "+ arr.getJSONObject(i).getString("metric")+ ",";
 					// add the EGIMnode value to the list				
 					Data=Data+ " "+ result.getString("EGIMNode")+",";
-					Data=Data+ " "+ result.getString("SensorID")+",";			
+					//Data=Data+ " "+ result.getString("SensorID")+",";			
 			 		}
+			//I receive the information (Parameters for single instruments) with same techinque previous described 
+			 String URL= urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;
+			 //String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
+			 String paramss = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
+			 //response_1 = retTemplate.getForObject(URL, String.class);
+			  response_1 = restTemplate.getForObject(URL, String.class, paramss);
+			  obj = new JSONObject(response_1);
+			  JSONArray arr_1 = obj.getJSONArray("results");
+			  for (int i = 0; i < arr.length(); i++) {
+				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
+			  }
+			  //To separe string's fields uncomment this 
+			  /*
+			  String [] splits = Data_2.split(",");
+				for(String s:splits){
+				//Do some operations on NETCDF File	
+				}
+				*/
     	} catch (JSONException e) {
 					// TODO Auto-geerate catch block
 					e.printStackTrace();
 				}
+    	
     	
 		/* uncomment this for using NETCDF File
 		 * 	  try {
@@ -207,7 +229,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(Data, HttpStatus.OK);
+        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
     }
 
 }
