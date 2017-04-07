@@ -63,7 +63,9 @@ public interface ObservationsApi {
 			);
 
 	@ApiOperation(value = "Time-series of a specific EGIM parameter.", notes = "Gets the time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observations Time-series", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
+	,@ApiResponse(code = 400, message = "Fields are with validation errors")
+	})
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory
@@ -80,7 +82,7 @@ public interface ObservationsApi {
 			,
 			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
 			,
-			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false) Integer limit
+			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false, defaultValue = "0") Integer limit
 			);
 
 }
