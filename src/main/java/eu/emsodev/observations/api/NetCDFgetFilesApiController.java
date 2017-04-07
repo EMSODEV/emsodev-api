@@ -134,7 +134,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
-		String compositeUrl="";
+		//String compositeUrl="";
     	
 		//I create rest_template_object
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -194,28 +194,30 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					
 			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 			  }
-			// I receive the information (time series) 
-			  Map<String,String> params = new HashMap<String,String>();
-				params.put("EGIMNode", observatory);
-				params.put("SensorID", instrument);
-				//DateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy hh:mm:ss z");
-				//
-				long unixTime = (long) startDate.getTime()/1000;
-				 strDate= strDate.valueOf(unixTime);
-				 long unixTime_1 = (long) endDate.getTime()/1000;
-				 strDate_1= strDate.valueOf(unixTime_1);
-				//Date date = dateFormat.parse(strDate);
-				//long unixTime = (long) date.getTime()/1000;
-				
-			//ATTENZIONE: Nella stringa compositeUrl tu hai fissato un parametro (sea_water_temperature) ma in realtà devi fare un ciclo for per ogni parametro che è il risultato della stringa Data_2	
-				 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet; 
-				   //response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-			  
+			
     	} catch (JSONException e) {
 					// TODO Auto-generate catch block
 					e.printStackTrace();
 				}
     	
+    	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+		
+		//Create a map of params to pass add as placeholder after parameter value in the following compositeUrl
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("EGIMNode", observatory);
+		params.put("SensorID",instrument);
+		
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
+				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
+				+ "sea_water_temperature"+"{params}"
+				+"&end="
+				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
+    	
+    	// I receive the information (time series) 
+		  
+			
+		
+		  
     	
 		/* uncomment this for using NETCDF File
 		 * 	  try {
@@ -279,7 +281,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(resp, HttpStatus.OK);
+        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
     }
 
 }
