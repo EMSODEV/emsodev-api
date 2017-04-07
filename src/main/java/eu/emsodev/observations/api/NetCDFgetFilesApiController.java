@@ -175,7 +175,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				}
 				*/
 			//I receive the information (metadata) by using API 
-			  Url_3=urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" + instrument ;;
+			  Url_3=urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" +instrument ;
 			  //Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
 			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
 			  obj_2 = new JSONObject(response_5);
