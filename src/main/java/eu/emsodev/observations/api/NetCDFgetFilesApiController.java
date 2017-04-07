@@ -69,8 +69,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	@Value("${emsodev.global.setting.urlToCall.observatoriesGet}")
 	private String urlToCallObservatoriesGet;
 	
+	@Value("${emsodev.global.setting.urlToCall.observatoryInstrumentsGet}")
+	private String urlToCallObservatoryInstrumentsGet;
+	
+	
+	
 	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentGet}")
-	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;  
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;              
+	
+	
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentParametersGet}")
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
+	
+	@Value("${emsodev.global.setting.urlToCall.observatoriesObservatoryInstrumentsInstrumentParametersParameterGet}")
+	private String urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet;
 	
 	protected RestTemplate restTemplate;
 				
@@ -144,7 +157,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					//Data=Data+ " "+ result.getString("SensorID")+",";			
 			 		}
 			//I receive the information (Parameters for single instruments) with same techinque previous described 
-			 String URL= urlToCallObservatoriesObservatoryInstrumentsInstrumentGet;
+			 String URL= urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersGet;
 			 //String URL="http://dmpnode5.emsodev.eu:9991/api/search/lookup?limit=0&m=*{params}"; 
 			 String paramss = "{SensorID="+instrument+",EGIMNode="+observatory+"}";
 			 //response_1 = retTemplate.getForObject(URL, String.class);
@@ -229,7 +242,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(Data+Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>("Observatory"+Data+"Instruments' Parameters"+Data_2, HttpStatus.OK);
     }
 
 }
