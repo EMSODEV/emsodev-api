@@ -174,6 +174,25 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				//Do some operations on NETCDF File	
 				}
 				*/
+			//I receive the information (metadata) by using API 
+			  Url_3=urlToCallObservatoriesObservatoryInstrumentsInstrumentGet +observatory +"/" + instrument ;;
+			  //Url_3 = "http://dmpnode1.emsodev.eu:50070/webhdfs/v1/emsodev/" +observatory +"/" + instrument ;
+			  response_5= restTemplate.getForObject(Url_3 + "?op=LISTSTATUS", String.class);
+			  obj_2 = new JSONObject(response_5);
+			  JSONArray arr_2 = obj_2.getJSONObject("FileStatuses").getJSONArray("FileStatus");
+			  for (int i = 0; i < arr.length(); i++) {
+					type = arr_2.getJSONObject(i).getString("type");
+					nameDir = arr_2.getJSONObject(i).getString("pathSuffix");
+					dateValidity = arr_2.getJSONObject(i).getString("modificationTime");
+					
+					if (type != null && "DIRECTORY".equals(type)){
+						 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
+						//System.out.println(resp);
+					}
+					
+			  response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
+			  }
+			  
     	} catch (JSONException e) {
 					// TODO Auto-geerate catch block
 					e.printStackTrace();
@@ -242,7 +261,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>(response_4, HttpStatus.OK);
     }
 
 }
