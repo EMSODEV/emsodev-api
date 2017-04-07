@@ -242,7 +242,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>("Observatory"+Data+"Instruments' Parameters"+Data_2, HttpStatus.OK);
+        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
     }
 
 }
