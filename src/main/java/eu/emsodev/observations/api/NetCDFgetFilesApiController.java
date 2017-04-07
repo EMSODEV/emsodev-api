@@ -82,11 +82,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
 			,
 			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+			/* uncomment this for using NETCDF file
 			,
 			HttpServletResponse response
+			*/
 			)  {
         // do some magic!
-    	//reo l'oggetto restTemplate
+    	//Variables definitions
     	String location = "Umberto.nc";
     	NetcdfFileWriter writer = null;
     	NetcdfFileWriter ncfile = null;
@@ -95,11 +97,56 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	List<Dimension> dims = null;
     	Variable t = null;
     	Array data = null;
-    	//Dimension names= null;
     	Dimension svar_len = null;
     	InputStream is = null;
     	String absolutePath= "ok";
-			  try {
+    	JSONObject obj = null;
+		JSONObject obj_2 = null;
+		JSONObject result = null;
+		JSONObject result_1 = null;
+		String Data ="";
+		String Data_2 ="";
+		String response_1 ="";
+		String response_2 ="";
+		String response_3 = " ";
+		String Url_3 = "";
+		String response_4 = "";
+		String response_5 = "";
+		String strDate ="";
+		String strDate_1 ="";
+		String type = "";
+		String nameDir ="";
+		String dateValidity ="";
+		String resp ="";
+    	
+		//I create rest_template_object
+    	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+    	
+    	String egimNode = "{EGIMNode=*}";
+    	
+    	// The response_rest as string of the urlToCall
+    	String response_rest = restTemplate.getForObject(urlToCallObservatoriesGet, String.class,
+    					egimNode);
+    	
+    	//I collect the information (Node name) by using JSON object from rest responce with for cycle. 
+    	try {
+			 obj = new JSONObject(response_rest);	
+			 JSONArray arr = obj.getJSONArray("results"); //nuovo JSON solo con results
+			 for (int i = 0; i < arr.length(); i++) {
+				 	//Data_1=" "+ obj.getString("metric")+ ",";
+					result = arr.getJSONObject(i).getJSONObject("tags");
+					Data = Data+ " "+ arr.getJSONObject(i).getString("metric")+ ",";
+					// add the EGIMnode value to the list				
+					Data=Data+ " "+ result.getString("EGIMNode")+",";
+					Data=Data+ " "+ result.getString("SensorID")+",";			
+			 		}
+    	} catch (JSONException e) {
+					// TODO Auto-geerate catch block
+					e.printStackTrace();
+				}
+    	
+		/* uncomment this for using NETCDF File
+		 * 	  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 				//Add dimension
 				svar_len = writer.addDimension(null, "svar_len", 80);
@@ -157,30 +204,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					//e.printStackTrace();
 				}
 			  
-						  
+			*/			  
 			  
-			/*  try {
-				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
-				  Files.copy(file, response.getOutputStream());
-				  response.getOutputStream().flush();
-				  //is = new FileInputStream ("./Umberto.nc");
-			//try {
-				//	org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-			//	} catch (IOException e) {
-					// TODO Auto-generated catch block
-			//		e.printStackTrace();
-			//	}
-
-			    //response.flushBuffer();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	  
-			  */
-        return new ResponseEntity<String>(absolutePath, HttpStatus.OK);
+			
+        return new ResponseEntity<String>(Data, HttpStatus.OK);
     }
 
 }

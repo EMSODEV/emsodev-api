@@ -67,9 +67,10 @@ public interface NetCDFgetFilesApi {
 
 			,
 			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
+			/* uncomment this for using NETCDF File
 			, 
 			HttpServletResponse response
-    		
+    		*/
     		);
 	
 	//fine
