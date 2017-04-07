@@ -349,7 +349,7 @@ public class ObservationsController implements ObservationsApi {
 			,
 			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
 			,
-			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false) Integer limit
+			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false, defaultValue = "0") Integer limit
 			) {
 
 		
