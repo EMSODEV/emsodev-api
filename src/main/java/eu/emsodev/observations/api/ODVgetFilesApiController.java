@@ -130,11 +130,11 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 						.replace(
 								"startDateVar",
 								EmsodevUtility
-										.getDateToStringScalaFormat(startDate))
+										.getDateToStringScalaFormat(startDate, "S"))
 						.replace(
 								"endDateVar",
 								EmsodevUtility
-										.getDateToStringScalaFormat(endDate));
+										.getDateToStringScalaFormat(endDate, "E"));
 			} catch (Exception e) {
 				System.out.println("Input Failure: " + e.getMessage());
 			}
