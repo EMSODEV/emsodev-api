@@ -212,6 +212,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+ "sea_water_temperature"+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
+		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
     	
     	// I receive the information (time series) 
 		  
@@ -281,7 +282,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
+        return new ResponseEntity<String>(response_3, HttpStatus.OK);
     }
 
 }
