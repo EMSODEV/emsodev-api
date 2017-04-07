@@ -186,12 +186,25 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					dateValidity = arr_2.getJSONObject(i).getString("modificationTime");
 					
 					if (type != null && "DIRECTORY".equals(type)){
+						//resp is the string you have to considerer to obtain the metadata for observatory
 						 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
 						//System.out.println(resp);
 					}
 					
 			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 			  }
+			// I receive the information (time series) 
+			  Map<String,String> params = new HashMap<String,String>();
+				params.put("EGIMNode", observatory);
+				params.put("SensorID", instrument);
+				
+			//ATTENZIONE: Nella stringa compositeUrl tu hai fissato un parametro (sea_water_temperature) ma in realtà devi fare un ciclo for per ogni parametro che è il risultato della stringa Data_2	
+			  String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
+						+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
+						+ "sea_water_temperature"+"{params}"
+						+"&end="
+						+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
+			  response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			  
     	} catch (JSONException e) {
 					// TODO Auto-generate catch block
@@ -261,7 +274,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(resp, HttpStatus.OK);
+        return new ResponseEntity<String>(response_3, HttpStatus.OK);
     }
 
 }
