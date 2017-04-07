@@ -208,12 +208,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				//long unixTime = (long) date.getTime()/1000;
 				
 			//ATTENZIONE: Nella stringa compositeUrl tu hai fissato un parametro (sea_water_temperature) ma in realtà devi fare un ciclo for per ogni parametro che è il risultato della stringa Data_2	
-				 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
-							+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-							+ "sea_water_temperature"+"{params}"
-							+"&end="
-							+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
-				   response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+				 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet; 
+				   //response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 			  
     	} catch (JSONException e) {
 					// TODO Auto-generate catch block
