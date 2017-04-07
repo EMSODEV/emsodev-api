@@ -135,6 +135,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String dateValidity ="";
 		String resp ="";
 		//String compositeUrl="";
+		
+		//la struttura del programma è questa: 
+		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
     	
 		//I create rest_template_object
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
