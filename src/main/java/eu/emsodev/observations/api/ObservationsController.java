@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+
 //import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -346,7 +347,10 @@ public class ObservationsController implements ObservationsApi {
 			@ApiParam(value = "Beginning date for the time series range. The date format is dd/MM/yyyy.", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate
 
 			,
-			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) {
+			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
+			,
+			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false) Integer limit
+			) {
 
 		
 		//Create the restTemplate object with or without proxy
@@ -414,8 +418,19 @@ public class ObservationsController implements ObservationsApi {
 			String[] arrayDps = jobjectDpsCleaned.split(",");	
 			//Declare a List of Observation 
             ArrayList<Observation> observationsList = new ArrayList<Observation>();
-			//For each array item extract the key and value to set to a new Observation object in the loop
-            for (int index = 0, n = arrayDps.length; index < n; index++) {
+			
+            
+            
+            int startIndex = 0;            
+            if (limit!= null && limit > 0 ){
+            	if (limit < arrayDps.length){
+            		startIndex = arrayDps.length - limit;
+            	}
+            }
+            
+            
+            //For each array item extract the key and value to set to a new Observation object in the loop
+            for (int index = startIndex, n = arrayDps.length; index < n; index++) {            
          		String item = arrayDps[index];
 			    //
 				Observation obs = new Observation();
