@@ -190,7 +190,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						//System.out.println(resp);
 					}
 					
-			  response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
+			  //response_4 = restTemplate.getForObject(Url_3 + "/" +"" + "/metadata/metadata.json"+"?op=OPEN", String.class);
 			  }
 			  
     	} catch (JSONException e) {
@@ -261,7 +261,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(response_4, HttpStatus.OK);
+        return new ResponseEntity<String>(resp, HttpStatus.OK);
     }
 
 }
