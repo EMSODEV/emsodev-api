@@ -317,6 +317,7 @@ public class LivyInteractiveClient {
               	  String buf;
               	  try {
               		  buf = getStatementResult();
+              		  System.out.println("BUF FIRST LOOP = : " + buf);
               	  } catch (IOException e1) {
               		  e1.printStackTrace();
               		  return;
@@ -367,6 +368,7 @@ public class LivyInteractiveClient {
            }
         });
 	}
+	
 	
 	/**
 	 * Gets the result of statements
