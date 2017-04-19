@@ -222,7 +222,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
 		 for (String element:Data_2.split(",\\s")){
 		  
-		compositeUrl = "";
 		element_1=element.split(",");
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
