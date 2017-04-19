@@ -207,7 +207,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				if (type != null && "DIRECTORY".equals(type)){
 					//resp is the string you have to considerer to obtain the metadata for observatory
 					 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
-					//System.out.println(resp);
+					//System.out.printn(resp);
 				}
 			}
 		} catch (JSONException e) {
