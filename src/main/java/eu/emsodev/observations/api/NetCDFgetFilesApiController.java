@@ -182,7 +182,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  for (int i = 0; i < arr_1.length(); i++) {
 				  Data_2 = Data_2+ " "+ arr_1.getJSONObject(i).getString("metric")+ ",";
 			  }
-			  Data_2=Data_2.substring(0, Data_2.length()-1); //tolgo l'ultimo carattere
+			  Data_2=Data_2.substring(1, Data_2.length()-1); //tolgo il primo e l'ultimo carattere
 			  //To separe string's fields uncomment this 
 			  /*
 			  String [] splits = Data_2.split(",");
@@ -222,7 +222,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	////Information for Time series for instrument
 		 String Data_8="sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device, roll, Bin20_N_S_sea_water_speed, Bin20_E_W_sea_water_speed, Bin20_vert_sea_water_speed, Bin3_E_W_sea_water_speed, Bin2_N_S_sea_water_speed, Bin3_error_sea_water_speed";
     	
-		 for (String element:Data_8.split(",\\s")){
+		 for (String element:Data_2.split(",\\s")){
 			  
 			//////element_1=element.split(","); 
 		  
