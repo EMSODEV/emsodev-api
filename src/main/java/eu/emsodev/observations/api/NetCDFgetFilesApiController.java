@@ -222,9 +222,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	////Information for Time series for instrument
 		 String Data_8="sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device";
     	
-		 for (String element:Data_8.split(", s")){
+		 for (String element:Data_8.split(",\\s")){
 			  
-			//////element_1=element.split(","); 
+			////element_1=element.split(","); 
 		  
 
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
