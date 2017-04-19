@@ -241,7 +241,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 		
 		}
-		//Da quissssssssss in poi non puoi utilizzare la procedura per prenderti i file  con il JsonArray tradizionale, ma utilizzare la stessa procedura descritta nell'Observation Controller. 
+		//Da qui in poi non puoi utilizzare la procedura per prenderti i file  con il JsonArray tradizionale, ma utilizzare la stessa procedura descritta nell'Observation Controller. 
 		//Una volta presi i dati avrai una varibile time che scriverai con i valori ottenuti e un'altra che dipenderà da time (il parametro). Vedi file java su mia macchina CreateNetCdf  
 		//Ne consegue che qui puoi scrivere il NETCDF decommentando le funzioni qui giù. 
 		//Fine
@@ -308,7 +308,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/
 		////
 			  
-        return new ResponseEntity<String>("obs"+Data+"parametri"+Data_2+"metadati"+resp+"serie_temp"+response_3, HttpStatus.OK);
+        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
     }
 
 }
