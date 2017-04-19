@@ -118,15 +118,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	String absolutePath= "ok";
     	JSONObject obj = null;
 		JSONObject obj_2 = null;
-		JSONObject obj_3 = null;
 		JSONObject result = null;
 		JSONObject result_1 = null;
 		String Data ="";
-		String Data_2 =""; //String for variables netcdf
-		String Par_Data_2 = "";
-		char lettera = ' ';
-		int n =0;
-		String Data_3 ="";
+		String Data_2 ="";
 		String response_1 ="";
 		String response_2 ="";
 		String response_3 = " ";
@@ -185,7 +180,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  }
 			  //To separe string's fields uncomment this 
 			  /*
-			   * Vedi il file in locale NETCDF (li c'è tutta la procedura funzionante)
+			  String [] splits = Data_2.split(",");
+				for(String s:splits){
+				//Do some operations on NETCDF File	
+				}
 				*/
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -207,7 +205,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				if (type != null && "DIRECTORY".equals(type)){
 					//resp is the string you have to considerer to obtain the metadata for observatory
 					 resp= restTemplate.getForObject(Url_3 + "/"+nameDir + "/metadata/metadata.json"+"?op=OPEN", String.class);
-					//System.out.printn(resp);
+					//System.out.println(resp);
 				}
 			}
 		} catch (JSONException e) {
@@ -217,15 +215,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	
     	//Information for Time series for instrument
-    	//metti un ciclo for perchè da qui deve prendere i parametri presenti nella stringa Data_2 per ogni passaggio deve fare da
-		 //Inizio a fine che è più giù
-		 
-		/*for(int i = 0; i < Data_2.length(); i++){
-			lettera= Data_2.charAt(i);
-			if(lettera ==' '){ //arrivo alla fine della sottostringa
-				Par_Data_2=Data_2.substring(n,i-1);
-						  n=i+1;
-			  }*/
+    	
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -239,13 +229,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+    	
+    	//qui poi per riordinare il file farai come sopra
+		//try {
+			//obj_7 = new JSONObject(response_3);
+			//JSONArray arr_7 = ecc.... e poi il for. 
+			
 		
-		//}
-		//Da qui in poi non puoi utilizzare la procedura per prenderti i file  con il JsonArray tradizionale, ma utilizzare la stessa procedura descritta nell'Observation Controller. 
-		//Una volta presi i dati avrai una varibile time che scriverai con i valori ottenuti e un'altra che dipenderà da time (il parametro). Vedi file java su mia macchina CreateNetCdf  
-		//Ne consegue che qui puoi scrivere il NETCDF decommentando le funzioni qui giù. 
-		//Fine
-		
+		  
+    	
 		/* uncomment this for using NETCDF File
 		 * 	  try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
@@ -305,10 +297,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					//e.printStackTrace();
 				}
 			  
-			*/
-		//////
+			*/			  
 			  
-        return new ResponseEntity<String>(Data_2, HttpStatus.OK);
+			
+        return new ResponseEntity<String>("obs"+Data+"parametri"+Data_2+"metadati"+resp+"serie_temp"+response_3, HttpStatus.OK);
     }
 
 }
