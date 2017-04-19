@@ -214,7 +214,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
     	
     	
-    	//Information for Time series for instrument
+    	////Information for Time series for instrument
     	
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
