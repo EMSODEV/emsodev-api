@@ -234,7 +234,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ Data_2_out+"{params}"
+				+ "sea_water_temperature"+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
@@ -310,7 +310,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
+        return new ResponseEntity<String>(compositeUrl+Data_2_out, HttpStatus.OK);
     }
 
 }
