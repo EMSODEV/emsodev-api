@@ -219,11 +219,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	
     	////Information for Time series for instrument
-		 String Data_8="sea_water_temperature, pitch,";
+		 String Data_8="sea_water_temperature, pitch";
     	
 		 for (String element:Data_8.split(",\\s")){
 			  
-			element_1=element.split(","); 
+			//element_1=element.split(","); 
 		  
 
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -237,7 +237,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ element_1[0]+"{params}"
+				+ element+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
