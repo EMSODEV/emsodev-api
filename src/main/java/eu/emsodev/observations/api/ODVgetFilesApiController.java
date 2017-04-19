@@ -130,11 +130,11 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 						.replace(
 								"startDateVar",
 								EmsodevUtility
-										.getDateToStringScalaFormat(startDate))
+										.getDateToStringScalaFormat(startDate, "S"))
 						.replace(
 								"endDateVar",
 								EmsodevUtility
-										.getDateToStringScalaFormat(endDate));
+										.getDateToStringScalaFormat(endDate, "E"));
 			} catch (Exception e) {
 				System.out.println("Input Failure: " + e.getMessage());
 			}
@@ -180,7 +180,14 @@ public class ODVgetFilesApiController implements ODVgetFilesApi {
 			// ResultListener
 			boolean loop = true;
 			while (loop) {
+				System.out.println("SPARK-RESULT = : " + sparkResult);
 				if (sparkResult == null) {
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					continue;
 				} else {
 					loop = false;

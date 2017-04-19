@@ -108,18 +108,22 @@ public final class EmsodevUtility {
 		return new String(encoded, encoding);
 	}
 	
-	public static String getDateToStringScalaFormat (Date date){
+	public static String getDateToStringScalaFormat (Date date, String startOrEnd){
 				
 		if (date == null){
 			date = GregorianCalendar.getInstance().getTime();
 		}
-		
+		String dateToScalaFormat = "";
 		Calendar cal = Calendar.getInstance();
 	    cal.setTime(date);
 	    Integer year = cal.get(Calendar.YEAR);
 	    Integer month = cal.get(Calendar.MONTH) + 1;
 	    Integer day = cal.get(Calendar.DAY_OF_MONTH);
-	    String dateToScalaFormat = year.toString() + "," + month.toString() + "," + day.toString() + ",0,0,0";
+	    if ( startOrEnd != null && "S".equals(startOrEnd)){
+	        dateToScalaFormat = year.toString() + "," + month.toString() + "," + day.toString() + ",0,0,0";
+	    }else{
+	    	dateToScalaFormat = year.toString() + "," + month.toString() + "," + day.toString() + ",23,59,59";
+	    }
 		
 		
 		return dateToScalaFormat; 
