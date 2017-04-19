@@ -136,7 +136,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String resp ="";
 		String compositeUrl= "";
 		String result_data_2= null;
-		String element_1 = " ";
+		String[] element_1 = null;
 		char lettera = ' ';
 		int n=0;
 		
@@ -223,7 +223,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 for (String element:Data_2.split(",\\s")){
 		  
 		compositeUrl = "";
-		element_1=element;
+		element_1=element.split(",");
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -233,7 +233,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ element_1+"{params}"
+				+ element_1[0]+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
