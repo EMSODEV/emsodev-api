@@ -136,6 +136,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String resp ="";
 		String compositeUrl= "";
 		String result_data_2= null;
+		String element_1 = " ";
 		char lettera = ' ';
 		int n=0;
 		
@@ -219,8 +220,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	////Information for Time series for instrument
     	
-		 //for (String element:Data_2.split(",\\s")){ 
-		 
+		 for (String element:Data_2.split(",\\s")){
+		  
+		compositeUrl = "";
+		element_1=element;
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -230,12 +233,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ "sea_water_temperature"+"{params}"
+				+ element_1+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
     	
-		 //}
+		 }
     	//qui poi per riordinare il file farai come sopra
 		//try {
 			//obj_7 = new JSONObject(response_3);
@@ -306,7 +309,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
+        return new ResponseEntity<String>(element_1, HttpStatus.OK);
     }
 
 }
