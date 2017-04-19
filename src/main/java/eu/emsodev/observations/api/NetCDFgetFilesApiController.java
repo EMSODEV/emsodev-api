@@ -219,8 +219,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	
     	////Information for Time series for instrument
+		 String Data_8="sea_water_temperature, pitch,";
     	
-		 for (String element:Data_2.split(",\\s")){
+		 for (String element:Data_8.split(",\\s")){
 			  
 			element_1=element.split(","); 
 		  
