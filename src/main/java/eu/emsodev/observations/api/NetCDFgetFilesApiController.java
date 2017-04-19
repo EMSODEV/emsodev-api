@@ -309,7 +309,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(element_1, HttpStatus.OK);
+        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
     }
 
 }
