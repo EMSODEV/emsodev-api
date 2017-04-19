@@ -122,9 +122,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JSONObject result_1 = null;
 		String Data ="";
 		String Data_2 ="";
-		String Data_2_out ="";
-		char lettera = ' ';
-		int n=0;
 		String response_1 ="";
 		String response_2 ="";
 		String response_3 = " ";
@@ -137,7 +134,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String nameDir ="";
 		String dateValidity ="";
 		String resp ="";
-		String compositeUrl= null;
+		//String compositeUrl="";
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -218,13 +215,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	
     	//Information for Time series for instrument
-		for(int i = 0; i < Data_2.length(); i++){
-			lettera= Data_2.charAt(i);
-			if(lettera ==' '){ //arrivo alla fine della sottostringa
-				Data_2_out=Data_2.substring(n,i-1);
-				n=i+1;
-						  
-			  
+    	
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -232,14 +223,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		params.put("EGIMNode", observatory);
 		params.put("SensorID",instrument);
 		
-		compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
 				+ "sea_water_temperature"+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-			}
-		}
+    	
     	//qui poi per riordinare il file farai come sopra
 		//try {
 			//obj_7 = new JSONObject(response_3);
