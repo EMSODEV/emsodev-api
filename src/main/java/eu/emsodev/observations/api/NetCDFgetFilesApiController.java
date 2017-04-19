@@ -135,7 +135,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String dateValidity ="";
 		String resp ="";
 		String compositeUrl= "";
-		String result_data_2= "";
+		String result_data_2= null;
 		char lettera = ' ';
 		int n=0;
 		
