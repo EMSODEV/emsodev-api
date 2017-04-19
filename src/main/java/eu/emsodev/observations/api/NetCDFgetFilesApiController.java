@@ -223,7 +223,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 for (String element:Data_2.split(",\\s")){
 		  
 		element_1=element.split(",");
-		 }
+
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -238,7 +238,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
     	
-		 
+		 } 
     	//qui poi per riordinare il file farai come sopra
 		//try {
 			//obj_7 = new JSONObject(response_3);
