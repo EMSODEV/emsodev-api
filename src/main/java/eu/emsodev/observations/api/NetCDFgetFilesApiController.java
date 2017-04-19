@@ -139,6 +139,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String[] element_1 = null;
 		char lettera = ' ';
 		int n=0;
+		String header="{info: [ ";
+		String ultimo_char="]}";
+		String selection ="";
+		JSONObject obj_6=null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -217,7 +221,19 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+		 //To select the information for metadata use this code
+		 
+		 resp=header+resp+ultimo_char; // it becomes a JSON object
+		 try {
+			obj_6 = new JSONObject(resp);
+			JSONArray arr_2 = obj_6.getJSONArray("info");
+			for (int i = 0; i < arr_2.length(); i++) {
+				selection = arr_2.getJSONObject(i).getString("EGIMLocation"); //se vuoi selezionare un campo: EgimLocation nel nostro caso
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	////Information for Time series for instrument
 		 String Data_8="sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device, roll, Bin20_N_S_sea_water_speed, Bin20_E_W_sea_water_speed, Bin20_vert_sea_water_speed, Bin3_E_W_sea_water_speed, Bin2_N_S_sea_water_speed, Bin3_error_sea_water_speed";
@@ -315,7 +331,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(compositeUrl, HttpStatus.OK);
+        return new ResponseEntity<String>(selection+compositeUrl, HttpStatus.OK);
     }
 
 }
