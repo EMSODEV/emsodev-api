@@ -220,12 +220,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	//metti un ciclo for perchè da qui deve prendere i parametri presenti nella stringa Data_2 per ogni passaggio deve fare da
 		 //Inizio a fine che è più giù
 		 
-		for(int i = 0; i < Data_2.length(); i++){
+		/*for(int i = 0; i < Data_2.length(); i++){
 			lettera= Data_2.charAt(i);
 			if(lettera ==' '){ //arrivo alla fine della sottostringa
 				Par_Data_2=Data_2.substring(n,i-1);
 						  n=i+1;
-			  }
+			  }*/
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
 		
 		
@@ -235,12 +235,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ Par_Data_2+"{params}"
+				+ "sea_water_temperature"+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
 		
-		}
+		//}
 		//Da qui in poi non puoi utilizzare la procedura per prenderti i file  con il JsonArray tradizionale, ma utilizzare la stessa procedura descritta nell'Observation Controller. 
 		//Una volta presi i dati avrai una varibile time che scriverai con i valori ottenuti e un'altra che dipenderà da time (il parametro). Vedi file java su mia macchina CreateNetCdf  
 		//Ne consegue che qui puoi scrivere il NETCDF decommentando le funzioni qui giù. 
