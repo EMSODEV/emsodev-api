@@ -220,7 +220,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	
     	////Information for Time series for instrument
-		 String Data_8=" sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device, roll, Bin20_N_S_sea_water_speed, Bin20_E_W_sea_water_speed, Bin20_vert_sea_water_speed, Bin3_E_W_sea_water_speed, Bin2_N_S_sea_water_speed, Bin3_error_sea_water_speed";
+		 String Data_8=" sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device";
     	
 		 for (String element:Data_8.split(",\\s")){
 			  
