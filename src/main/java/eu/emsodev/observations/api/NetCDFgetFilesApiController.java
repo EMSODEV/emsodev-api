@@ -109,7 +109,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			)  {
         // do some magic!
     	//Variables definitions
-    	String location = "Umberto.nc";
+    	String location = "Netcdf_File.nc";
     	NetcdfFileWriter writer = null;
     	NetcdfFileWriter ncfile = null;
     	Dimension lonDim = null;
@@ -336,11 +336,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		////
 		  try {
-			  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
+			  java.nio.file.Path file = Paths.get(".", "Netcdf_File.nc");
 			  if (Files.exists(file))
 		        {
 		            response.setContentType("application/x-netcdf");
-		            response.addHeader("Content-Disposition", "attachment; filename=\"Umberto.nc\"");
+		            response.addHeader("Content-Disposition", "attachment; filename=\"Netcdf_File.nc\"");
 		        }
 			  Files.copy(file, response.getOutputStream());
 			  response.getOutputStream().flush();
