@@ -155,6 +155,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String jobjectDpsCleaned = null;
 		Gson gson=null;
 		JsonObject  jobjectDps = null;
+		String[] arrayDps = null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -288,6 +289,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+		arrayDps= jobjectDpsCleaned.split(",");
 		 } 
 		//} 
     	//qui poi per riordinare il file farai come sopra
@@ -360,7 +362,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(jobjectDpsCleaned, HttpStatus.OK);
+        return new ResponseEntity<String>(arrayDps[0], HttpStatus.OK);
     }
 
 }
