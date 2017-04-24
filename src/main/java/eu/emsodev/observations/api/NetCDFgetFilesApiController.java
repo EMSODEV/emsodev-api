@@ -25,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import eu.emsodev.observations.utilities.EmsodevUtility;
 
 import java.util.HashMap;
@@ -143,6 +148,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String ultimo_char="]}";
 		String selection ="";
 		JSONObject obj_6=null;
+		Object response;
+		String egimNodeName = "";
+		String sensorIdName = "";
+		String metricName = "" ;
+		String jobjectDpsCleaned = null;
+		Gson gson=null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -257,8 +268,22 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+ element+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
-		response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-    	
+		//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+		response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
+		gson = new Gson();
+		JsonElement jelement = gson.fromJson (response.toString(), JsonElement.class);
+		JsonArray jsonarray = jelement.getAsJsonArray();
+		//Get the first and last item of the array
+		JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+		//The value of metric attribute
+		JsonObject  jobject = jarrayItem.getAsJsonObject();
+		metricName = jobject.get("metric").getAsString();
+					
+		//Get the an jsonObject with that rapresent the "tags" branche
+		jobject = jobject.getAsJsonObject("tags");
+		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
+		sensorIdName = jobject.get("SensorID").getAsString();
+		egimNodeName = jobject.get("EGIMNode").getAsString();
 		 } 
 		//} 
     	//qui poi per riordinare il file farai come sopra
@@ -331,7 +356,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(selection+compositeUrl, HttpStatus.OK);
+        return new ResponseEntity<String>(sensorIdName, HttpStatus.OK);
     }
 
 }
