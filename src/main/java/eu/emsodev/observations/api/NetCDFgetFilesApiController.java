@@ -154,6 +154,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String metricName = "" ;
 		String jobjectDpsCleaned = null;
 		Gson gson=null;
+		JsonObject  jobjectDps = null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -284,6 +285,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
+		jobjectDps = jarrayItem.getAsJsonObject();
+		jobjectDps = jobjectDps.getAsJsonObject("dps");
+		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		 } 
 		//} 
     	//qui poi per riordinare il file farai come sopra
@@ -356,7 +360,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(sensorIdName, HttpStatus.OK);
+        return new ResponseEntity<String>(jobjectDpsCleaned, HttpStatus.OK);
     }
 
 }
