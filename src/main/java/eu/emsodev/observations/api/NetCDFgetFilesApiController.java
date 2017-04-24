@@ -103,10 +103,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 
 			,
 			@ApiParam(value = "The end time for the query. The formast must be dd/MM/yyyy. It is required") @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date endDate
-			/* uncomment this for using NETCDF file
-			,
+						,
 			HttpServletResponse response
-			*/
+			
 			)  {
         // do some magic!
     	//Variables definitions
@@ -148,7 +147,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String ultimo_char="]}";
 		String selection ="";
 		JSONObject obj_6=null;
-		Object response;
+		Object respons;
 		String egimNodeName = "";
 		String sensorIdName = "";
 		String metricName = "" ;
@@ -159,6 +158,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
+		try {
+			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     	
 		//I create rest_template_object
     	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -271,9 +276,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-		response = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
+		respons = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
 		gson = new Gson();
-		JsonElement jelement = gson.fromJson (response.toString(), JsonElement.class);
+		JsonElement jelement = gson.fromJson (respons.toString(), JsonElement.class);
 		JsonArray jsonarray = jelement.getAsJsonArray();
 		//Get the first and last item of the array
 		JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
@@ -289,7 +294,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-		arrayDps= jobjectDpsCleaned.split(",");
+		//arrayDps= jobjectDpsCleaned.split(",");
 		 } 
 		//} 
     	//qui poi per riordinare il file farai come sopra
@@ -297,7 +302,43 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//obj_7 = new JSONObject(response_3);
 			//JSONArray arr_7 = ecc.... e poi il for. 
 			
-		
+		 try {
+			writer.create();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 try {
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		//test esistenza file NETCDF
+		  try {
+			ncfile=NetcdfFileWriter.openExisting(location);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			 return new ResponseEntity<String>("error", HttpStatus.OK);	
+			//e.printStackTrace();
+		}
+		////
+		  try {
+			  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
+			  if (Files.exists(file))
+		        {
+		            response.setContentType("application/x-netcdf");
+		            response.addHeader("Content-Disposition", "attachment; filename=\"Umberto.nc\"");
+		        }
+			  Files.copy(file, response.getOutputStream());
+			  response.getOutputStream().flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				 return new ResponseEntity<String>("error_path", HttpStatus.OK);	
+				//e.printStackTrace();
+			} 
 		  
     	
 		/* uncomment this for using NETCDF File
@@ -362,7 +403,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			*/			  
 			  
 			
-        return new ResponseEntity<String>(arrayDps[0], HttpStatus.OK);
+        return new ResponseEntity<String>(jobjectDpsCleaned, HttpStatus.OK);
     }
 
 }
