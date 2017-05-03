@@ -302,7 +302,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
 		//aggiunta
-		writer.addGroupAttribute(null, new Attribute(jobject.get("data_type").getAsString(), "face"));
+		//writer.addGroupAttribute(null, new Attribute(jobject.get("data_type").getAsString(), "face"));
 		//fine
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
