@@ -161,6 +161,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable ta = null;
 		ArrayList<Dimension> dimss = null;
 		DataType app = null;
+		int occurance=0;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -367,7 +368,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)jobjectDpsCleaned.length()));
+		//Vedo la lunghezza della stringa dei valori
+		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
+		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
+		    	occurance++;
+		    } 
+		}
+		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
+		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)jobjectDpsCleaned.length()));
 		//arrayDps= jobjectDpsCleaned.split(",");
 		 } 
 		//} 
