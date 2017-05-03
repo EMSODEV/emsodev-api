@@ -303,6 +303,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 * Processing_level_4=
 			 * uncertainty_4=
 			 * comment_4=
+			 * area
+			 * institution=
+			 * geospatial_lat_min=
+			 * geospatial_lat_max=
+			 * geospatial_lon_min=
+			 * geospatial_lon_max=
+			 * geospatial_vertical_min=
+			 * geospatial_vertical_max=
 			 */
 			}
 		} catch (JSONException e) {
@@ -345,6 +353,24 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
+		//Uncomment this for NETCDF file
+		/*
+		principal_investigator=
+		principal_investigator_email
+		publisher_name=
+		publisher_e_mail=
+		publisher_url=
+		date_created=
+		update_interval=
+		license=
+		QC_indicator=
+		contributor_name
+		contributor_role
+		contributor_e_mail
+		
+		*/
+		
+		
 		
 		//Prendo le serie temporali
 		jobjectDps = jarrayItem.getAsJsonObject();
@@ -368,7 +394,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME");
+	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -495,37 +521,46 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 } 
     	volte=0;
 		
+    	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
+    	writer.addGroupAttribute(null, new Attribute("platform_code", "EMSODEV"));
+    	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory"+observatory+"related to this instrument"+instrument));
+    	//messo D perchè i dati non sono in real time. Controllare. Se dovessero esserlo mettere la R al posto di D
+    	writer.addGroupAttribute(null, new Attribute("data_mode", "D"));
+    	
 		 /* Uncomment this for NETCDF Compliant file
-		writer.addGroupAttribute(null, new Attribute("site_code", "face"));
-		writer.addGroupAttribute(null, new Attribute("platform_code", datas.time()));
-		writer.addGroupAttribute(null, new Attribute("title", (float) 1.2));
-		writer.addGroupAttribute(null, new Attribute("data_mode", (float) 1.2));
-		writer.addGroupAttribute(null, new Attribute("principal_investigator", 1));
-		writer.addGroupAttribute(null, new Attribute("principal_investigator_email", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("institution", "face"));
-		writer.addGroupAttribute(null, new Attribute("geospatial_lat_min", 1.2));
-		writer.addGroupAttribute(null, new Attribute("geospatial_lat_max", (float) 1.2));
-		writer.addGroupAttribute(null, new Attribute("geospatial_lon_min", 1));
-		writer.addGroupAttribute(null, new Attribute("geospatial_lon_max", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", (byte) 3));
-		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", 1.2));
-		writer.addGroupAttribute(null, new Attribute("time_coverage_start", (float) 1.2));
-		writer.addGroupAttribute(null, new Attribute("time_coverage_end", 1));
-		writer.addGroupAttribute(null, new Attribute("data_type", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("area", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("format_version", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("netcdf_version", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("publisher_name", (short) 2));
-		writer.addGroupAttribute(null, new Attribute("publisher_email", (byte) 3));
-		writer.addGroupAttribute(null, new Attribute("publisher_url", "face"));
-		writer.addGroupAttribute(null, new Attribute("update_interval", (float) 1.2));
-		writer.addGroupAttribute(null, new Attribute("license", (float) 1.2));
-	    writer.addGroupAttribute(null, new Attribute("date_created", (float) 1.2));
-	    writer.addGroupAttribute(null, new Attribute("QC_indicator", (float) 1.2));
-        writer.addGroupAttribute(null, new Attribute("contributor_name", (float) 1.2));
-	    writer.addGroupAttribute(null, new Attribute("contributor_role", (float) 1.2));
-	    writer.addGroupAttribute(null, new Attribute("contributor_email", (float) 1.2));
-		 */
+		
+		writer.addGroupAttribute(null, new Attribute("principal_investigator", principal_investigator));
+		writer.addGroupAttribute(null, new Attribute("principal_investigator_email", principal_investigator_email));
+		writer.addGroupAttribute(null, new Attribute("institution", institution));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_min", geospatial_lat_min));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_max", geospatial_lat_max));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_min", geospatial_lon_min));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_max", geospatial_lon_max));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", geospatial_vertical_min));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", geospatial_vertical_max));
+		*/
+		writer.addGroupAttribute(null, new Attribute("time_coverage_start", EmsodevUtility.getDateAsStringTimestampFormat(startDate)));
+		writer.addGroupAttribute(null, new Attribute("time_coverage_end", EmsodevUtility.getDateAsStringTimestampFormat(endDate)));
+		
+		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
+		//Uncomment this line for NETCDF file
+		//writer.addGroupAttribute(null, new Attribute("area", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("format_version", (float) 1.3));
+		writer.addGroupAttribute(null, new Attribute("netcdf_version", (float) 3.5));
+		/* Uncomment this for NETCDF Compliant file
+		writer.addGroupAttribute(null, new Attribute("publisher_name", publisher_name));
+		writer.addGroupAttribute(null, new Attribute("publisher_email", publisher_email));
+		writer.addGroupAttribute(null, new Attribute("publisher_url", publisher_url));
+		writer.addGroupAttribute(null, new Attribute("update_interval", update_interval));
+		writer.addGroupAttribute(null, new Attribute("license", license));
+	    writer.addGroupAttribute(null, new Attribute("date_created", date_created));
+	    
+	    writer.addGroupAttribute(null, new Attribute("QC_indicator", QC_indicator));
+        writer.addGroupAttribute(null, new Attribute("contributor_name", contributor_name));
+	    writer.addGroupAttribute(null, new Attribute("contributor_role", contributor_role));
+	    writer.addGroupAttribute(null, new Attribute("contributor_email", contributor_email));
+	    */
+		
 		 try {
 			writer.create();
 		} catch (IOException e) {
