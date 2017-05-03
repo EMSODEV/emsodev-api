@@ -367,7 +367,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
 	    volte=1;
 		}
-	    /*
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
 	    TIME=writer.addVariable(null, "TIME", DataType.LONG, "TIME");
