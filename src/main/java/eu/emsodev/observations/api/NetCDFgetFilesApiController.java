@@ -369,6 +369,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		//Vedo la lunghezza della stringa dei valori
+		occurance=0;
 		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
 		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
 		    	occurance++;
