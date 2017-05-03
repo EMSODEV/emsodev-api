@@ -162,6 +162,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayList<Dimension> dimss = null;
 		DataType app = null;
 		int occurance=0;
+		int d=0;
+		Dimension T=null;
+		Dimension D=null;
+		Dimension LA=null;
+		Dimension LO=null;
+		Variable TIME=null;
+		Variable DEPTH=null;
+		Variable LATITUDE=null;
+		Variable LONGITUDE=null;
+		
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -264,18 +274,43 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			JSONArray arr_2 = obj_6.getJSONArray("info");
 			for (int i = 0; i < arr_2.length(); i++) {
 				selection = arr_2.getJSONObject(i).getString("EGIMLocation"); //se vuoi selezionare un campo: EgimLocation nel nostro caso
+			/*Uncomment this for NETCDF File
+			 * valid_min_1=
+			 * valid_max_1=
+			 * QC_indicator_1=
+			 * Processing_level_1
+			 * uncertainty_1=
+			 * comment_1=
+			 * coordinate_reference_frame_1= //for DEPTH
+			 * valid_min_2=
+			 * valid_max_2=
+			 * QC_indicator_2=
+			 * Processing_level_2=
+			 * uncertainty_2=
+			 * comment_2=
+			 * coordinate_reference_frame_2= //for LATITUDE
+			 * valid_min_3=
+			 * valid_max_3=
+			 * QC_indicator_3=
+			 * Processing_level_3=
+			 * uncertainty_3=
+			 * comment_3=
+			 * coordinate_reference_frame_3= //for LONGITUDE
+			 * valid_min_4=
+			 * valid_max_4=
+			 * QC_indicator_4=
+			 * Processing_level_4=
+			 * uncertainty_4=
+			 * comment_4=
+			 */
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	////Information for Time series for instrument
-		// String Data_8="sea_water_temperature, pitch, Bin20_error_sea_water_speed, heading_of_device, roll, Bin20_N_S_sea_water_speed, Bin20_E_W_sea_water_speed, Bin20_vert_sea_water_speed, Bin3_E_W_sea_water_speed, Bin2_N_S_sea_water_speed, Bin3_error_sea_water_speed";
-    	
 		 for (String element:Data_2.split(",\\s")){
-			  
-			//////element_1=element.split(","); 
+	   
 		  
 
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
@@ -308,20 +343,106 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
+		
+		//Prendo le serie temporali
+		jobjectDps = jarrayItem.getAsJsonObject();
+		jobjectDps = jobjectDps.getAsJsonObject("dps");
+		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+		//Vedo la lunghezza della stringa dei valori
+		occurance=0;
+		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
+		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
+		    	occurance++;
+		    } 
+		}
+		//arrayDps= jobjectDpsCleaned.split(",");
+		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
+		//Scrivo le dimensioni standard for Oceansites
+		T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+	    D=writer.addDimension(null, "DEPTH", 1);
+	    LA=writer.addDimension(null, "LATITUDE", 1);
+	    LO=writer.addDimension(null, "LONGITUDE", 1);
+		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
+	    //TIME
+	    TIME=writer.addVariable(null, "TIME", DataType.LONG, "TIME");
+	    TIME.addAttribute(new Attribute("standard_name", "time")); 
+	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
+	    TIME.addAttribute(new Attribute("axis", "T")); 
+	    TIME.addAttribute(new Attribute("long_name", "time"));
+	   //Uncomment this for NETCDF file
+	  //  TIME.addAttribute(new Attribute("valid_min", (double) valid_min_1)); 
+	   // TIME.addAttribute(new Attribute("valid_max", (double) valid_max_1)); 
+	   // TIME.addAttribute(new Attribute("QC_indicator", QC_indicator_1)); 
+	   // TIME.addAttribute(new Attribute("Processing_level", Processing_level_1)); 
+	   // TIME.addAttribute(new Attribute("uncertainty", uncertainty_1)); 
+	   // TIME.addAttribute(new Attribute("comment", comment_1));
+	    //DEPTH
+	    DEPTH=writer.addVariable(null, "DEPTH", DataType.FLOAT, "DEPTH");
+	    DEPTH.addAttribute(new Attribute("standard_name", "depth")); 
+	    DEPTH.addAttribute(new Attribute("units", "meters"));
+	    DEPTH.addAttribute(new Attribute("positive", "down")); 
+	    DEPTH.addAttribute(new Attribute("axis", "Z")); 
+	    DEPTH.addAttribute(new Attribute("reference", "sea_level"));
+	    
+	   //Uncomment this for NETCDF file
+	    //DEPTH.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_1));
+	  //  DEPTH.addAttribute(new Attribute("long_name", "Depth of measurement")); 
+	   // DEPTH.addAttribute(new Attribute("_FillValue", (float) -99999.0)); 
+	   // DEPTH.addAttribute(new Attribute("valid_min", (double) valid_min_2)); 
+		   // DEPTH.addAttribute(new Attribute("valid_max", (double) valid_max_2)); 
+		   // DEPTH.addAttribute(new Attribute("QC_indicator", QC_indicator_2)); 
+		   // DEPTH.addAttribute(new Attribute("Processing_level", Processing_level_2)); 
+		   // DEPTH.addAttribute(new Attribute("uncertainty", uncertainty_2)); 
+		   // DEPTH.addAttribute(new Attribute("comment", comment_2));
+	    
+	   //LATITUDE
+	    LATITUDE=writer.addVariable(null, "LATITUDE", DataType.DOUBLE, "LATITUDE");
+	    LATITUDE.addAttribute(new Attribute("standard_name", "latitude")); 
+	    LATITUDE.addAttribute(new Attribute("units", "degrees_north"));
+	    LATITUDE.addAttribute(new Attribute("axis", "Y")); 
+	    LATITUDE.addAttribute(new Attribute("long_name", "Latitude of measurement"));
+	    LATITUDE.addAttribute(new Attribute("reference", "WGS84"));
+	    //Uncomment this for NETCDF File
+	    //LATITUDE.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_2));
+	    //LATITUDE.addAttribute(new Attribute("valid_min", (double) valid_min_3)); 
+		   // LATITUDE.addAttribute(new Attribute("valid_max", (double) valid_max_3)); 
+		   // LATITUDE.addAttribute(new Attribute("QC_indicator", QC_indicator_3)); 
+		   // LATITUDE.addAttribute(new Attribute("Processing_level", Processing_level_3)); 
+		   // LATITUDE.addAttribute(new Attribute("uncertainty", uncertainty_3)); 
+		   // LATITUDE.addAttribute(new Attribute("comment", comment_3));
+	    
+	    //LONGITUDE
+	    LONGITUDE=writer.addVariable(null, "LONGITUDE", DataType.DOUBLE, "LONGITUDE");
+	    LONGITUDE.addAttribute(new Attribute("standard_name", "latitude")); 
+	    LONGITUDE.addAttribute(new Attribute("units", "degrees_east"));
+	    LONGITUDE.addAttribute(new Attribute("axis", "X")); 
+	    LONGITUDE.addAttribute(new Attribute("reference", "WGS84"));
+	    LONGITUDE.addAttribute(new Attribute("long_name", "Longitude of each location"));
+	    //Uncomment this for NETCDF file
+	  //Uncomment this for NETCDF File
+	    //LONGITUDE.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_3));
+	    //LONGITUDE.addAttribute(new Attribute("valid_min", (double) valid_min_4)); 
+		   // LONGITUDE.addAttribute(new Attribute("valid_max", (double) valid_max_4)); 
+		   // LONGITUDE.addAttribute(new Attribute("QC_indicator", QC_indicator_4)); 
+		   // LONGITUDE.addAttribute(new Attribute("Processing_level", Processing_level_4)); 
+		   // LONGITUDE.addAttribute(new Attribute("uncertainty", uncertainty_4)); 
+		   // LONGITUDE.addAttribute(new Attribute("comment", comment_4));
+	    
+		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
 		 	dimss=new ArrayList<Dimension>();
 		 	if(jobject.get("T").getAsString() == 1){
-	    		dims.add(T);
+	    		dimss.add(T);
 				}
 			if(jobject.get("D").getAsString() == 1){
-		    	dims.add(D);
+		    	dimss.add(D);
 				}
 			if(jobject.get("LA").getAsString() == 1){
-		    	dims.add(LA);
+		    	dimss.add(LA);
 				}
 			if(jobject.get("LO").getAsString() == 1){
-		    	dims.add(LO);
+		    	dimss.add(LO);
 				}
 			// Bisogna definire il tipo di dato	
 			if (jobject.get("d").getAsString()== 1){
@@ -365,25 +486,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    ts.addAttribute(new Attribute("comment", jobject.get("comment").getAsString()));
 			}
 		fine*/
-		jobjectDps = jarrayItem.getAsJsonObject();
-		jobjectDps = jobjectDps.getAsJsonObject("dps");
-		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-		//Vedo la lunghezza della stringa dei valori
-		occurance=0;
-		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
-		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
-		    	occurance++;
-		    } 
-		}
-		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
-		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)jobjectDpsCleaned.length()));
-		//arrayDps= jobjectDpsCleaned.split(",");
+		
 		 } 
-		//} 
-    	//qui poi per riordinare il file farai come sopra
-		//try {
-			//obj_7 = new JSONObject(response_3);
-			//JSONArray arr_7 = ecc.... e poi il for. 
+    	
 		
 		 /* Uncomment this for NETCDF Compliant file
 		writer.addGroupAttribute(null, new Attribute("site_code", "face"));
