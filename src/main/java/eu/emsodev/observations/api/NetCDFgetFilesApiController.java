@@ -367,7 +367,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-		//writer.addGroupAttribute(null, new Attribute("lunghezza",jobjectDpsCleaned.length()));
+		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)jobjectDpsCleaned.length()));
 		//arrayDps= jobjectDpsCleaned.split(",");
 		 } 
 		//} 
