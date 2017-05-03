@@ -362,19 +362,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
 		T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
-	    D=writer.addDimension(null, "DEPTH", 20000);
+	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    /*
-	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME");
+	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME");
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
 	    TIME.addAttribute(new Attribute("long_name", "time"));
-	    */
 	   //Uncomment this for NETCDF file
 	  //  TIME.addAttribute(new Attribute("valid_min", (double) valid_min_1)); 
 	   // TIME.addAttribute(new Attribute("valid_max", (double) valid_max_1)); 
