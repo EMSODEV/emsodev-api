@@ -171,6 +171,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable DEPTH=null;
 		Variable LATITUDE=null;
 		Variable LONGITUDE=null;
+		int volte=0;
 		
 		
 		//la struttura del programma è questa: 
@@ -309,6 +310,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
     	
+		 
 		 for (String element:Data_2.split(",\\s")){
 	   
 		  
@@ -357,12 +359,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		//arrayDps= jobjectDpsCleaned.split(",");
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
-		
+		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
-		T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+		T=writer.addDimension(null, "TIME", occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
-	    //LO=writer.addDimension(null, "LONGITUDE", 1);
+	    LO=writer.addDimension(null, "LONGITUDE", 1);
+	    volte=1;
+		}
 	    /*
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
@@ -490,7 +494,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		fine*/
 		
 		 } 
-    	
+    	volte=0;
 		
 		 /* Uncomment this for NETCDF Compliant file
 		writer.addGroupAttribute(null, new Attribute("site_code", "face"));
