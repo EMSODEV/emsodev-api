@@ -155,6 +155,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Gson gson=null;
 		JsonObject  jobjectDps = null;
 		String[] arrayDps = null;
+		String test="pippo";
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -301,8 +302,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
+		test=jobject.get("data_type").getAsString();
 		//aggiunta
-		writer.addGroupAttribute(null, new Attribute(jobject.get("data_type").getAsString(), "face"));
+		writer.addGroupAttribute(null, new Attribute(test, "face"));
 		//fine
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
