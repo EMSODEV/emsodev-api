@@ -156,6 +156,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JsonObject  jobjectDps = null;
 		String[] arrayDps = null;
 		String test="pippo";
+		Variable tx = null;
+		Variable ts = null;
+		Variable ta = null;
+		ArrayList<Dimension> dimss = null;
+		DataType app = null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -302,13 +307,67 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
-		//test=jobject.get("data_type").getAsString();
-		//aggiunta
-		//writer.addGroupAttribute(null, new Attribute(test, "face"));
-		//fine
+		/*Uncomment this for writing NETCDF compliant file 
+		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
+		 	dimss=new ArrayList<Dimension>();
+		 	if(jobject.get("T").getAsString() == 1){
+	    		dims.add(T);
+				}
+			if(jobject.get("D").getAsString() == 1){
+		    	dims.add(D);
+				}
+			if(jobject.get("LA").getAsString() == 1){
+		    	dims.add(LA);
+				}
+			if(jobject.get("LO").getAsString() == 1){
+		    	dims.add(LO);
+				}
+			// Bisogna definire il tipo di dato	
+			if (jobject.get("d").getAsString()== 1){
+				 app=DataType.DOUBLE;
+				}
+			if (jobject.get("b").getAsString()== 1){
+				 app=DataType.BYTE;
+				}
+			if (jobject.get("c").getAsString()== 1){
+				 app=DataType.CHAR;
+				}
+			if (jobject.get("f").getAsString()== 1){
+				 app=DataType.FLOAT;
+				}
+			if (jobject.get("i").getAsString()== 1){
+				 app=DataType.INT;
+				}
+			//Scrittura variabile data
+			ts = writer.addVariable(null, metricName, app, dimss);
+		    ts.addAttribute(new Attribute("standard_name", jobject.get("standard_name").getAsString()));
+		    ts.addAttribute(new Attribute("units", jobject.get("units").getAsString()));
+		    ts.addAttribute(new Attribute("_FillValue", Float.parseFloat(jobject.get("_FillValue").getAsString())));
+		    ts.addAttribute(new Attribute("long_name", jobject.get("long_name").getAsString()));
+		    ts.addAttribute(new Attribute("QC_indicator", jobject.get("QC_indicator").getAsString()));
+		    ts.addAttribute(new Attribute("valid_min", Double.parseDouble(jobject.get("valid_min").getAsString())));
+		    ts.addAttribute(new Attribute("valid_max", Double.parseDouble(jobject.get("valid_max").getAsString()));
+		    ts.addAttribute(new Attribute("sensor_depth", jobject.get("sensor_depth").getAsString()));
+		    ts.addAttribute(new Attribute("sensor_name", jobject.get("sensor_name").getAsString()));
+		    if(jobject.get("ancillary_variables_flag").getAsString()== 1){
+		    	ts.addAttribute(new Attribute("ancillary_variables", jobject.get("ancillary_variables").getAsString()));
+		    	//Aggiungo l'eventuale variabile ancillary
+		    	 ta= writer.addVariable(null, "byte "+metricName, app, dimss);
+		    	 ta.addAttribute(new Attribute("long_name", jobject.get("long_name").getAsString()));
+		    	 ta.addAttribute(new Attribute("valid_min", Double.parseDouble(jobject.get("valid_min").getAsString())));
+		    	 ta.addAttribute(new Attribute("valid_max", Double.parseDouble(jobject.get("valid_max").getAsString())));
+		    	 ta.addAttribute(new Attribute("flag_values",  jobject.get("flag_values").getAsString()));
+		    	 ta.addAttribute(new Attribute("flag_meanings", jobject.get("flag_meanings").getAsString()));
+		         ta.addAttribute(new Attribute("conventions", jobject.get("conventions").getAsString()));
+		    }
+		    if(jobject.get("comment_flag").getAsString()== 1){
+		    ts.addAttribute(new Attribute("comment", jobject.get("comment").getAsString()));
+			}
+		fine*/
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+		writer.addGroupAttribute(null, new Attribute("lunghezza",jobjectDpsCleaned.length() ));
 		//arrayDps= jobjectDpsCleaned.split(",");
 		 } 
 		//} 
@@ -316,7 +375,38 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//try {
 			//obj_7 = new JSONObject(response_3);
 			//JSONArray arr_7 = ecc.... e poi il for. 
-			
+		
+		 /* Uncomment this for NETCDF Compliant file
+		writer.addGroupAttribute(null, new Attribute("site_code", "face"));
+		writer.addGroupAttribute(null, new Attribute("platform_code", datas.time()));
+		writer.addGroupAttribute(null, new Attribute("title", (float) 1.2));
+		writer.addGroupAttribute(null, new Attribute("data_mode", (float) 1.2));
+		writer.addGroupAttribute(null, new Attribute("principal_investigator", 1));
+		writer.addGroupAttribute(null, new Attribute("principal_investigator_email", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("institution", "face"));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_min", 1.2));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_max", (float) 1.2));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_min", 1));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_max", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", (byte) 3));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", 1.2));
+		writer.addGroupAttribute(null, new Attribute("time_coverage_start", (float) 1.2));
+		writer.addGroupAttribute(null, new Attribute("time_coverage_end", 1));
+		writer.addGroupAttribute(null, new Attribute("data_type", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("area", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("format_version", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("netcdf_version", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("publisher_name", (short) 2));
+		writer.addGroupAttribute(null, new Attribute("publisher_email", (byte) 3));
+		writer.addGroupAttribute(null, new Attribute("publisher_url", "face"));
+		writer.addGroupAttribute(null, new Attribute("update_interval", (float) 1.2));
+		writer.addGroupAttribute(null, new Attribute("license", (float) 1.2));
+	    writer.addGroupAttribute(null, new Attribute("date_created", (float) 1.2));
+	    writer.addGroupAttribute(null, new Attribute("QC_indicator", (float) 1.2));
+        writer.addGroupAttribute(null, new Attribute("contributor_name", (float) 1.2));
+	    writer.addGroupAttribute(null, new Attribute("contributor_role", (float) 1.2));
+	    writer.addGroupAttribute(null, new Attribute("contributor_email", (float) 1.2));
+		 */
 		 try {
 			writer.create();
 		} catch (IOException e) {
@@ -356,66 +446,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			} 
 		  
     	
-		/* uncomment this for using NETCDF File
-		 * 	  try {
-			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
-				//Add dimension
-				svar_len = writer.addDimension(null, "svar_len", 80);
-				writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
-				//Add Group Attributes
-				writer.addGroupAttribute(null, new Attribute("yo", "face"));
-			    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
-			    writer.addGroupAttribute(null, new Attribute("versionF", (float) 1.2));
-			    writer.addGroupAttribute(null, new Attribute("versionI", 1));
-			    writer.addGroupAttribute(null, new Attribute("versionS", (short) 2));
-			    writer.addGroupAttribute(null, new Attribute("versionB", (byte) 3));
-				
-			} catch (IOException e) {
-				return new ResponseEntity<String>("error", HttpStatus.OK);
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-    	
-			  try {
-				writer.create();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				return new ResponseEntity<String>("error", HttpStatus.OK);
-				//e.printStackTrace();
-			}
-			  try {
-				writer.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				return new ResponseEntity<String>("error", HttpStatus.OK);
-				//e1.printStackTrace();
-			}
-			  //test esistenza file NETCDF
-			  try {
-				ncfile=NetcdfFileWriter.openExisting(location);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				 return new ResponseEntity<String>("error", HttpStatus.OK);	
-				//e.printStackTrace();
-			}
-			////
-			  try {
-				  java.nio.file.Path file = Paths.get(".", "Umberto.nc");
-				  if (Files.exists(file))
-			        {
-			            response.setContentType("application/x-netcdf");
-			            response.addHeader("Content-Disposition", "attachment; filename=\"Umberto.nc\"");
-			        }
-				  Files.copy(file, response.getOutputStream());
-				  response.getOutputStream().flush();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					 return new ResponseEntity<String>("error_path", HttpStatus.OK);	
-					//e.printStackTrace();
-				}
 			  
-			*/			  
 			  
 			
         return new ResponseEntity<String>(jobjectDpsCleaned, HttpStatus.OK);
