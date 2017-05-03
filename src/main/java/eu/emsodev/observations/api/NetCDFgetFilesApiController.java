@@ -356,10 +356,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    } 
 		}
 		//arrayDps= jobjectDpsCleaned.split(",");
-		writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
+		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		
 		//Scrivo le dimensioni standard for Oceansites
-		//T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+		T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    //LO=writer.addDimension(null, "LONGITUDE", 1);
