@@ -365,8 +365,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
-	    volte=1;
-		}
+	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
 	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME");
@@ -432,7 +431,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		   // LONGITUDE.addAttribute(new Attribute("Processing_level", Processing_level_4)); 
 		   // LONGITUDE.addAttribute(new Attribute("uncertainty", uncertainty_4)); 
 		   // LONGITUDE.addAttribute(new Attribute("comment", comment_4));
-	    
+	    volte=1;
+		}
 		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
