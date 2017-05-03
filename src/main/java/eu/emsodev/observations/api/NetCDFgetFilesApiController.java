@@ -369,7 +369,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.STRING, "TIME");
+	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME");
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
