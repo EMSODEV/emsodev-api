@@ -602,7 +602,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			v = writer.findVariable("svar");
 			shape = v.getShape();
 			ac2=new ArrayChar.D1(shape[0]);
-			f=arrayDps[0].split(":");
+			f=arrayDps[100].split(":");
 			ac2.setString(f[0]);
 			writer.write(v, ac2);
 						
@@ -612,8 +612,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			datas = new ArrayDouble.D1(shape[0]);
 			ima=datas.getIndex();
 			for(int i=0; i<shape[0]; i++){
-			f=arrayDps[i].split(":");
-			datas.setDouble(ima.set(i), Double.parseDouble(f[0]+".00"));
+			//f=arrayDps[i].split(":");
+			datas.setDouble(ima.set(i), Double.parseDouble("300.00"));
 			}
 			//datas.setDouble(ima.set(1), 900.00);
 		  	writer.write(v, datas);
