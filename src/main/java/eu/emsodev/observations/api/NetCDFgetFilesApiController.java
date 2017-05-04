@@ -177,7 +177,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayChar.D2 ac2=null;
 		ArrayDouble.D2 A = null;
 		Index ima = null;
-		//ArrayDouble.D1 datas = null;
+		ArrayFloat.D0 datas = null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -400,7 +400,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.CHAR, "TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -601,17 +601,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  		
 		  	shape = v.getShape();
 		  	//prendo i valori del tempo
-		  	//String[] appoggio=arrayDps[0].split(":");
+		  	String[] appoggio=arrayDps[0].split(":");
 		  	//converto la stringa in float
-		  	//Float.parseFloat(appoggio[0]);
-		  		
-		  	ac2= new ArrayChar.D2(shape[0], shape[1]);
-		  	ima = ac2.getIndex();
-		  	ac2.setString(ima.set(0), arrayDps[0]);
-		  	ac2.setString(ima.set(1), arrayDps[1]);
+		  	Float.parseFloat(appoggio[0]);
+		  	//Array dei dati 
+		  	datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-		  	writer.write(v, ac2);
+		  	datas.set((float)222.333);
+		  	writer.write(v, datas);
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
