@@ -432,7 +432,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		   // DEPTH.addAttribute(new Attribute("comment", comment_2));
 	    
 	   //LATITUDE
-	    LATITUDE=writer.addVariable(null, "LATITUDE", DataType.FLOAT, "LATITUDE");
+	    LATITUDE=writer.addVariable(null, "LATITUDE", DataType.DOUBLE, "LATITUDE");
 	    LATITUDE.addAttribute(new Attribute("standard_name", "latitude")); 
 	    LATITUDE.addAttribute(new Attribute("units", "degrees_north"));
 	    LATITUDE.addAttribute(new Attribute("axis", "Y")); 
@@ -606,7 +606,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	//datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-		  	datas.set(1.1f);
+		  	datas.set(1.1);
 		  	v = writer.findVariable("LATITUDE");
 		  	writer.write(v, datas);
 			
