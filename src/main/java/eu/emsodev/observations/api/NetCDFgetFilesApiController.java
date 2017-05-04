@@ -386,7 +386,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    	occurance++;
 		    } 
 		}
-		occurance=jobjectDpsCleaned.length();
+		occurance=(jobjectDpsCleaned.length())*10;
 		//Modifica
 		if(volte==0){
 		arrayDps= jobjectDpsCleaned.split(",");
