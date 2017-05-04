@@ -605,7 +605,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			ima=datas.getIndex();
 			int hal=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
-			datas.setDouble(ima.set(hal), Double.parseDouble("300.00"));
+				f=rep.split(":");
+			datas.setDouble(ima.set(hal), Double.parseDouble("400.00"));
 			hal++;
 			}
 			writer.write(v, datas);
