@@ -596,12 +596,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Modifica 
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
+			
+			//Scrivo i valori della Latitudine
 			v = writer.findVariable("LATITUDE");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
 		  	ima=datas.getIndex();
 		  	datas.setDouble(ima.set(0), 2.2);
-		  	writer.write(v, datas);		  			  	
+		  	writer.write(v, datas);
+		  	//Scrivo i valori della Longitudine
+		  	v = writer.findVariable("LONGITUDE");	
+		  	shape = v.getShape();
+		  	datas = new ArrayDouble.D1(shape[0]);
+		  	ima=datas.getIndex();
+		  	datas.setDouble(ima.set(0), 1.1);
+		  	writer.write(v, datas);
 		  	//prendo i valori del tempo
 		  	//String[] appoggio=arrayDps[0].split(":");
 		  	//converto la stringa in float
