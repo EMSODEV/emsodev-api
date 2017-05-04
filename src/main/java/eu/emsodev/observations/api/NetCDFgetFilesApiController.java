@@ -465,8 +465,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	  //Modifica
 	  		
 	  		arrayDps= jobjectDpsCleaned.split(",");
-	  		/*
+	  		
 	  		v = writer.findVariable("TIME");
+	  		/*
 	  		shape = v.getShape();
 	  		
 	  		ac2= new ArrayChar.D1(shape[0]);
