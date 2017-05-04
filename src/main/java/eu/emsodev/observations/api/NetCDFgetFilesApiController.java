@@ -177,7 +177,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayChar.D2 ac2=null;
 		ArrayDouble.D2 A = null;
 		Index ima = null;
-		ArrayFloat.D0 datas = null;
+		ArrayDouble.D0 datas = new ArrayDouble.D0();
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -432,7 +432,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		   // DEPTH.addAttribute(new Attribute("comment", comment_2));
 	    
 	   //LATITUDE
-	    LATITUDE=writer.addVariable(null, "LATITUDE", DataType.DOUBLE, "LATITUDE");
+	    LATITUDE=writer.addVariable(null, "LATITUDE", DataType.FLOAT, "LATITUDE");
 	    LATITUDE.addAttribute(new Attribute("standard_name", "latitude")); 
 	    LATITUDE.addAttribute(new Attribute("units", "degrees_north"));
 	    LATITUDE.addAttribute(new Attribute("axis", "Y")); 
@@ -597,18 +597,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
 		  		
-		  	v = writer.findVariable("DEPTH");
-		  		
 		  	//shape = v.getShape();
 		  	//prendo i valori del tempo
 		  	//String[] appoggio=arrayDps[0].split(":");
 		  	//converto la stringa in float
 		  	//Float.parseFloat(appoggio[0]);
 		  	//Array dei dati 
-		  	datas=new ArrayFloat.D0();
+		  	//datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
 		  	datas.set(1.1f);
+		  	v = writer.findVariable("LATITUDE");
 		  	writer.write(v, datas);
 			
 		} catch (IOException e1) {
