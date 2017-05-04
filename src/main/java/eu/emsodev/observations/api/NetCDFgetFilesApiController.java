@@ -464,15 +464,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 	  //Modifica
 	  		
-	  		arrayDps= jobjectDpsCleaned.split(",");
 	  		
-	  		v = writer.findVariable("TIME");
-	  		
-	  		shape = v.getShape();
-	  		
-	  		ac2= new ArrayChar.D1(shape[0]);
-	  		ac2.setString(arrayDps[0]);
-	  		ac2.setString(arrayDps[1]);
 	  		/*
 	  		 try {
 	  			writer.write(v, ac2);
@@ -601,7 +593,18 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 
 		//Modifica 
 		 try {
-			writer.write(v, ac2);
+			 arrayDps= jobjectDpsCleaned.split(",");
+		  		
+		  	v = writer.findVariable("TIME");
+		  		
+		  	shape = v.getShape();
+		  		
+		  	ac2= new ArrayChar.D1(shape[0]);
+		  	ac2.setString(arrayDps[0]);
+		  	writer.write(v, ac2);
+		  	ac2.setString(arrayDps[1]);
+		  	writer.write(v, ac2);
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
