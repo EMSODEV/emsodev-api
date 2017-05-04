@@ -606,7 +606,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	//datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-		  	datas.set(1.1);
+		  	datas.set((double)1.1);
 		  	v = writer.findVariable("LATITUDE");
 		  	writer.write(v, datas);
 			
