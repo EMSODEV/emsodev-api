@@ -597,13 +597,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
 		  		
-		  	v = writer.findVariable("TIME");
+		  	v = writer.findVariable("DEPTH");
 		  		
 		  	shape = v.getShape();
 		  	//prendo i valori del tempo
-		  	String[] appoggio=arrayDps[0].split(":");
+		  	//String[] appoggio=arrayDps[0].split(":");
 		  	//converto la stringa in float
-		  	Float.parseFloat(appoggio[0]);
+		  	//Float.parseFloat(appoggio[0]);
 		  	//Array dei dati 
 		  	datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
