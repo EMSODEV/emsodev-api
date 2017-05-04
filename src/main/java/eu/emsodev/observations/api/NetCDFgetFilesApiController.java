@@ -614,7 +614,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    //Uncomment this for NETCDF file 
 		  	//datas.setDouble(ima.set(0), depth);
 		  	//Comment the following line for NETCDF file
-		  	datas.setDouble(ima.set(0), 2000.00);
+		  	datas.setDouble(ima.set(0), (double)shape[0]);
 		  	writer.write(v, datas);
 			//Scrivo i valori della Latitudine
 			v = writer.findVariable("LATITUDE");	
