@@ -391,9 +391,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		if(volte==0){
 		arrayDps= jobjectDpsCleaned.split(",");
 		v = writer.findVariable("TIME");
-		shape = v.getShape();
-		 ac2= new ArrayChar.D1(shape[0]);
-		 ac2.setString("pollo");
+		//shape = v.getShape();
+		// ac2= new ArrayChar.D1(shape[0]);
+		// ac2.setString("pollo");
 		 try {
 			writer.write(v, ac2);
 		} catch (IOException e) {
