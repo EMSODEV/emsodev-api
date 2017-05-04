@@ -599,7 +599,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  		
 		  	v = writer.findVariable("DEPTH");
 		  		
-		  	shape = v.getShape();
+		  	//shape = v.getShape();
 		  	//prendo i valori del tempo
 		  	//String[] appoggio=arrayDps[0].split(":");
 		  	//converto la stringa in float
@@ -608,7 +608,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-		  	datas.set((float)222.333);
+		  	datas.set((float)1.1);
 		  	writer.write(v, datas);
 			
 		} catch (IOException e1) {
