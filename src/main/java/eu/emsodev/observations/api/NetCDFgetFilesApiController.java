@@ -602,7 +602,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			v = writer.findVariable("svar");
 			shape = v.getShape();
 			ac2=new ArrayChar.D1(shape[0]);
-			ac2.setString(arrayDps[0]);
+			f=arrayDps[0].split(":");
+			ac2.setString(f[0]);
 			writer.write(v, ac2);
 						
 			//Scrivo i valori di TIME
