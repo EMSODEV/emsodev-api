@@ -413,7 +413,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	   // TIME.addAttribute(new Attribute("uncertainty", uncertainty_1)); 
 	   // TIME.addAttribute(new Attribute("comment", comment_1));
 	    //DEPTH
-	    DEPTH=writer.addVariable(null, "DEPTHS", DataType.FLOAT, "DEPTH");
+	    DEPTH=writer.addVariable(null, "DEPTHS", DataType.FLOAT, "DEPTH, TIME");
 	    DEPTH.addAttribute(new Attribute("standard_name", "depth")); 
 	    DEPTH.addAttribute(new Attribute("units", "meters"));
 	    DEPTH.addAttribute(new Attribute("positive", "down")); 
