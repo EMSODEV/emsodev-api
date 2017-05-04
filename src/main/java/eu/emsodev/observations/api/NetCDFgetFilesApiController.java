@@ -172,6 +172,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable LATITUDE=null;
 		Variable LONGITUDE=null;
 		int volte=0;
+		Variable v=null;
+		int[] shape= null;
+		ArrayChar ac2=null;
 		
 		
 		//la struttura del programma è questa: 
@@ -383,7 +386,24 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    	occurance++;
 		    } 
 		}
-		//arrayDps= jobjectDpsCleaned.split(",");
+		//Modifica
+		if(volte==0){
+		arrayDps= jobjectDpsCleaned.split(",");
+		v = writer.findVariable("TIME");
+		shape = v.getShape();
+		 ac2= new ArrayChar.D1(shape[0]);
+		 ac2.setString(arrayDps[0]);
+		 try {
+			writer.write(v, ac2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidRangeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		} 
+		///Fine modifica
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
@@ -394,7 +414,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.STRING, "TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.CHAR, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
