@@ -608,7 +608,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	datas=new ArrayFloat.D0();
 		  	//writer.write(v, ac2);
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-		  	datas.set((float)1.1);
+		  	datas.set(1.1f);
 		  	writer.write(v, datas);
 			
 		} catch (IOException e1) {
