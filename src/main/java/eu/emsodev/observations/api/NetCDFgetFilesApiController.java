@@ -316,6 +316,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 * geospatial_lon_max=
 			 * geospatial_vertical_min=
 			 * geospatial_vertical_max=
+			 * depth=
 			 */
 			}
 		} catch (JSONException e) {
@@ -400,7 +401,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -413,7 +414,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	   // TIME.addAttribute(new Attribute("uncertainty", uncertainty_1)); 
 	   // TIME.addAttribute(new Attribute("comment", comment_1));
 	    //DEPTH
-	    DEPTH=writer.addVariable(null, "DEPTH", DataType.FLOAT, "DEPTH");
+	    DEPTH=writer.addVariable(null, "DEPTH", DataType.DOUBLE, "DEPTH");
 	    DEPTH.addAttribute(new Attribute("standard_name", "depth")); 
 	    DEPTH.addAttribute(new Attribute("units", "meters"));
 	    DEPTH.addAttribute(new Attribute("positive", "down")); 
@@ -596,20 +597,39 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Modifica 
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
+			//Scrivo i valori di TIME
 			
+			
+			
+			//Scrivo i valori della DEPTH
+			v = writer.findVariable("DEPTH");	
+		  	shape = v.getShape();
+		  	datas = new ArrayDouble.D1(shape[0]);
+		  	ima=datas.getIndex();
+		    //Uncomment this for NETCDF file 
+		  	//datas.setDouble(ima.set(0), depth);
+		  	//Comment the following line for NETCDF file
+		  	datas.setDouble(ima.set(0), 2000.00);
+		  	writer.write(v, datas);
 			//Scrivo i valori della Latitudine
 			v = writer.findVariable("LATITUDE");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
 		  	ima=datas.getIndex();
-		  	datas.setDouble(ima.set(0), 2.2);
+		  	//Uncomment this for NETCDF file 
+		  	//datas.setDouble(ima.set(0), geospatial_lat_min);
+		  	//Comment the following line for NETCDF file
+		  	datas.setDouble(ima.set(0), 36.681690);
 		  	writer.write(v, datas);
 		  	//Scrivo i valori della Longitudine
 		  	v = writer.findVariable("LONGITUDE");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
 		  	ima=datas.getIndex();
-		  	datas.setDouble(ima.set(0), 1.1);
+		  	//Uncomment this for NETCDF file 
+		  	//datas.setDouble(ima.set(0), geospatial_lon_max);
+		    //Comment the following line for NETCDF file
+		  	datas.setDouble(ima.set(0), 15.133875);
 		  	writer.write(v, datas);
 		  	//prendo i valori del tempo
 		  	//String[] appoggio=arrayDps[0].split(":");
