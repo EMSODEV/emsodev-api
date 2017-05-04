@@ -390,7 +390,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    	occurance++;
 		    } 
 		}
-		occurance=jobjectDpsCleaned.length();
+		//occurance=jobjectDpsCleaned.length();
 		
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
