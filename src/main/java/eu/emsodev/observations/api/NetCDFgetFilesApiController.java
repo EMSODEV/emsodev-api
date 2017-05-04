@@ -174,7 +174,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		int volte=0;
 		Variable v=null;
 		int[] shape= null;
-		ArrayChar.D2 ac2=null;
+		ArrayChar.D1 ac2=null;
 		ArrayDouble.D2 A = null;
 		Index ima = null;
 		ArrayDouble.D1 datas = null;
@@ -598,6 +598,13 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Modifica 
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
+			//Scrivo valori su varibile di prova
+			v = writer.findVariable("svar");
+			shape = v.getShape();
+			ac2=new ArrayChar.D1(shape[0]);
+			ac2.setString(arrayDps[0]);
+			writer.write(v, ac2);
+						
 			//Scrivo i valori di TIME
 			v = writer.findVariable("TIME");
 			shape = v.getShape();
