@@ -598,8 +598,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
 			//Scrivo i valori di TIME
-			
-			
+			v = writer.findVariable("TIME");
+			shape = v.getShape();
+			datas = new ArrayDouble.D1(shape[0]);
+			ima=datas.getIndex();
+			datas.setDouble(ima.set(0), 800.00);
+			datas.setDouble(ima.set(1), 900.00);
+		  	writer.write(v, datas);
+			//for(int i=0; i<)
 			
 			//Scrivo i valori della DEPTH
 			v = writer.findVariable("DEPTH");	
