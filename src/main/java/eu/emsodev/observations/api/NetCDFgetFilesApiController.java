@@ -387,24 +387,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    } 
 		}
 		occurance=jobjectDpsCleaned.length();
-		//Modifica
-		if(volte==0){
-		arrayDps= jobjectDpsCleaned.split(",");
-		v = writer.findVariable("TIME");
-		//shape = v.getShape();
-		// ac2= new ArrayChar.D1(shape[0]);
-		// ac2.setString("pollo");
-		 try {
-			writer.write(v, ac2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidRangeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		} 
-		///Fine modifica
+		
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
@@ -478,6 +461,28 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		   // LONGITUDE.addAttribute(new Attribute("Processing_level", Processing_level_4)); 
 		   // LONGITUDE.addAttribute(new Attribute("uncertainty", uncertainty_4)); 
 		   // LONGITUDE.addAttribute(new Attribute("comment", comment_4));
+	    
+	  //Modifica
+	  		
+	  		arrayDps= jobjectDpsCleaned.split(",");
+	  		v = writer.findVariable("TIME");
+	  		shape = v.getShape();
+	  		ac2= new ArrayChar.D1(shape[0]);
+	  		ac2.setString(arrayDps[0]);
+	  		 try {
+	  			writer.write(v, ac2);
+	  		} catch (IOException e) {
+	  			// TODO Auto-generated catch block
+	  			e.printStackTrace();
+	  		} catch (InvalidRangeException e) {
+	  			// TODO Auto-generated catch block
+	  			e.printStackTrace();
+	  		}
+	  		 
+	  		///Fine modifica
+	    
+	       
+	    
 	    volte=1;
 		}
 		
