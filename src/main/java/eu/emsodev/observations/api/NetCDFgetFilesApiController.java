@@ -174,10 +174,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		int volte=0;
 		Variable v=null;
 		int[] shape= null;
-		ArrayChar ac2=null;
-		ArrayDouble A = null;
+		ArrayChar.D2 ac2=null;
+		ArrayDouble.D2 A = null;
 		Index ima = null;
-		
+		//ArrayDouble.D1 datas = null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -400,7 +400,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.CHAR, "TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.FLOAT, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -600,6 +600,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	v = writer.findVariable("TIME");
 		  		
 		  	shape = v.getShape();
+		  	//prendo i valori del tempo
+		  	//String[] appoggio=arrayDps[0].split(":");
+		  	//converto la stringa in float
+		  	//Float.parseFloat(appoggio[0]);
 		  		
 		  	ac2= new ArrayChar.D2(shape[0], shape[1]);
 		  	ima = ac2.getIndex();
