@@ -178,6 +178,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayDouble.D2 A = null;
 		Index ima = null;
 		ArrayDouble.D1 datas = null;
+		String[] f=null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -602,8 +603,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			shape = v.getShape();
 			datas = new ArrayDouble.D1(shape[0]);
 			ima=datas.getIndex();
-			datas.setDouble(ima.set(0), Double.parseDouble("850.00"));
-			datas.setDouble(ima.set(1), 900.00);
+			for(int i=0; i<shape[0]; i++){
+			f=arrayDps[i].split(":");
+			datas.setDouble(ima.set(i), Double.parseDouble(f[0]));
+			}
+			//datas.setDouble(ima.set(1), 900.00);
 		  	writer.write(v, datas);
 						
 			//Scrivo i valori della DEPTH
@@ -614,7 +618,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    //Uncomment this for NETCDF file 
 		  	//datas.setDouble(ima.set(0), depth);
 		  	//Comment the following line for NETCDF file
-		  	datas.setDouble(ima.set(0), (double)shape[0]);
+		  	datas.setDouble(ima.set(0), 2000.00);
 		  	writer.write(v, datas);
 			//Scrivo i valori della Latitudine
 			v = writer.findVariable("LATITUDE");	
