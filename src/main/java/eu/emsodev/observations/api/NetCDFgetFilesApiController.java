@@ -604,8 +604,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			datas = new ArrayDouble.D1(shape[0]);
 			ima=datas.getIndex();
 			//for(int i=0; i<shape[0]; i++){
-			f=arrayDps[0].split(":");
-			datas.setDouble(ima.set(0), Double.parseDouble(f[0]));
+			//f=arrayDps[0].split(":");
+			datas.setDouble(ima.set(0), Double.parseDouble("300.00"));
 			//}
 			//datas.setDouble(ima.set(1), 900.00);
 		  	writer.write(v, datas);
