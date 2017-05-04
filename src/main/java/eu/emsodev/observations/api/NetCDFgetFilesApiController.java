@@ -400,7 +400,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.CHAR, "TIME TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.CHAR, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -413,7 +413,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	   // TIME.addAttribute(new Attribute("uncertainty", uncertainty_1)); 
 	   // TIME.addAttribute(new Attribute("comment", comment_1));
 	    //DEPTH
-	    DEPTH=writer.addVariable(null, "DEPTH", DataType.FLOAT, "DEPTH");
+	    DEPTH=writer.addVariable(null, "DEPTH", DataType.FLOAT, "DEPTH DEPTH");
 	    DEPTH.addAttribute(new Attribute("standard_name", "depth")); 
 	    DEPTH.addAttribute(new Attribute("units", "meters"));
 	    DEPTH.addAttribute(new Attribute("positive", "down")); 
