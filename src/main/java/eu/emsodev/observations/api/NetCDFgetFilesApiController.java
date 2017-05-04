@@ -603,8 +603,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			shape = v.getShape();
 			ac2=new ArrayChar.D1(shape[0]);
 			for(int i=0; i<shape[0]; i++){
-			f=arrayDps[i].split(":");
-			ac2.setString(f[0]);
+			//f=arrayDps[i].split(":");
+			ac2.setString("pippo");
 			}
 			writer.write(v, ac2);
 						
