@@ -472,6 +472,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	  		
 	  		ac2= new ArrayChar.D1(shape[0]);
 	  		ac2.setString(arrayDps[0]);
+	  		ac2.setString(arrayDps[1]);
 	  		/*
 	  		 try {
 	  			writer.write(v, ac2);
