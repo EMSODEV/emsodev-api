@@ -600,9 +600,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	shape = v.getShape();
 		  		
 		  	ac2= new ArrayChar.D1(shape[0]);
-		  	ac2.setString(arrayDps[0]);
-		  	writer.write(v, ac2);
-		  	ac2.setString(arrayDps[1]);
+		  	ac2.setString(0,arrayDps[0]);
+		  	//writer.write(v, ac2);
+		  	ac2.setString(1 ,arrayDps[1]);
 		  	writer.write(v, ac2);
 			
 		} catch (IOException e1) {
