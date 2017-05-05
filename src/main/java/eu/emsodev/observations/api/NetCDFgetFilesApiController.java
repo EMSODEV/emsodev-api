@@ -181,6 +181,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String[] f=null;
 		int occ_max=0;
 		Dimension POLLY;
+		String tempo=null;
+		int indice=0;
+		Variable NEW_TIME=null;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -466,19 +469,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
 		*/
-		//conto le occorrenze e controllo se occorrenze sono le stesse di quelle massime
-		occurance=0;
-		for(String rep:jobjectDpsCleaned.split(",")){
-			occurance++;
-		}
 		
-		if(occurance != occ_max){
-		//significa che dovrò dichiarare una dimensione tempo_X da cui dipende la variabile che è diversa da dimensione di tempo generale
-		
-		//occ_max=occurance;
-		//occurance=jobjectDpsCleaned.length();
- 
-		}
 		//Fine modifica 5/5/2017
 		
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
@@ -560,8 +551,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 	    volte=1;
 		}
-		//writer.addDimension(null, "svar_len", 80);
-		//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
+		//conto le occorrenze e controllo se le occorrenze sono le stesse di quelle massime
+				occurance=0;
+				for(String rep:jobjectDpsCleaned.split(",")){
+					occurance++;
+				}
+				
+				if(occurance != occ_max){
+				//significa che devo fare un file NETCDF diverso (Riscrivere il file)
+				}
+		
 		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
