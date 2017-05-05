@@ -384,6 +384,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		//Vedo la lunghezza della stringa dei valori
+		/*
 		occurance=0;
 		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
 		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
@@ -393,6 +394,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
+		*/
 		//Modifica 5/5/2017
 		occurance=0;
 		for(String rep:jobjectDpsCleaned.split(",")){
@@ -404,7 +406,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
-		T=writer.addDimension(null, "TIME", occurance/2); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+		T=writer.addDimension(null, "TIME", occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
