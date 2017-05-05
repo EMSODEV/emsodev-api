@@ -391,7 +391,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    } 
 		}
 		
-		occurance=occurance+1;
+		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
 		//Modifica 5/5/2017
 		occurance=0;
