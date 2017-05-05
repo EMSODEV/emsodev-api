@@ -179,6 +179,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Index ima = null;
 		ArrayDouble.D1 datas = null;
 		String[] f=null;
+		int occ_max=0;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -324,6 +325,72 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 //Modifica del 5/5/2017
+		 //Trovo la massima dimensione della variabile TIME
+		 for (String element:Data_2.split(",\\s")){
+			   
+			  
+
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
+				
+				
+		Map<String,String> params = new HashMap<String,String>();
+			params.put("EGIMNode", observatory);
+			params.put("SensorID",instrument);
+				
+				
+				
+		compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
+						+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
+						+ element+"{params}"
+						+"&end="
+						+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
+				//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+				respons = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
+				gson = new Gson();
+				JsonElement jelement = gson.fromJson (respons.toString(), JsonElement.class);
+				JsonArray jsonarray = jelement.getAsJsonArray();
+				//Get the first and last item of the array
+				JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+				//The value of metric attribute
+				JsonObject  jobject = jarrayItem.getAsJsonObject();
+				metricName = jobject.get("metric").getAsString();
+							
+				//Get the an jsonObject with that rapresent the "tags" branche
+				jobject = jobject.getAsJsonObject("tags");
+				//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
+				sensorIdName = jobject.get("SensorID").getAsString();
+				egimNodeName = jobject.get("EGIMNode").getAsString();
+				
+				
+				
+				
+				//Prendo le serie temporali
+				jobjectDps = jarrayItem.getAsJsonObject();
+				jobjectDps = jobjectDps.getAsJsonObject("dps");
+				jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
+				//Vedo la lunghezza della stringa dei valori
+				
+				occurance=0;
+				for(String rep:jobjectDpsCleaned.split(",")){
+					occurance++;
+				}
+				
+				if(occurance>occ_max){
+				
+				occ_max=occurance;
+				//occurance=jobjectDpsCleaned.length();
+		 
+		 }
+		 
+		 
+		 }
+		 
+		 
+		 //Fine Modifica del 5/5/2017
+		 
+		 
+		 
     	
 		 
 		 for (String element:Data_2.split(",\\s")){
@@ -384,7 +451,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		//Vedo la lunghezza della stringa dei valori
-		
+		/*Commento 5/5/2017
 		occurance=0;
 		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
 		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
@@ -394,11 +461,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
+		Fine commento 5/5/2017*/
 		
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
-		T=writer.addDimension(null, "TIME", occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+		T=writer.addDimension(null, "TIME", occ_max); //nome della dimensione e grandezza sono dati da metodi in Acquire 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
@@ -469,22 +537,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		   // LONGITUDE.addAttribute(new Attribute("uncertainty", uncertainty_4)); 
 		   // LONGITUDE.addAttribute(new Attribute("comment", comment_4));
 	    
-	  //Modifica
-	  		
-	  		
-	  		/*
-	  		 try {
-	  			writer.write(v, ac2);
-	  		} catch (IOException e) {
-	  			// TODO Auto-generated catch block
-	  			e.printStackTrace();
-	  		} catch (InvalidRangeException e) {
-	  			// TODO Auto-generated catch block
-	  			e.printStackTrace();
-	  		}
-	  		 */
-	  		///Fine modifica
-	    
+	  	    
 	       
 	    
 	    volte=1;
