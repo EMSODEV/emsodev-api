@@ -551,15 +551,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 	    volte=1;
 		}
-		//conto le occorrenze e controllo se le occorrenze sono le stesse di quelle massime
-				occurance=0;
-				for(String rep:jobjectDpsCleaned.split(",")){
-					occurance++;
-				}
-				
-				if(occurance != occ_max){
-				//significa che devo fare un file NETCDF diverso (Riscrivere il file)
-				}
 		
 		
 		/*Uncomment this for writing NETCDF compliant file 
