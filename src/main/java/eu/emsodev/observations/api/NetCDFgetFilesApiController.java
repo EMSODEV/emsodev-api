@@ -187,8 +187,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 			//Add dimension
-			writer.addDimension(null, "svar_len", 80);
-			writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
+			//writer.addDimension(null, "svar_len", 80);
+			//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
 			//svar_len = writer.addDimension(null, "svar_len", 80);
 			//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
 			//Add Group Attributes
@@ -545,6 +545,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 	    volte=1;
 		}
+		writer.addDimension(null, "svar_len", 80);
+		writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
 		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
