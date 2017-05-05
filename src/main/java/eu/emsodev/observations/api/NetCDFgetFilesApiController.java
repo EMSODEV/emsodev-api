@@ -619,7 +619,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		 //} 
     	volte=0;
-		
+    	//Scrivo una variabile di prova per il NETCDF
+    	dimss=new ArrayList<Dimension>();
+    	dimss.add(T);
+    	dimss.add(D);
+    	dimss.add(LA);
+    	dimss.add(LO);
+    	ts = writer.addVariable(null, metricName, DataType.DOUBLE, dimss);
+    	ts.addAttribute(new Attribute("standard_name", "testing"));
+		//Fine variabile di prova
+    	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
     	writer.addGroupAttribute(null, new Attribute("platform_code", "EMSODEV"));
     	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory"+observatory+"related to this instrument"+instrument));
@@ -682,19 +691,18 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			hal++;
 			}
 			writer.write(v, datas);
-			/*
-			//Scrivo i valori di TIME
-			v = writer.findVariable("TIME");
+			//Scrittura valori su variabile di prova
+			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datas = new ArrayDouble.D1(shape[0]);
 			ima=datas.getIndex();
-			for(int i=0; i<shape[0]; i++){
-			//f=arrayDps[i].split(":");
-			datas.setDouble(ima.set(i), Double.parseDouble("300.00"));
+			int hals=0;
+			for(String rep:jobjectDpsCleaned.split(",")){
+				f=rep.split(":");
+			datas.setDouble(ima.set(hals), Double.parseDouble(f[0]));
+			hals++;
 			}
-			//datas.setDouble(ima.set(1), 900.00);
-		  	writer.write(v, datas);
-		  	*/
+			writer.write(v, datas);
 						
 			//Scrivo i valori della DEPTH
 			v = writer.findVariable("DEPTH");	
