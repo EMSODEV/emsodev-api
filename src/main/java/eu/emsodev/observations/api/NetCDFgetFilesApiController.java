@@ -404,7 +404,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
-			T=writer.addDimension(null, "TIME", 1324);
+			T=writer.addDimension(null, "TIME", 1500);
 		//T=writer.addDimension(null, "TIME", (int)occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
