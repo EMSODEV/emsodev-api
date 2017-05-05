@@ -736,15 +736,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datas = new ArrayDouble.D1(shape[0]);
-			ima=datas.getIndex();
+			//ima=datas.getIndex();
 			int hals=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-			datas.setDouble(ima.set(hals), Double.parseDouble(f[0]));
+			datas.setDouble(hals, Double.parseDouble("3000.00"));
 			hals++;
 			}
-			writer.write(v, shape, datas);
-			//writer.write(v, datas);
+			//writer.write(v, shape, datas);
+			writer.write(v, datas);
 		  	
 			
 		} catch (IOException e1) {
