@@ -455,6 +455,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		//Vedo la lunghezza della stringa dei valori
 		/*Commento 5/5/2017
+		  
 		occurance=0;
 		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
 		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
@@ -464,7 +465,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
-		Fine commento 5/5/2017*/
+		*/
+		//conto le occorrenze e controllo se occorrenze sono le stesse di quelle massime
+		occurance=0;
+		for(String rep:jobjectDpsCleaned.split(",")){
+			occurance++;
+		}
+		
+		if(occurance != occ_max){
+		//significa che dovrò dichiarare una dimensione tempo_X da cui dipende la variabile che è diversa da dimensione di tempo generale
+		
+		//occ_max=occurance;
+		//occurance=jobjectDpsCleaned.length();
+ 
+		}
+		//Fine modifica 5/5/2017
 		
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
