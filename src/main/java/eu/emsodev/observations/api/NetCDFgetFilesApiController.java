@@ -99,7 +99,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
 
 			,
-			@ApiParam(value = "EGIM instrument name.", required = true) @PathVariable("parameter") String parameter
+			@ApiParam(value = "EGIM instrument parameter. It is required because NETCDF file allows one TIME dimension, that could be different for each instrument's parameter ", required = true) @PathVariable("parameter") String parameter
 			
 			,
 			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
@@ -336,6 +336,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		 //Modifica del 5/5/2017
 		 //Trovo la massima dimensione della variabile TIME
+		 /*
 		 for (String element:Data_2.split(",\\s")){
 			   
 			  
@@ -394,7 +395,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 
 		 
 		 }
-		 
+		 */
 		 
 		 //Fine Modifica del 5/5/2017
 		 
@@ -402,7 +403,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		 
     	
 		 
-		 for (String element:Data_2.split(",\\s")){
+		// for (String element:Data_2.split(",\\s")){
 	   
 		  
 
@@ -417,7 +418,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		 compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
 				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-				+ element+"{params}"
+				+ parameter+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
@@ -614,7 +615,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			}
 		fine*/
 		
-		 } 
+		 //} 
     	volte=0;
 		
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
