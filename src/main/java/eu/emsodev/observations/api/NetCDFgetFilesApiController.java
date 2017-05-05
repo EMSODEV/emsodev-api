@@ -733,7 +733,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//double a=1.111111111;
 		  	//datas.set(a);
 		  //Scrittura valori su variabile di prova
-			v = writer.findVariable("sea_water_temperature");
+			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datas = new ArrayDouble.D1(shape[0]);
 			ima=datas.getIndex();
