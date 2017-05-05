@@ -398,7 +398,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		for(String rep:jobjectDpsCleaned.split(",")){
 			occurance++;
 		}
-		occurance=occurance+1;
+		occurance=occurance*2;
 		
 		//Fine Modifica 5/5/2017
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
