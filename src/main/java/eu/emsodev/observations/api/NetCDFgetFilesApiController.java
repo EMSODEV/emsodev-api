@@ -384,7 +384,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
 		//Vedo la lunghezza della stringa dei valori
-		/*
+		
 		occurance=0;
 		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
 		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
@@ -394,15 +394,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		occurance=occurance+2;
 		occurance=jobjectDpsCleaned.length();
-		*/
-		//Modifica 5/5/2017
-		occurance=0;
-		for(String rep:jobjectDpsCleaned.split(",")){
-			occurance++;
-		}
-		occurance=occurance*2;
 		
-		//Fine Modifica 5/5/2017
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
