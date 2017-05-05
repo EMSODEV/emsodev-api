@@ -765,8 +765,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 	v = writer.findVariable(metricName);
 							shape = v.getShape();
 						 	dataD1=new ArrayDouble.D1(shape[0]);
+						 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
 						 	for (int lon = 0; lon < shape[0]; lon++) {
-		              		dataD1.set(lon, Double.parseDouble("3000.00"));
+		              		dataD1.set(lon, Double.parseDouble(f[1]));
+		            		}
 		            		}
 		            		int[] origin = new int[1];
 		            		writer.write(v, origin, dataD1);
@@ -775,14 +778,17 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 	v = writer.findVariable(metricName);
 							shape = v.getShape();
 						 	dataD2=new ArrayDouble.D2(shape[0], shape[1]);
+						 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
 						 	for (int lat = 0; lat < shape[0]; lat++)
 		            		for (int lon = 0; lon < shape[1]; lon++) {
-		              		dataD2.set(lat, lon, Double.parseDouble("3000.00"));
+		              		dataD2.set(lat, lon, Double.parseDouble(f[1]));
+		              		}
+		              		}
 		              		int[] origin = new int[2];
 		              		writer.write(v, origin, dataD2);
-		            		}
-						 	}	
-									//continuare con tutti i casi e dichiarare le varie tipologie di array (char, float double int e array di dimensione 1, 2, 3 ,4 ecc...)
+		              		break;
+			}						//continuare con tutti i casi e dichiarare le varie tipologie di array (char, float double int e array di dimensione 1, 2, 3 ,4 ecc...)
 			}
 			*/
 		} catch (IOException e1) {
