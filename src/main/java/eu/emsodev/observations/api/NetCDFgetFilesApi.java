@@ -63,7 +63,7 @@ public interface NetCDFgetFilesApi {
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
 
 			,
-			@ApiParam(value = "EGIM instrument parameter. It is required because NETCDF file allows one TIME dimension, that could be different for each instrument's parameter", required = true) @PathVariable("parameter") String parameter
+			@ApiParam(value = "EGIM parameter name.", required = true) @RequestParam("parameter") String parameter
 			
 			,
 			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
