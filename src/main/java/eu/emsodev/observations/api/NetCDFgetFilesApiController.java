@@ -754,6 +754,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		              datass.set(record, lvl, lat, lon, Double.parseDouble("3000.00"));
 		            }
 		      }
+			int[] origin = new int[4];
+			writer.write(v, origin, datass);
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
