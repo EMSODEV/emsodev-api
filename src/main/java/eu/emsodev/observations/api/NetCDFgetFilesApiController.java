@@ -186,6 +186,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String tempo=null;
 		int indice=0;
 		Variable NEW_TIME=null;
+		int dipendenze=0;
 		ArrayDouble.D4 datass = null;
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -562,32 +563,36 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
 		 	dimss=new ArrayList<Dimension>();
-		 	if(jobject.get("T").getAsString() == 1){
+		 	if(jobject.get("T").getAsString() == "1"){
 	    		dimss.add(T);
+	    		dipendenze++; 
 				}
-			if(jobject.get("D").getAsString() == 1){
+			if(jobject.get("D").getAsString() == "1"){
 		    	dimss.add(D);
+		    	dipendenze++;
 				}
-			if(jobject.get("LA").getAsString() == 1){
+			if(jobject.get("LA").getAsString() == "1"){
 		    	dimss.add(LA);
+		    	dipendenze++;
 				}
-			if(jobject.get("LO").getAsString() == 1){
+			if(jobject.get("LO").getAsString() == "1"){
 		    	dimss.add(LO);
-				}
+		    	dipendenze++;
+				}	
 			// Bisogna definire il tipo di dato	
-			if (jobject.get("d").getAsString()== 1){
+			if (jobject.get("d").getAsString()== "1"){
 				 app=DataType.DOUBLE;
 				}
-			if (jobject.get("b").getAsString()== 1){
+			if (jobject.get("b").getAsString()== "1"){
 				 app=DataType.BYTE;
 				}
-			if (jobject.get("c").getAsString()== 1){
+			if (jobject.get("c").getAsString()== "1"){
 				 app=DataType.CHAR;
 				}
-			if (jobject.get("f").getAsString()== 1){
+			if (jobject.get("f").getAsString()== "1"){
 				 app=DataType.FLOAT;
 				}
-			if (jobject.get("i").getAsString()== 1){
+			if (jobject.get("i").getAsString()== "1"){
 				 app=DataType.INT;
 				}
 			//Scrittura variabile data
@@ -736,27 +741,50 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
-			//ima=datas.getIndex();
-			/*
-			int hals=0;
+			//Scrivo i dati sull'array quadridimensionale
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-			datas.setDouble(hals, Double.parseDouble("3000.00"));
-			hals++;
-			}
-			//writer.write(v, shape, datas);
-			writer.write(v, datas);
-		  	*/
 			for (int record = 0; record < shape[0]; record++) {
 		        for (int lvl = 0; lvl < shape[1]; lvl++)
 		          for (int lat = 0; lat < shape[2]; lat++)
 		            for (int lon = 0; lon < shape[3]; lon++) {
-		              datass.set(record, lvl, lat, lon, Double.parseDouble("3000.00"));
+		              datass.set(record, lvl, lat, lon, Double.parseDouble(f[0]));
 		            }
 		      }
+			}
 			int[] origin = new int[4];
 			writer.write(v, origin, datass);
-			
+			//Fine scrittura variabile di prova
+			/*Uncomment this for NETCDF File
+			//la varibile dipendenze mi dice che dimensioni ha la variabile. Il tipo di dato me lo dà la variabile app
+			 * 
+			switch(app){
+				case Datatype.Double: 
+						switch(dipendenze){
+						 	case 1: 
+						 	v = writer.findVariable(metricName);
+							shape = v.getShape();
+						 	dataD1=new ArrayDouble.D1(shape[0]);
+						 	for (int lon = 0; lon < shape[0]; lon++) {
+		              		dataD1.set(lon, Double.parseDouble("3000.00"));
+		            		}
+		            		int[] origin = new int[1];
+		            		writer.write(v, origin, dataD1);
+						 	break;
+						 	case 2: 
+						 	v = writer.findVariable(metricName);
+							shape = v.getShape();
+						 	dataD2=new ArrayDouble.D2(shape[0], shape[1]);
+						 	for (int lat = 0; lat < shape[0]; lat++)
+		            		for (int lon = 0; lon < shape[1]; lon++) {
+		              		dataD2.set(lat, lon, Double.parseDouble("3000.00"));
+		              		int[] origin = new int[2];
+		              		writer.write(v, origin, dataD2);
+		            		}
+						 	}	
+									//continuare con tutti i casi e dichiarare le varie tipologie di array (char, float double int e array di dimensione 1, 2, 3 ,4 ecc...)
+			}
+			*/
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
