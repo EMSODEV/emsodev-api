@@ -544,8 +544,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    volte=1;
 		}
 		
-		POLLY=writer.addDimension(null, "POLLY", 10);
-		writer.addVariable(null, "GINO", DataType.DOUBLE, "POLLY");
 		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
