@@ -391,9 +391,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    } 
 		}
 		
-		occurance++;
-		//occurance=jobjectDpsCleaned.length();
+		occurance=occurance+1;
+		occurance=jobjectDpsCleaned.length();
+		//Modifica 5/5/2017
+		occurance=0;
+		for(String rep:jobjectDpsCleaned.split(",")){
+			occurance++;
+		}
+		occurance=occurance+100;
 		
+		//Fine Modifica 5/5/2017
 		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
 		if(volte==0){
 		//Scrivo le dimensioni standard for Oceansites
