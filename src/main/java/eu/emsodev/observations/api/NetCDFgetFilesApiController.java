@@ -180,6 +180,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayDouble.D1 datas = null;
 		String[] f=null;
 		int occ_max=0;
+		Dimension POLLY;
 		
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
@@ -543,8 +544,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    volte=1;
 		}
 		
-		writer.addDimension(null, "POLLY", 10);
-		writer.addVariable(null, "POLLY", DataType.DOUBLE, "POLLY");
+		POLLY=writer.addDimension(null, "POLLY", 10);
+		writer.addVariable(null, "GINO", DataType.DOUBLE, "POLLY");
 		
 		/*Uncomment this for writing NETCDF compliant file 
 		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
