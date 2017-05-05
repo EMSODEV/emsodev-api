@@ -735,7 +735,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  //Scrittura valori su variabile di prova
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
-			datas = new ArrayDouble.D1(shape[0]);
+			datas = new ArrayDouble.D1(shape[1]);
 			ima=datas.getIndex();
 			int hals=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
