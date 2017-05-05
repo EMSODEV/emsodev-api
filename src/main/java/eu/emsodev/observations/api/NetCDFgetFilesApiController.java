@@ -691,19 +691,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			hal++;
 			}
 			writer.write(v, datas);
-			//Scrittura valori su variabile di prova
-			v = writer.findVariable(metricName);
-			shape = v.getShape();
-			datas = new ArrayDouble.D1(shape[0]);
-			ima=datas.getIndex();
-			int hals=0;
-			for(String rep:jobjectDpsCleaned.split(",")){
-				f=rep.split(":");
-			datas.setDouble(ima.set(hals), Double.parseDouble(f[0]));
-			hals++;
-			}
-			writer.write(v, datas);
-						
+									
 			//Scrivo i valori della DEPTH
 			v = writer.findVariable("DEPTH");	
 		  	shape = v.getShape();
@@ -744,7 +732,18 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
 			//double a=1.111111111;
 		  	//datas.set(a);
-		  	
+		  //Scrittura valori su variabile di prova
+			v = writer.findVariable(metricName);
+			shape = v.getShape();
+			datas = new ArrayDouble.D1(shape[0]);
+			ima=datas.getIndex();
+			int hals=0;
+			for(String rep:jobjectDpsCleaned.split(",")){
+				f=rep.split(":");
+			datas.setDouble(ima.set(hals), Double.parseDouble(f[0]));
+			hals++;
+			}
+			writer.write(v, datas);
 		  	
 			
 		} catch (IOException e1) {
