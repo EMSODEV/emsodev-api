@@ -186,7 +186,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		String tempo=null;
 		int indice=0;
 		Variable NEW_TIME=null;
-		
+		ArrayDouble.D4 datass = null;
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
 		try {
@@ -735,8 +735,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  //Scrittura valori su variabile di prova
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
-			datas = new ArrayDouble.D1(shape[0]);
+			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
 			//ima=datas.getIndex();
+			/*
 			int hals=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
@@ -745,7 +746,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			}
 			//writer.write(v, shape, datas);
 			writer.write(v, datas);
-		  	
+		  	*/
+			for (int record = 0; record < shape[0]; record++) {
+		        for (int lvl = 0; lvl < shape[1]; lvl++)
+		          for (int lat = 0; lat < shape[2]; lat++)
+		            for (int lon = 0; lon < shape[3]; lon++) {
+		              datass.set(record, lvl, lat, lon, Double.parseDouble("3000.00"));
+		            }
+		      }
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
