@@ -748,7 +748,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		        for (int lvl = 0; lvl < shape[1]; lvl++)
 		          for (int lat = 0; lat < shape[2]; lat++)
 		            for (int lon = 0; lon < shape[3]; lon++) {
-		              datass.set(record, lvl, lat, lon, Double.parseDouble(f[0]));
+		              datass.set(record, lvl, lat, lon, Double.parseDouble(f[1]));
 		            }
 		      }
 			}
