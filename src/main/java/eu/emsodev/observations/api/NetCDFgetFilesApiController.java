@@ -579,8 +579,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	dimss.add(LA);
     	dimss.add(LO);
     	ts = writer.addVariable(null, metricName, DataType.DOUBLE, dimss);
-    	//ts.addAttribute(new Attribute("standard_name", "testing"));
-    	ts.addAttribute(new Attribute("standard_name", "ALLA"));
+    	ts.addAttribute(new Attribute("standard_name", "testing"));
 		//Stop writing test variable
     	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
@@ -1084,7 +1083,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		        {
 		            response.setContentType("application/x-netcdf");
 		            response.addHeader("Content-Disposition", "attachment; filename="+location);
-		            //response.addHeader("Content-Disposition", "attachment; filename=\"NetcdfFile.nc\"");
 		        }
 			  Files.copy(file, response.getOutputStream());
 			  response.getOutputStream().flush();
