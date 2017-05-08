@@ -188,6 +188,33 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable NEW_TIME=null;
 		int dipendenze=0;
 		ArrayDouble.D4 datass = null;
+		int[] origin=null;
+		//Variabili per tipologia di dato in netcdf
+		//Double
+		ArrayDouble.D1 dataD1=null;
+		ArrayDouble.D2 dataD2=null;
+		ArrayDouble.D3 dataD3=null;
+		ArrayDouble.D4 dataD4=null;
+		//Float
+		ArrayFloat.D1 dataF1=null;
+		ArrayFloat.D2 dataF2=null;
+		ArrayFloat.D3 dataF3=null;
+		ArrayFloat.D4 dataF4=null;
+		//Char 
+		ArrayChar.D1 dataC1=null;
+		ArrayChar.D2 dataC2=null;
+		ArrayChar.D3 dataC3=null;
+		ArrayChar.D4 dataC4=null;
+		//Int 
+		ArrayInt.D1 dataI1=null;
+		ArrayInt.D2 dataI2=null;
+		ArrayInt.D3 dataI3=null;
+		ArrayInt.D4 dataI4=null;
+		//Byte
+		ArrayByte.D1 dataB1=null;
+		ArrayByte.D2 dataB2=null;
+		ArrayByte.D3 dataB3=null;
+		ArrayByte.D4 dataB4=null;
 		//la struttura del programma è questa: 
 		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
 		try {
@@ -752,8 +779,82 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		            }
 		      }
 			}
-			int[] origin = new int[4];
+			origin = new int[4];
 			writer.write(v, origin, datass);
+			//Inizio Modifica 8_5_2017
+			//Datatype Double
+			if(app==DataType.DOUBLE){
+				if(dipendenze == 1){
+					v = writer.findVariable(metricName);
+					shape = v.getShape();
+				 	dataD1=new ArrayDouble.D1(shape[0]);
+				 	for(String rep:jobjectDpsCleaned.split(",")){
+						f=rep.split(":");
+					 	for (int lon = 0; lon < shape[0]; lon++) {
+					 		dataD1.set(lon, Double.parseDouble(f[1]));
+					 		}
+	            		}
+	            		origin = new int[1];
+	            		writer.write(v, origin, dataD1);
+				}
+				if(dipendenze == 2){
+					v = writer.findVariable(metricName);
+					shape = v.getShape();
+				 	dataD2=new ArrayDouble.D2(shape[0], shape[1]);
+				 	for(String rep:jobjectDpsCleaned.split(",")){
+						f=rep.split(":");
+						for (int lat = 0; lat < shape[0]; lat++){
+						for (int lon = 0; lon < shape[1]; lon++) {
+					 		dataD2.set(lat, lon, Double.parseDouble(f[1]));
+					 		}
+				 		}
+	            		}
+	            		origin = new int[2];
+	            		writer.write(v, origin, dataD2);
+				}
+				
+				if(dipendenze == 3){
+					v = writer.findVariable(metricName);
+					shape = v.getShape();
+				 	dataD3=new ArrayDouble.D3(shape[0], shape[1], shape[2]);
+				 	for(String rep:jobjectDpsCleaned.split(",")){
+						f=rep.split(":");
+						for (int lvl = 0; lvl < shape[0]; lvl++){
+						for (int lat = 0; lat < shape[1]; lat++)
+						for (int lon = 0; lon < shape[2]; lon++) {
+					 		dataD3.set(lvl, lat, lon, Double.parseDouble(f[1]));
+					 		}
+							}
+	            		}
+	            		origin = new int[3];
+	            		writer.write(v, origin, dataD3);
+				}
+				if(dipendenze == 4){
+					v = writer.findVariable(metricName);
+					shape = v.getShape();
+				 	dataD4=new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[4]);
+				 	for(String rep:jobjectDpsCleaned.split(",")){
+						f=rep.split(":");
+						
+						for (int record = 0; record < shape[0]; record++) {
+					        for (int lvl = 0; lvl < shape[1]; lvl++)
+					          for (int lat = 0; lat < shape[2]; lat++)
+					            for (int lon = 0; lon < shape[3]; lon++) {
+					            	dataD4.set(record, lvl, lat, lon, Double.parseDouble(f[1]));
+					            }
+					      }			
+						
+				}
+			
+				}
+			
+			//Datatype Float
+				
+			
+			
+			}
+			
+			//Fine Modifica 8_5_2017
 			//Fine scrittura variabile di prova
 			/*Uncomment this for NETCDF File
 			//la varibile dipendenze mi dice che dimensioni ha la variabile. Il tipo di dato me lo dà la variabile app
