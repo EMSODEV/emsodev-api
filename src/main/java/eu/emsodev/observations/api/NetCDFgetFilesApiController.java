@@ -113,7 +113,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			)  {
         // do some magic!
     	//Variables definitions
-    	String location = "Netcdf_File.nc";
+    	String location = "NetcdfFile.nc";
     	NetcdfFileWriter writer = null;
     	NetcdfFileWriter ncfile = null;
     	Dimension lonDim = null;
@@ -217,8 +217,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayByte.D2 dataB2=null;
 		ArrayByte.D3 dataB3=null;
 		ArrayByte.D4 dataB4=null;
-		//la struttura del programma è questa: 
-		//crei il file netcdf; ricevi le info e nei cicli for sulle stringhe del JSON object le scrivi
+		
 		try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 			//Add dimension
@@ -1087,7 +1086,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		////Finding the file for adding the information and passing file and information to the Output Stream
 		  try {
-			  java.nio.file.Path file = Paths.get(".", "Netcdf_File.nc");
+			  java.nio.file.Path file = Paths.get(".", "NetcdfFile.nc");
 			  if (Files.exists(file))
 		        {
 		            response.setContentType("application/x-netcdf");
