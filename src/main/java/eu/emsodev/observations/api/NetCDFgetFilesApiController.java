@@ -40,6 +40,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -612,7 +613,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", geospatial_vertical_min));
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", geospatial_vertical_max));
 		*/
-		writer.addGroupAttribute(null, new Attribute("time_coverage_start", EmsodevUtility.getDateAsStringTimestampFormat(startDate)));
+    	SimpleDateFormat dateformatyyyyMMdd = new SimpleDateFormat("yyyyMMdd");
+    	String Starting_DATE=dateformatyyyyMMdd.format(startDate);
+    	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE));
 		writer.addGroupAttribute(null, new Attribute("time_coverage_end", EmsodevUtility.getDateAsStringTimestampFormat(endDate)));
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
