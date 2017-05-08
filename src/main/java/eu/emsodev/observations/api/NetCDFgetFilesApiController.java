@@ -1090,7 +1090,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			  if (Files.exists(file))
 		        {
 		            response.setContentType("application/x-netcdf");
-		            response.addHeader("Content-Disposition", "attachment; filename=\"Netcdf_File.nc\"");
+		            response.addHeader("Content-Disposition", "attachment; filename=\"NetcdfFile.nc\"");
 		        }
 			  Files.copy(file, response.getOutputStream());
 			  response.getOutputStream().flush();
