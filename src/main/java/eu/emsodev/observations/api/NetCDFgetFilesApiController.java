@@ -616,8 +616,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	SimpleDateFormat dateformatyyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     	String Starting_DATE=dateformatyyyyMMdd.format(startDate);
     	String Ending_DATE=dateformatyyyyMMdd.format(endDate);
-    	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE+"T00:00Z"));
-		writer.addGroupAttribute(null, new Attribute("time_coverage_end", Ending_DATE+"T00:00Z"));
+    	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE+"T00:00:00Z"));
+		writer.addGroupAttribute(null, new Attribute("time_coverage_end", Ending_DATE+"T23:59:59Z"));
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
 		//Uncomment this line for NETCDF file
