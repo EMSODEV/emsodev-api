@@ -431,7 +431,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    //TIME
 	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
-	    TIME.addAttribute(new Attribute("units", "days since 1950-01-01T00:00:00Z")); 
+	    TIME.addAttribute(new Attribute("units", "second since 1970-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
 	    TIME.addAttribute(new Attribute("long_name", "time"));
 	   //Uncomment this for NETCDF file
