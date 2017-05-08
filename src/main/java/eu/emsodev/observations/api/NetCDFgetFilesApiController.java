@@ -1084,7 +1084,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 return new ResponseEntity<String>("error", HttpStatus.OK);	
 			//e.printStackTrace();
 		}
-		////Finding the file for adding the information and passing file and information to the Output Stream
+		////Finding the file for adding the information and passing file and information to Output Stream
 		  try {
 			  java.nio.file.Path file = Paths.get(".", "NetcdfFile.nc");
 			  if (Files.exists(file))
