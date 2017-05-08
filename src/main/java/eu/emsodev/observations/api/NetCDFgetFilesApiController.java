@@ -613,10 +613,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", geospatial_vertical_min));
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", geospatial_vertical_max));
 		*/
-    	SimpleDateFormat dateformatyyyyMMdd = new SimpleDateFormat("yyyyMMdd");
+    	SimpleDateFormat dateformatyyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     	String Starting_DATE=dateformatyyyyMMdd.format(startDate);
-    	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE));
-		writer.addGroupAttribute(null, new Attribute("time_coverage_end", EmsodevUtility.getDateAsStringTimestampFormat(endDate)));
+    	String Ending_DATE=dateformatyyyyMMdd.format(endDate);
+    	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE+"T00:00Z"));
+		writer.addGroupAttribute(null, new Attribute("time_coverage_end", Ending_DATE+"T00:00Z"));
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
 		//Uncomment this line for NETCDF file
