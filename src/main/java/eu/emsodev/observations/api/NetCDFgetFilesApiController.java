@@ -845,16 +845,228 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					      }			
 						
 				}
+				 	origin = new int[4];
+					writer.write(v, origin, dataD4);	
 			
 				}
-			
-			//Datatype Float
-				
-			
-			
 			}
 			
+			//Datatype Float
+				if(app==DataType.FLOAT){
+					if(dipendenze == 1){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataF1=new ArrayFloat.D1(shape[0]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+						 	for (int lon = 0; lon < shape[0]; lon++) {
+						 		dataF1.set(lon, Float.parseFloat(f[1]));
+						 		}
+		            		}
+		            		origin = new int[1];
+		            		writer.write(v, origin, dataF1);
+					}
+					if(dipendenze == 2){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataF2=new ArrayFloat.D2(shape[0], shape[1]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lat = 0; lat < shape[0]; lat++){
+							for (int lon = 0; lon < shape[1]; lon++) {
+						 		dataF2.set(lat, lon, Float.parseFloat(f[1]));
+						 		}
+					 		}
+		            		}
+		            		origin = new int[2];
+		            		writer.write(v, origin, dataF2);
+					}
+					
+					if(dipendenze == 3){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataF3=new ArrayFloat.D3(shape[0], shape[1], shape[2]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lvl = 0; lvl < shape[0]; lvl++){
+							for (int lat = 0; lat < shape[1]; lat++)
+							for (int lon = 0; lon < shape[2]; lon++) {
+						 		dataF3.set(lvl, lat, lon, Float.parseFloat(f[1]));
+						 		}
+								}
+		            		}
+		            		origin = new int[3];
+		            		writer.write(v, origin, dataF3);
+					}
+					if(dipendenze == 4){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							
+							for (int record = 0; record < shape[0]; record++) {
+						        for (int lvl = 0; lvl < shape[1]; lvl++)
+						          for (int lat = 0; lat < shape[2]; lat++)
+						            for (int lon = 0; lon < shape[3]; lon++) {
+						            	dataF4.set(record, lvl, lat, lon, Float.parseFloat(f[1]));
+						            }
+						      }			
+							
+					}
+					 	origin = new int[4];
+						writer.write(v, origin, dataF4);	
+				
+					}	
+			
+				}
+			//Datatype CHAR
+				if(app==DataType.CHAR){
+					if(dipendenze == 1){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataC1=new ArrayChar.D1(shape[0]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+						 	for (int lon = 0; lon < shape[0]; lon++) {
+						 		dataC1.setString(lon, f[1]);
+						 		}
+		            		}
+		            		origin = new int[1];
+		            		writer.write(v, origin, dataC1);
+					}
+					if(dipendenze == 2){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataC2=new ArrayChar.D2(shape[0], shape[1]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lat = 0; lat < shape[0]; lat++){
+							for (int lon = 0; lon < shape[1]; lon++) {
+								for(int i = 0; i < f[1].length(); i++){
+						 		dataC2.set(lat, lon, f[1].charAt(i));
+								}
+						 		}
+					 		}
+		            		}
+		            		origin = new int[2];
+		            		writer.write(v, origin, dataC2);
+					}
+					
+					if(dipendenze == 3){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataC3=new ArrayChar.D3(shape[0], shape[1], shape[2]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lvl = 0; lvl < shape[0]; lvl++){
+							for (int lat = 0; lat < shape[1]; lat++)
+							for (int lon = 0; lon < shape[2]; lon++) {
+								for(int i = 0; i < f[1].length(); i++){
+							 		dataC3.set(lvl,lat, lon, f[1].charAt(i));
+									}
+						 		}
+								}
+		            		}
+		            		origin = new int[3];
+		            		writer.write(v, origin, dataC3);
+					}
+					if(dipendenze == 4){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							
+							for (int record = 0; record < shape[0]; record++) {
+						        for (int lvl = 0; lvl < shape[1]; lvl++)
+						          for (int lat = 0; lat < shape[2]; lat++)
+						            for (int lon = 0; lon < shape[3]; lon++) {
+						            	for(int i = 0; i < f[1].length(); i++){
+									 		dataC4.set(record, lvl,lat, lon, f[1].charAt(i));
+											}
+						            }
+						      }			
+							
+					}
+					 	origin = new int[4];
+						writer.write(v, origin, dataC4);
+					}	
+			
+				}
+				
+				//Datatype Byte
+				
+				if(app==DataType.BYTE){
+					if(dipendenze == 1){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataB1=new ArrayByte.D1(shape[0]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+						 	for (int lon = 0; lon < shape[0]; lon++) {
+						 		dataB1.set(lon, Byte.parseByte(f[1]));
+						 		}
+		            		}
+		            		origin = new int[1];
+		            		writer.write(v, origin, dataB1);
+					}
+					if(dipendenze == 2){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataB2=new ArrayByte.D2(shape[0], shape[1]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lat = 0; lat < shape[0]; lat++){
+							for (int lon = 0; lon < shape[1]; lon++) {
+						 		dataB2.set(lat, lon, Byte.parseByte(f[1]));
+						 		}
+					 		}
+		            		}
+		            		origin = new int[2];
+		            		writer.write(v, origin, dataB2);
+					}
+					
+					if(dipendenze == 3){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataB3=new ArrayByte.D3(shape[0], shape[1], shape[2]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lvl = 0; lvl < shape[0]; lvl++){
+							for (int lat = 0; lat < shape[1]; lat++)
+							for (int lon = 0; lon < shape[2]; lon++) {
+						 		dataB3.set(lvl, lat, lon, Byte.parseByte(f[1]));
+						 		}
+								}
+		            		}
+		            		origin = new int[3];
+		            		writer.write(v, origin, dataB3);
+					}
+					if(dipendenze == 4){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataB4=new ArrayByte.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							
+							for (int record = 0; record < shape[0]; record++) {
+						        for (int lvl = 0; lvl < shape[1]; lvl++)
+						          for (int lat = 0; lat < shape[2]; lat++)
+						            for (int lon = 0; lon < shape[3]; lon++) {
+						            	dataB4.set(record, lvl, lat, lon, Byte.parseByte(f[1]));
+						            }
+						      }			
+							
+					}
+					 	origin = new int[4];
+						writer.write(v, origin, dataB4);	
+				
+					}
+				}
+			
 			//Fine Modifica 8_5_2017
+	
 			//Fine scrittura variabile di prova
 			/*Uncomment this for NETCDF File
 			//la varibile dipendenze mi dice che dimensioni ha la variabile. Il tipo di dato me lo dà la variabile app
