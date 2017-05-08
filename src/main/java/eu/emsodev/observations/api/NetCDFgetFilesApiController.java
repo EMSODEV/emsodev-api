@@ -93,7 +93,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	protected RestTemplate restTemplate;
 				
 	//public void netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
-    public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
+    @SuppressWarnings("null")
+	public ResponseEntity <String> netcdfFilesGet(@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
 
 			,
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
@@ -361,76 +362,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 //Modifica del 5/5/2017
-		 //Trovo la massima dimensione della variabile TIME
-		 /*
-		 for (String element:Data_2.split(",\\s")){
-			   
-			  
-
-		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,username,password,proxyUrl,proxyPort);
-				
-				
-		Map<String,String> params = new HashMap<String,String>();
-			params.put("EGIMNode", observatory);
-			params.put("SensorID",instrument);
-				
-				
-				
-		compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet 
-						+ EmsodevUtility.getDateAsStringTimestampFormat(startDate) +"&m=sum:" 
-						+ element+"{params}"
-						+"&end="
-						+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
-				//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
-				respons = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
-				gson = new Gson();
-				JsonElement jelement = gson.fromJson (respons.toString(), JsonElement.class);
-				JsonArray jsonarray = jelement.getAsJsonArray();
-				//Get the first and last item of the array
-				JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
-				//The value of metric attribute
-				JsonObject  jobject = jarrayItem.getAsJsonObject();
-				metricName = jobject.get("metric").getAsString();
-							
-				//Get the an jsonObject with that rapresent the "tags" branche
-				jobject = jobject.getAsJsonObject("tags");
-				//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
-				sensorIdName = jobject.get("SensorID").getAsString();
-				egimNodeName = jobject.get("EGIMNode").getAsString();
-				
-				
-				
-				
-				//Prendo le serie temporali
-				jobjectDps = jarrayItem.getAsJsonObject();
-				jobjectDps = jobjectDps.getAsJsonObject("dps");
-				jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-				//Vedo la lunghezza della stringa dei valori
-				
-				occurance=0;
-				for(String rep:jobjectDpsCleaned.split(",")){
-					occurance++;
-				}
-				
-				if(occurance>occ_max){
-				
-				occ_max=occurance;
-				//occurance=jobjectDpsCleaned.length();
-		 
-		 }
 		 
 		 
-		 }
-		 */
-		 
-		 //Fine Modifica del 5/5/2017
-		 
-		 
-		 
-    	
-		 
-		// for (String element:Data_2.split(",\\s")){
 	   
 		  
 
@@ -754,17 +687,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    //Comment the following line for NETCDF file
 		  	datas.setDouble(ima.set(0), 15.133875);
 		  	writer.write(v, datas);
-		  	//prendo i valori del tempo
-		  	//String[] appoggio=arrayDps[0].split(":");
-		  	//converto la stringa in float
-		  	//Float.parseFloat(appoggio[0]);
-		  	//Array dei dati 
-		  	//datas=new ArrayFloat.D0();
-		  	//writer.write(v, ac2);
-		  	//ac2.setString(ima.set(1) ,arrayDps[1]);
-			//double a=1.111111111;
-		  	//datas.set(a);
+		  	
 		  //Scrittura valori su variabile di prova
+		  	
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
@@ -832,7 +757,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				if(dipendenze == 4){
 					v = writer.findVariable(metricName);
 					shape = v.getShape();
-				 	dataD4=new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[4]);
+				 	dataD4=new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
 				 	for(String rep:jobjectDpsCleaned.split(",")){
 						f=rep.split(":");
 						
@@ -901,7 +826,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					if(dipendenze == 4){
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
-					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[3]);
 					 	for(String rep:jobjectDpsCleaned.split(",")){
 							f=rep.split(":");
 							
@@ -974,7 +899,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					if(dipendenze == 4){
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
-					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[3]);
 					 	for(String rep:jobjectDpsCleaned.split(",")){
 							f=rep.split(":");
 							
@@ -1046,7 +971,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					if(dipendenze == 4){
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
-					 	dataB4=new ArrayByte.D4(shape[0], shape[1], shape[2], shape[4]);
+					 	dataB4=new ArrayByte.D4(shape[0], shape[1], shape[2], shape[3]);
 					 	for(String rep:jobjectDpsCleaned.split(",")){
 							f=rep.split(":");
 							
@@ -1064,46 +989,78 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				
 					}
 				}
+				//Datatype INT 
+				if(app==DataType.INT){
+					if(dipendenze == 1){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataI1=new ArrayInt.D1(shape[0]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+						 	for (int lon = 0; lon < shape[0]; lon++) {
+						 		dataI1.set(lon, Integer.parseInt(f[1]));
+						 		}
+		            		}
+		            		origin = new int[1];
+		            		writer.write(v, origin, dataI1);
+					}
+					if(dipendenze == 2){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataI2=new ArrayInt.D2(shape[0], shape[1]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lat = 0; lat < shape[0]; lat++){
+							for (int lon = 0; lon < shape[1]; lon++) {
+						 		dataI2.set(lat, lon, Integer.parseInt(f[1]));
+						 		}
+					 		}
+		            		}
+		            		origin = new int[2];
+		            		writer.write(v, origin, dataI2);
+					}
+					
+					if(dipendenze == 3){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataI3=new ArrayInt.D3(shape[0], shape[1], shape[2]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							for (int lvl = 0; lvl < shape[0]; lvl++){
+							for (int lat = 0; lat < shape[1]; lat++)
+							for (int lon = 0; lon < shape[2]; lon++) {
+						 		dataI3.set(lvl, lat, lon, Integer.parseInt(f[1]));
+						 		}
+								}
+		            		}
+		            		origin = new int[3];
+		            		writer.write(v, origin, dataI3);
+					}
+					if(dipendenze == 4){
+						v = writer.findVariable(metricName);
+						shape = v.getShape();
+					 	dataI4=new ArrayInt.D4(shape[0], shape[1], shape[2], shape[3]);
+					 	for(String rep:jobjectDpsCleaned.split(",")){
+							f=rep.split(":");
+							
+							for (int record = 0; record < shape[0]; record++) {
+						        for (int lvl = 0; lvl < shape[1]; lvl++)
+						          for (int lat = 0; lat < shape[2]; lat++)
+						            for (int lon = 0; lon < shape[3]; lon++) {
+						            	dataI4.set(record, lvl, lat, lon, Integer.parseInt(f[1]));
+						            }
+						      }			
+							
+					}
+					 	origin = new int[4];
+						writer.write(v, origin, dataI4);	
+				
+					}
+				}
 			
 			//Fine Modifica 8_5_2017
 	
-			//Fine scrittura variabile di prova
-			/*Uncomment this for NETCDF File
-			//la varibile dipendenze mi dice che dimensioni ha la variabile. Il tipo di dato me lo dà la variabile app
-			 * 
-			switch(app){
-				case Datatype.Double: 
-						switch(dipendenze){
-						 	case 1: 
-						 	v = writer.findVariable(metricName);
-							shape = v.getShape();
-						 	dataD1=new ArrayDouble.D1(shape[0]);
-						 	for(String rep:jobjectDpsCleaned.split(",")){
-							f=rep.split(":");
-						 	for (int lon = 0; lon < shape[0]; lon++) {
-		              		dataD1.set(lon, Double.parseDouble(f[1]));
-		            		}
-		            		}
-		            		int[] origin = new int[1];
-		            		writer.write(v, origin, dataD1);
-						 	break;
-						 	case 2: 
-						 	v = writer.findVariable(metricName);
-							shape = v.getShape();
-						 	dataD2=new ArrayDouble.D2(shape[0], shape[1]);
-						 	for(String rep:jobjectDpsCleaned.split(",")){
-							f=rep.split(":");
-						 	for (int lat = 0; lat < shape[0]; lat++)
-		            		for (int lon = 0; lon < shape[1]; lon++) {
-		              		dataD2.set(lat, lon, Double.parseDouble(f[1]));
-		              		}
-		              		}
-		              		int[] origin = new int[2];
-		              		writer.write(v, origin, dataD2);
-		              		break;
-			}						//continuare con tutti i casi e dichiarare le varie tipologie di array (char, float double int e array di dimensione 1, 2, 3 ,4 ecc...)
-			}
-			*/
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
