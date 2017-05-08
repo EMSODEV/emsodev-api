@@ -612,7 +612,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Uncomment this line for NETCDF file
 		//writer.addGroupAttribute(null, new Attribute("area", (short) 2));
 		writer.addGroupAttribute(null, new Attribute("format_version", (float) 1.3));
-		writer.addGroupAttribute(null, new Attribute("netcdf_version", (float) 3.5));
+		writer.addGroupAttribute(null, new Attribute("netcdf_version", (float) 3));
 		/* Uncomment this for NETCDF Compliant file
 		writer.addGroupAttribute(null, new Attribute("publisher_name", publisher_name));
 		writer.addGroupAttribute(null, new Attribute("publisher_email", publisher_email));
@@ -1079,11 +1079,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		}
 		////Finding the file for adding the information and passing file and information to Output Stream
 		  try {
-			  java.nio.file.Path file = Paths.get(".", "NetcdfFile.nc");
+			  java.nio.file.Path file = Paths.get(".", location );
 			  if (Files.exists(file))
 		        {
 		            response.setContentType("application/x-netcdf");
-		            response.addHeader("Content-Disposition", "attachment; filename=\"NetcdfFile.nc\"");
+		            response.addHeader("Content-Disposition", "attachment; filename="+location);
+		            //response.addHeader("Content-Disposition", "attachment; filename=\"NetcdfFile.nc\"");
 		        }
 			  Files.copy(file, response.getOutputStream());
 			  response.getOutputStream().flush();
