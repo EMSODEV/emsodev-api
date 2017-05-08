@@ -220,20 +220,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
-			//Add dimension
-			//writer.addDimension(null, "svar_len", 80);
-			//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
-			//svar_len = writer.addDimension(null, "svar_len", 80);
-			//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
-			//Add Group Attributes
-			/*
-			writer.addGroupAttribute(null, new Attribute("yo", "face"));
-		    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
-		    writer.addGroupAttribute(null, new Attribute("versionF", (float) 1.2));
-		    writer.addGroupAttribute(null, new Attribute("versionI", 1));
-		    writer.addGroupAttribute(null, new Attribute("versionS", (short) 2));
-		    writer.addGroupAttribute(null, new Attribute("versionB", (byte) 3));
-		    */
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -322,42 +308,45 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			for (int i = 0; i < arr_2.length(); i++) {
 				selection = arr_2.getJSONObject(i).getString("EGIMLocation"); //Select a specific field. For instance EGIMLocation
 			/*Uncomment this for NETCDF File
-			 * valid_min_1=
-			 * valid_max_1=
-			 * QC_indicator_1=
-			 * Processing_level_1
-			 * uncertainty_1=
-			 * comment_1=
-			 * coordinate_reference_frame_1= //for DEPTH
-			 * valid_min_2=
-			 * valid_max_2=
-			 * QC_indicator_2=
-			 * Processing_level_2=
-			 * uncertainty_2=
-			 * comment_2=
-			 * coordinate_reference_frame_2= //for LATITUDE
-			 * valid_min_3=
-			 * valid_max_3=
-			 * QC_indicator_3=
-			 * Processing_level_3=
-			 * uncertainty_3=
-			 * comment_3=
-			 * coordinate_reference_frame_3= //for LONGITUDE
-			 * valid_min_4=
-			 * valid_max_4=
-			 * QC_indicator_4=
-			 * Processing_level_4=
-			 * uncertainty_4=
-			 * comment_4=
-			 * area
-			 * institution=
-			 * geospatial_lat_min=
-			 * geospatial_lat_max=
-			 * geospatial_lon_min=
-			 * geospatial_lon_max=
-			 * geospatial_vertical_min=
-			 * geospatial_vertical_max=
-			 * depth=
+			 * valid_min_1=arr_2.getJSONObject(i).getString("valid_min_1");
+			 * valid_max_1=arr_2.getJSONObject(i).getString("valid_max_1");
+			 * QC_indicator_1=arr_2.getJSONObject(i).getString("QC_indicator_1");
+			 * Processing_level_1=arr_2.getJSONObject(i).getString("Processing_level_1");
+			 * uncertainty_1=arr_2.getJSONObject(i).getString("uncertainty_1");
+			 * comment_1=arr_2.getJSONObject(i).getString("comment_1");
+			 * //for DEPTH
+			 * coordinate_reference_frame_1= arr_2.getJSONObject(i).getString("coordinate_reference_frame_1");
+			 * valid_min_2=arr_2.getJSONObject(i).getString("valid_min_2");
+			 * valid_max_2=arr_2.getJSONObject(i).getString("valid_max_2");
+			 * QC_indicator_2=arr_2.getJSONObject(i).getString("QC_indicator_2");
+			 * Processing_level_2=arr_2.getJSONObject(i).getString("Processing_level_2");
+			 * uncertainty_2=arr_2.getJSONObject(i).getString("uncertainty_2");
+			 * comment_2=arr_2.getJSONObject(i).getString("comment_2");
+			 * //for LATITUDE
+			 * coordinate_reference_frame_2=arr_2.getJSONObject(i).getString("coordinate_reference_frame_2"); 
+			 * valid_min_3=arr_2.getJSONObject(i).getString("valid_min_3");
+			 * valid_max_3=arr_2.getJSONObject(i).getString("valid_max_3");
+			 * QC_indicator_3=arr_2.getJSONObject(i).getString("QC_indicator_3");
+			 * Processing_level_3=arr_2.getJSONObject(i).getString("Processing_level_3");
+			 * uncertainty_3=arr_2.getJSONObject(i).getString("uncertainty_3");
+			 * comment_3=arr_2.getJSONObject(i).getString("comment_3");
+			 * //for LONGITUDE
+			 * coordinate_reference_frame_3= arr_2.getJSONObject(i).getString("coordinate_reference_frame_3");
+			 * valid_min_4=arr_2.getJSONObject(i).getString("valid_min_4");
+			 * valid_max_4=arr_2.getJSONObject(i).getString("valid_max_4");
+			 * QC_indicator_4=arr_2.getJSONObject(i).getString("QC_indicator_4");
+			 * Processing_level_4=arr_2.getJSONObject(i).getString("Processing_level_4");
+			 * uncertainty_4=arr_2.getJSONObject(i).getString("uncertainty_4");
+			 * comment_4=arr_2.getJSONObject(i).getString("comment_4");
+			 * area=arr_2.getJSONObject(i).getString("area");
+			 * institution=arr_2.getJSONObject(i).getString("institution");
+			 * geospatial_lat_min=arr_2.getJSONObject(i).getString("geospatial_lat_min");
+			 * geospatial_lat_max=arr_2.getJSONObject(i).getString("geospatial_lat_max");
+			 * geospatial_lon_min=arr_2.getJSONObject(i).getString("geospatial_lon_min");
+			 * geospatial_lon_max=arr_2.getJSONObject(i).getString("geospatial_lon_max");
+			 * geospatial_vertical_min=arr_2.getJSONObject(i).getString("geospatial_vertical_min");
+			 * geospatial_vertical_max=arr_2.getJSONObject(i).getString("geospatial_vertical_max");
+			 * depth=arr_2.getJSONObject(i).getString("depth");
 			 */
 			}
 		} catch (JSONException e) {
@@ -401,18 +390,18 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		egimNodeName = jobject.get("EGIMNode").getAsString();
 		//Uncomment this for NETCDF file
 		/*
-		principal_investigator=
-		principal_investigator_email
-		publisher_name=
-		publisher_e_mail=
-		publisher_url=
-		date_created=
-		update_interval=
-		license=
-		QC_indicator=
-		contributor_name
-		contributor_role
-		contributor_e_mail
+		principal_investigator=jobject.get("principal_investigator").getAsString();
+		principal_investigator_email=jobject.get("principal_investigator_email").getAsString();
+		publisher_name=jobject.get("publisher_name").getAsString();
+		publisher_e_mail=jobject.get("publisher_e_mail").getAsString();
+		publisher_url=jobject.get("publisher_url").getAsString();
+		date_created=jobject.get("date_created").getAsString();
+		update_interval=jobject.get("update_interval").getAsString();
+		license=jobject.get("license").getAsString();
+		QC_indicator=jobject.get("QC_indicator").getAsString();
+		contributor_name=jobject.get("contributor_name").getAsString();
+		contributor_role=jobject.get("contributor_role").getAsString();
+		contributor_e_mail=jobject.get("contributor_e_mail").getAsString();
 		
 		*/
 		
