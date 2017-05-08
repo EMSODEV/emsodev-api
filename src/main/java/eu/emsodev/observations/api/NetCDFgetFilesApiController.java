@@ -227,12 +227,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//svar_len = writer.addDimension(null, "svar_len", 80);
 			//writer.addVariable(null, "svar", DataType.CHAR, "svar_len");
 			//Add Group Attributes
+			/*
 			writer.addGroupAttribute(null, new Attribute("yo", "face"));
 		    writer.addGroupAttribute(null, new Attribute("versionD", 1.2));
 		    writer.addGroupAttribute(null, new Attribute("versionF", (float) 1.2));
 		    writer.addGroupAttribute(null, new Attribute("versionI", 1));
 		    writer.addGroupAttribute(null, new Attribute("versionS", (short) 2));
 		    writer.addGroupAttribute(null, new Attribute("versionB", (byte) 3));
+		    */
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
