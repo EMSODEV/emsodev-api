@@ -54,7 +54,7 @@ public interface NetCDFgetFilesApi {
     @RequestMapping(value = "/fileasnetcdf",
         produces = { "application/x-netcdf" }, 
         method = RequestMethod.GET)
-	//inizio
+	//Starting 
 	ResponseEntity <String> netcdfFilesGet(
 	//void netcdfFilesGet(
     		@ApiParam(value = "EGIM observatory name.", required = true) @RequestParam("observatory") String observatory
@@ -75,7 +75,7 @@ public interface NetCDFgetFilesApi {
 			HttpServletResponse response
     		);
 	
-	// fine
+	// Ending 
 	
 	
 	

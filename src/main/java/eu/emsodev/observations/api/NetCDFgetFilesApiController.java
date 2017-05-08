@@ -321,7 +321,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			obj_6 = new JSONObject(resp);
 			JSONArray arr_2 = obj_6.getJSONArray("info");
 			for (int i = 0; i < arr_2.length(); i++) {
-				selection = arr_2.getJSONObject(i).getString("EGIMLocation"); //se vuoi selezionare un campo: EgimLocation nel nostro caso
+				selection = arr_2.getJSONObject(i).getString("EGIMLocation"); //Select a specific field. For instance EGIMLocation
 			/*Uncomment this for NETCDF File
 			 * valid_min_1=
 			 * valid_max_1=
@@ -384,7 +384,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				+ parameter+"{params}"
 				+"&end="
 				+EmsodevUtility.getDateAsStringTimestampFormat(endDate);
-		//response_3 = restTemplate.getForObject(compositeUrl, String.class, params.toString().replace(" ", ""));
+		
 		respons = restTemplate.getForObject(compositeUrl, Object.class, params.toString().replace(" ", ""));
 		gson = new Gson();
 		JsonElement jelement = gson.fromJson (respons.toString(), JsonElement.class);
@@ -395,9 +395,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		JsonObject  jobject = jarrayItem.getAsJsonObject();
 		metricName = jobject.get("metric").getAsString();
 					
-		//Get the an jsonObject with that rapresent the "tags" branche
+		//Get the an jsonObject with that represents the "tags" branch
 		jobject = jobject.getAsJsonObject("tags");
-		//Get the value of attribute of SensorID and EGIMNode of the "tags" branche
+		//Get the value of attribute of SensorID and EGIMNode of the "tags" branch
 		sensorIdName = jobject.get("SensorID").getAsString();
 		egimNodeName = jobject.get("EGIMNode").getAsString();
 		//Uncomment this for NETCDF file
@@ -419,38 +419,27 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		
 		
-		//Prendo le serie temporali
+		//The json dps object is taken and adapted to string 
 		jobjectDps = jarrayItem.getAsJsonObject();
 		jobjectDps = jobjectDps.getAsJsonObject("dps");
 		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "").replace("{", "").replace("}", "");
-		//Vedo la lunghezza della stringa dei valori
-		/*Commento 5/5/2017
-		  
-		occurance=0;
-		for( int i=0; i<jobjectDpsCleaned.length(); i++ ) {
-		    if( jobjectDpsCleaned.charAt(i) == ',' ) {
-		    	occurance++;
-		    } 
-		}
 		
-		occurance=occurance+2;
-		occurance=jobjectDpsCleaned.length();
-		*/
+		//I count the samples within the string 
 		occurance=0;
 		for(String rep:jobjectDpsCleaned.split(",")){
 			occurance++;
 		}
-		//Fine modifica 5/5/2017
-		
-		//writer.addGroupAttribute(null, new Attribute("lunghezza",(int)occurance ));
+				
+
 		if(volte==0){
-		//Scrivo le dimensioni standard for Oceansites
-		T=writer.addDimension(null, "TIME", occurance); //nome della dimensione e grandezza sono dati da metodi in Acquire 
+		//Writing standard dimensions for OCENASITE NETCDF flavour
+	
+		T=writer.addDimension(null, "TIME", occurance); 
 	    D=writer.addDimension(null, "DEPTH", 1);
 	    LA=writer.addDimension(null, "LATITUDE", 1);
 	    LO=writer.addDimension(null, "LONGITUDE", 1);
 	    
-		//Scrivo le GLOBAL Variables di Oceansites (these are standard variables). 
+		//Writing GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
 	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
@@ -524,7 +513,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		
 		/*Uncomment this for writing NETCDF compliant file 
-		 Per scrivere la variabile ho bisogno del nome e da cosa dipende (da quali dimensioni dipende). 
+		 //To write the variable I need to receive the information on the name and the variable dimensions. 
+		 
 		 	dimss=new ArrayList<Dimension>();
 		 	if(jobject.get("T").getAsString() == "1"){
 	    		dimss.add(T);
@@ -558,7 +548,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			if (jobject.get("i").getAsString()== "1"){
 				 app=DataType.INT;
 				}
-			//Scrittura variabile data
+				
+			//Writing data variable (NETCDF Oceansites Flavour)
+			 * 
 			ts = writer.addVariable(null, metricName, app, dimss);
 		    ts.addAttribute(new Attribute("standard_name", jobject.get("standard_name").getAsString()));
 		    ts.addAttribute(new Attribute("units", jobject.get("units").getAsString()));
@@ -571,7 +563,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    ts.addAttribute(new Attribute("sensor_name", jobject.get("sensor_name").getAsString()));
 		    if(jobject.get("ancillary_variables_flag").getAsString()== 1){
 		    	ts.addAttribute(new Attribute("ancillary_variables", jobject.get("ancillary_variables").getAsString()));
-		    	//Aggiungo l'eventuale variabile ancillary
+		    	
+		    	//Adding ancillary variable if it exists
+		    	 
 		    	 ta= writer.addVariable(null, "byte "+metricName, app, dimss);
 		    	 ta.addAttribute(new Attribute("long_name", jobject.get("long_name").getAsString()));
 		    	 ta.addAttribute(new Attribute("valid_min", Double.parseDouble(jobject.get("valid_min").getAsString())));
@@ -583,11 +577,11 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    if(jobject.get("comment_flag").getAsString()== 1){
 		    ts.addAttribute(new Attribute("comment", jobject.get("comment").getAsString()));
 			}
-		fine*/
+		*/
 		
 		 //} 
     	volte=0;
-    	//Scrivo una variabile di prova per il NETCDF
+    	//I write a test variable in NETCDF file
     	dimss=new ArrayList<Dimension>();
     	dimss.add(T);
     	dimss.add(D);
@@ -595,12 +589,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	dimss.add(LO);
     	ts = writer.addVariable(null, metricName, DataType.DOUBLE, dimss);
     	ts.addAttribute(new Attribute("standard_name", "testing"));
-		//Fine variabile di prova
+		//Stop writing test variable
     	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
     	writer.addGroupAttribute(null, new Attribute("platform_code", "EMSODEV"));
     	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory"+observatory+"related to this instrument"+instrument));
-    	//messo D perchè i dati non sono in real time. Controllare. Se dovessero esserlo mettere la R al posto di D
+    	//I chose D because there aren't real-time data-sets. Otherwise choose R instead of D (check)
     	writer.addGroupAttribute(null, new Attribute("data_mode", "D"));
     	
 		 /* Uncomment this for NETCDF Compliant file
@@ -615,6 +609,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", geospatial_vertical_min));
 		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", geospatial_vertical_max));
 		*/
+    	//Writing Data in ISO 8601 format
     	SimpleDateFormat dateformatyyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     	String Starting_DATE=dateformatyyyyMMdd.format(startDate);
     	String Ending_DATE=dateformatyyyyMMdd.format(endDate);
@@ -647,10 +642,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		 
-		//Modifica 
+		//Writing numerical values into the variables previously declared
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
-			//Scrivo i valori di TIME 
+			//TIME variable 
 			v = writer.findVariable("TIME");
 			shape = v.getShape();
 			datas = new ArrayDouble.D1(shape[0]);
@@ -663,7 +658,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			}
 			writer.write(v, datas);
 									
-			//Scrivo i valori della DEPTH
+			//Writing values into DEPTH variable 
 			v = writer.findVariable("DEPTH");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
@@ -673,7 +668,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	//Comment the following line for NETCDF file
 		  	datas.setDouble(ima.set(0), 2000.00);
 		  	writer.write(v, datas);
-			//Scrivo i valori della Latitudine
+			//Writing values into LATITUDE variable
 			v = writer.findVariable("LATITUDE");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
@@ -683,7 +678,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	//Comment the following line for NETCDF file
 		  	datas.setDouble(ima.set(0), 36.681690);
 		  	writer.write(v, datas);
-		  	//Scrivo i valori della Longitudine
+		  	//Writing values into LONGITUDE variable
 		  	v = writer.findVariable("LONGITUDE");	
 		  	shape = v.getShape();
 		  	datas = new ArrayDouble.D1(shape[0]);
@@ -694,12 +689,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	datas.setDouble(ima.set(0), 15.133875);
 		  	writer.write(v, datas);
 		  	
-		  //Scrittura valori su variabile di prova
+		  //Writing values into 4D test variable 
 		  	
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
-			//Scrivo i dati sull'array quadridimensionale
+			//Loop for writing values in 4D test variable
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
 			for (int record = 0; record < shape[0]; record++) {
@@ -712,7 +707,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			}
 			origin = new int[4];
 			writer.write(v, origin, datass);
-			//Inizio Modifica 8_5_2017
+			//For each dataset I write the values into variable described by parameters in this API
 			//Datatype Double
 			if(app==DataType.DOUBLE){
 				if(dipendenze == 1){
@@ -1064,7 +1059,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					}
 				}
 			
-			//Fine Modifica 8_5_2017
 	
 			
 		} catch (IOException e1) {
@@ -1074,7 +1068,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//Fine modifica 
+		 
 		 
 		 try {
 			writer.close();
@@ -1083,7 +1077,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			e.printStackTrace();
 		}
 		 
-		//test esistenza file NETCDF
+		//In order to pass as a API parameter the generated Oceansites netcdf file, I need to re-open this.
 		  try {
 			ncfile=NetcdfFileWriter.openExisting(location);
 		} catch (IOException e) {
@@ -1091,7 +1085,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			 return new ResponseEntity<String>("error", HttpStatus.OK);	
 			//e.printStackTrace();
 		}
-		////
+		////Finding the file for adding the information and passing file and information to the Output Stream
 		  try {
 			  java.nio.file.Path file = Paths.get(".", "Netcdf_File.nc");
 			  if (Files.exists(file))
