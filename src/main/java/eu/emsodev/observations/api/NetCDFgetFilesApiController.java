@@ -218,6 +218,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		ArrayByte.D3 dataB3=null;
 		ArrayByte.D4 dataB4=null;
 		
+		
+		
+		
 		try {
 			writer= NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, location, null);
 		} catch (IOException e1) {
@@ -576,7 +579,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	dimss.add(LA);
     	dimss.add(LO);
     	ts = writer.addVariable(null, metricName, DataType.DOUBLE, dimss);
-    	ts.addAttribute(new Attribute("standard_name", "testing"));
+    	//ts.addAttribute(new Attribute("standard_name", "testing"));
+    	ts.addAttribute(new Attribute("standard_name", "ALLA"));
 		//Stop writing test variable
     	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
@@ -1083,6 +1087,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		        }
 			  Files.copy(file, response.getOutputStream());
 			  response.getOutputStream().flush();
+			  //Erasing the generated file
+			  Files.deleteIfExists(file);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				 return new ResponseEntity<String>("error_path", HttpStatus.OK);	
