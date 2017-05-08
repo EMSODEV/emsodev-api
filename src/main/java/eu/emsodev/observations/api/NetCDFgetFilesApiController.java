@@ -101,7 +101,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			@ApiParam(value = "EGIM instrument name.", required = true) @RequestParam("instrument") String instrument
 
 			,
-			@ApiParam(value = "EGIM parameter name. It is required for NETCDF file because one global TIME variable it allows into this file in Oceansites flavour. Indeed each parameter for instruments installed in a seafloor observatory (node) could be sampled at different times", required = true) @RequestParam("parameter") String parameter
+			@ApiParam(value = "EGIM parameter name. It is required for NETCDF file because one global TIME variable is allowed into this file in Oceansites flavour. Indeed each parameter for instruments installed in a seafloor observatory (node) could be sampled at different times", required = true) @RequestParam("parameter") String parameter
 			,
 			@ApiParam(value = "The start time for the query. The formast must be dd/MM/yyyy", required = true) @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern="dd/MM/yyyy") Date startDate
 
