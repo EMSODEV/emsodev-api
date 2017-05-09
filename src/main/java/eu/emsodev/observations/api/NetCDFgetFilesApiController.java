@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -606,6 +607,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	String Ending_DATE=dateformatyyyyMMdd.format(endDate);
     	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE+"T00:00:00Z"));
 		writer.addGroupAttribute(null, new Attribute("time_coverage_end", Ending_DATE+"T23:59:59Z"));
+		String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
+		writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
 		//Uncomment this line for NETCDF file
