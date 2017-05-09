@@ -399,7 +399,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		publisher_name=jobject.get("publisher_name").getAsString();
 		publisher_e_mail=jobject.get("publisher_e_mail").getAsString();
 		publisher_url=jobject.get("publisher_url").getAsString();
-		date_created=jobject.get("date_created").getAsString();
 		update_interval=jobject.get("update_interval").getAsString();
 		license=jobject.get("license").getAsString();
 		QC_indicator=jobject.get("QC_indicator").getAsString();
@@ -607,8 +606,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	String Ending_DATE=dateformatyyyyMMdd.format(endDate);
     	writer.addGroupAttribute(null, new Attribute("time_coverage_start", Starting_DATE+"T00:00:00Z"));
 		writer.addGroupAttribute(null, new Attribute("time_coverage_end", Ending_DATE+"T23:59:59Z"));
-		String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
-		writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
+		
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
 		//Uncomment this line for NETCDF file
@@ -621,8 +619,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		writer.addGroupAttribute(null, new Attribute("publisher_url", publisher_url));
 		writer.addGroupAttribute(null, new Attribute("update_interval", update_interval));
 		writer.addGroupAttribute(null, new Attribute("license", license));
-	    writer.addGroupAttribute(null, new Attribute("date_created", date_created));
-	    
+		*/
+		String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
+		writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
+	    /*
 	    writer.addGroupAttribute(null, new Attribute("QC_indicator", QC_indicator));
         writer.addGroupAttribute(null, new Attribute("contributor_name", contributor_name));
 	    writer.addGroupAttribute(null, new Attribute("contributor_role", contributor_role));
