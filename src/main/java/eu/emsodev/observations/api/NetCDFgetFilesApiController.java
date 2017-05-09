@@ -620,8 +620,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		writer.addGroupAttribute(null, new Attribute("update_interval", update_interval));
 		writer.addGroupAttribute(null, new Attribute("license", license));
 		*/
-		String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
-		writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
+		
+		//String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
+		//writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
 	    /*
 	    writer.addGroupAttribute(null, new Attribute("QC_indicator", QC_indicator));
         writer.addGroupAttribute(null, new Attribute("contributor_name", contributor_name));
