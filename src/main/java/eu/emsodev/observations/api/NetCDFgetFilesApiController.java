@@ -558,15 +558,15 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		    	//Adding ancillary variable if it exists
 		    	 
 		    	 ta= writer.addVariable(null, "byte "+metricName, app, dimss);
-		    	 ta.addAttribute(new Attribute("long_name", jobject.get("long_name").getAsString()));
-		    	 ta.addAttribute(new Attribute("valid_min", Double.parseDouble(jobject.get("valid_min").getAsString())));
-		    	 ta.addAttribute(new Attribute("valid_max", Double.parseDouble(jobject.get("valid_max").getAsString())));
-		    	 ta.addAttribute(new Attribute("flag_values",  jobject.get("flag_values").getAsString()));
-		    	 ta.addAttribute(new Attribute("flag_meanings", jobject.get("flag_meanings").getAsString()));
-		         ta.addAttribute(new Attribute("conventions", jobject.get("conventions").getAsString()));
+		    	 ta.addAttribute(new Attribute("long_name", jobject.get("long_name_A").getAsString()));
+		    	 ta.addAttribute(new Attribute("valid_min", Double.parseDouble(jobject.get("valid_min_A").getAsString())));
+		    	 ta.addAttribute(new Attribute("valid_max", Double.parseDouble(jobject.get("valid_max_A").getAsString())));
+		    	 ta.addAttribute(new Attribute("flag_values",  jobject.get("flag_values_A").getAsString()));
+		    	 ta.addAttribute(new Attribute("flag_meanings", jobject.get("flag_meanings_A").getAsString()));
+		         ta.addAttribute(new Attribute("conventions", jobject.get("conventions_A").getAsString()));
 		    }
 		    if(jobject.get("comment_flag").getAsString()== 1){
-		    ts.addAttribute(new Attribute("comment", jobject.get("comment").getAsString()));
+		    ts.addAttribute(new Attribute("comment", jobject.get("comment_A").getAsString()));
 			}
 		*/
 		
