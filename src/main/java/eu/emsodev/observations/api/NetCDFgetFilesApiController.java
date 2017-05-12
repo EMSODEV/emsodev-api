@@ -112,7 +112,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			HttpServletResponse response
 			
 			)  {
-        // do some magic!
+        //  do some magic!
     	//Variables definitions
     	String location = "NetcdfFile.nc";
     	NetcdfFileWriter writer = null;
