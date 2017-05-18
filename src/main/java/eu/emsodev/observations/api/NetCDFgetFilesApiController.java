@@ -191,6 +191,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable NEW_TIME=null;
 		int dipendenze=0;
 		ArrayDouble.D4 datass = null;
+		ArrayInt.D1 datas_T = null;
 		int[] origin=null;
 		//Variabili per tipologia di dato in netcdf
 		//Double
@@ -432,7 +433,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    
 		//Writing GLOBAL Variables di Oceansites (these are standard variables). 
 	    //TIME
-	    TIME=writer.addVariable(null, "TIME", DataType.DOUBLE, "TIME"); //funziona solo con il FLOAT
+	    TIME=writer.addVariable(null, "TIME", DataType.INT, "TIME"); //funziona solo con il FLOAT
 	    TIME.addAttribute(new Attribute("standard_name", "time")); 
 	    TIME.addAttribute(new Attribute("units", "second since 1970-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
@@ -643,12 +644,12 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//TIME variable 
 			v = writer.findVariable("TIME");
 			shape = v.getShape();
-			datas = new ArrayDouble.D1(shape[0]);
-			ima=datas.getIndex();
+			datas_T = new ArrayInt.D1(shape[0]);
+			ima=datas_T.getIndex();
 			int hal=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-			datas.setDouble(ima.set(hal), Double.parseDouble(f[0]));
+			datas_T.setInt(ima.set(hal), Integer.parseInt(f[0]));
 			hal++;
 			}
 			writer.write(v, datas);
