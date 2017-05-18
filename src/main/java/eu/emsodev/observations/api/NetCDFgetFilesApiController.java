@@ -585,7 +585,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
     	writer.addGroupAttribute(null, new Attribute("platform_code", "EMSODEV"));
-    	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory"+observatory+"related to this instrument"+instrument));
+    	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory "+observatory+" related to this instrument "+instrument));
     	//I chose D because there aren't real-time data-sets. Otherwise choose R instead of D (check)
     	writer.addGroupAttribute(null, new Attribute("data_mode", "D"));
     	
@@ -845,21 +845,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				}
 			//Datatype CHAR. 
 				if(app==DataType.CHAR){ 
-			/*The single string is managed by code, but if you are working on API's data output you'll never use this commented part  		
-					if(dipendenze == 1){ // String 
-						v = writer.findVariable(metricName);
-						shape = v.getShape();
-					 	dataC1=new ArrayChar.D1(shape[0]);
-					 	for(String rep:jobjectDpsCleaned.split(",")){
-							f=rep.split(":");
-						 	for (int lon = 0; lon < shape[0]; lon++) {
-						 		dataC1.setString(lon, f[1]);
-						 		}
-		            		}
-		            		origin = new int[1];
-		            		writer.write(v, origin, dataC1);
-					}
-				*/	
 					if(dipendenze != 5){ //String Array
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
@@ -873,47 +858,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		            		}
 		            		writer.write(v, dataC2);
 					}
-					/* This part could be erased, because in NETCDF you could manage Array of String Array (max dimension = 2) 
-					if(dipendenze == 3){
-						v = writer.findVariable(metricName);
-						shape = v.getShape();
-					 	dataC3=new ArrayChar.D3(shape[0], shape[1], shape[2]);
-					 	for(String rep:jobjectDpsCleaned.split(",")){
-							f=rep.split(":");
-							for (int lvl = 0; lvl < shape[0]; lvl++){
-							for (int lat = 0; lat < shape[1]; lat++)
-								for(int i = 0; i < f[1].length(); i++){
-								for (int lon = 0; lon < shape[2]; lon++) {
-							 		dataC3.set(lvl,lat, lon, f[1].charAt(i));
-									}
-						 		}
-								}
-		            		}
-		            		origin = new int[3];
-		            		writer.write(v, origin, dataC3);
-					}
-					if(dipendenze == 4){
-						v = writer.findVariable(metricName);
-						shape = v.getShape();
-					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[3]);
-					 	for(String rep:jobjectDpsCleaned.split(",")){
-							f=rep.split(":");
-							
-							for (int record = 0; record < shape[0]; record++) {
-						        for (int lvl = 0; lvl < shape[1]; lvl++)
-						          for (int lat = 0; lat < shape[2]; lat++)
-						        	  for(int i = 0; i < f[1].length(); i++){
-						        	  for (int lon = 0; lon < shape[3]; lon++) {
-						            	dataC4.set(record, lvl,lat, lon, f[1].charAt(i));
-											}
-						            }
-						      }			
-							
-					}
-					 	origin = new int[4];
-						writer.write(v, origin, dataC4);
-					}	
-					*/
 				}
 				
 				//Datatype Byte
