@@ -652,7 +652,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				hal++;
 			}
 			datas_T.setString(ima.set(0), "polly");
-			datas_T.setString(ima.set(1), "gino");
     		writer.write(v, datas_T);
 									
 			//Writing values into DEPTH variable 
