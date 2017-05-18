@@ -843,9 +843,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					}	
 			
 				}
-			//Datatype CHAR
-				if(app==DataType.CHAR){
-					if(dipendenze == 1){
+			//Datatype CHAR. 
+				if(app==DataType.CHAR){ 
+			/*The single string is managed by code, but if you are working on API's data output you'll never use this commented part  		
+					if(dipendenze == 1){ // String 
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataC1=new ArrayChar.D1(shape[0]);
@@ -858,24 +859,21 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		            		origin = new int[1];
 		            		writer.write(v, origin, dataC1);
 					}
-					if(dipendenze == 2){
+				*/	
+					if(dipendenze != 5){ //String Array
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataC2=new ArrayChar.D2(shape[0], shape[1]);
+					    ima = dataC2.getIndex();
 					 	for(String rep:jobjectDpsCleaned.split(",")){
 							f=rep.split(":");
 							for (int lat = 0; lat < shape[0]; lat++){
-							for (int lon = 0; lon < shape[1]; lon++) {
-								for(int i = 0; i < f[1].length(); i++){
-						 		dataC2.set(lat, lon, f[1].charAt(i));
-								}
-						 		}
+						 		dataC2.setString(ima.set(lat), f[1]);
 					 		}
 		            		}
-		            		origin = new int[2];
-		            		writer.write(v, origin, dataC2);
+		            		writer.write(v, dataC2);
 					}
-					
+					/* This part could be erased, because in NETCDF you could manage Array of String Array (max dimension = 2) 
 					if(dipendenze == 3){
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
@@ -884,8 +882,8 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 							f=rep.split(":");
 							for (int lvl = 0; lvl < shape[0]; lvl++){
 							for (int lat = 0; lat < shape[1]; lat++)
-							for (int lon = 0; lon < shape[2]; lon++) {
 								for(int i = 0; i < f[1].length(); i++){
+								for (int lon = 0; lon < shape[2]; lon++) {
 							 		dataC3.set(lvl,lat, lon, f[1].charAt(i));
 									}
 						 		}
@@ -904,9 +902,9 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 							for (int record = 0; record < shape[0]; record++) {
 						        for (int lvl = 0; lvl < shape[1]; lvl++)
 						          for (int lat = 0; lat < shape[2]; lat++)
-						            for (int lon = 0; lon < shape[3]; lon++) {
-						            	for(int i = 0; i < f[1].length(); i++){
-									 		dataC4.set(record, lvl,lat, lon, f[1].charAt(i));
+						        	  for(int i = 0; i < f[1].length(); i++){
+						        	  for (int lon = 0; lon < shape[3]; lon++) {
+						            	dataC4.set(record, lvl,lat, lon, f[1].charAt(i));
 											}
 						            }
 						      }			
@@ -915,7 +913,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					 	origin = new int[4];
 						writer.write(v, origin, dataC4);
 					}	
-			
+					*/
 				}
 				
 				//Datatype Byte
