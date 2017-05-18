@@ -652,7 +652,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			datas_T.setInt(ima.set(hal), Integer.parseInt(f[0]));
 			hal++;
 			}
-			writer.write(v, datas);
+			writer.write(v, datas_T);
 									
 			//Writing values into DEPTH variable 
 			v = writer.findVariable("DEPTH");	
