@@ -652,7 +652,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 				datas_T.setString(ima.set(hal), f[0]);
 				hal++;
 				}
-				datas_T.setString(ima.set(hal), "fine");
 				writer.write(v, datas_T);
 			
 									
