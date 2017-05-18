@@ -649,17 +649,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			int hal=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-				for (int lat = 0; lat < shape[0]; lat++){
-					for (int lon = 0; lon < shape[1]; lon++) {
-						for(int i = 0; i < f[0].length(); i++){
-				 		datas_T.set(lat, lon, f[0].charAt(i));
-						}
-				 		}
-			 		}
-				
+				datas_T.setString(ima.set(hal), f[0]);
+				hal++;
 			}
-			origin = new int[2];
-    		writer.write(v, origin, datas_T);
+    		writer.write(v, datas_T);
 									
 			//Writing values into DEPTH variable 
 			v = writer.findVariable("DEPTH");	
