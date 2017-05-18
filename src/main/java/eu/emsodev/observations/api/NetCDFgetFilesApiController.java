@@ -649,9 +649,10 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			int hal=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-				datas_T.setString(ima.set(hal), f[0]);
 				hal++;
 			}
+			datas_T.setString(ima.set(0), "polly");
+			datas_T.setString(ima.set(1), "gino");
     		writer.write(v, datas_T);
 									
 			//Writing values into DEPTH variable 
