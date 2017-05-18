@@ -191,7 +191,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		Variable NEW_TIME=null;
 		int dipendenze=0;
 		ArrayDouble.D4 datass = null;
-		ArrayChar.D1 datas_T = null;
+		ArrayChar.D2 datas_T = null;
 		int[] origin=null;
 		//Variabili per tipologia di dato in netcdf
 		//Double
@@ -644,15 +644,22 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			//TIME variable
 			v = writer.findVariable("TIME");
 			shape = v.getShape();
-			datas_T = new ArrayChar.D1(shape[0]);
+			datas_T = new ArrayChar.D2(shape[0], shape[1]);
 			ima=datas_T.getIndex();
 			int hal=0;
 			for(String rep:jobjectDpsCleaned.split(",")){
 				f=rep.split(":");
-			datas_T.setString(hal, f[0]);
-			hal++;
+				for (int lat = 0; lat < shape[0]; lat++){
+					for (int lon = 0; lon < shape[1]; lon++) {
+						for(int i = 0; i < f[0].length(); i++){
+				 		datas_T.set(lat, lon, f[0].charAt(i));
+						}
+				 		}
+			 		}
+				
 			}
-			writer.write(v, datas_T);
+			origin = new int[2];
+    		writer.write(v, origin, datas_T);
 									
 			//Writing values into DEPTH variable 
 			v = writer.findVariable("DEPTH");	
