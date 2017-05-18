@@ -641,7 +641,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		//Writing numerical values into the variables previously declared
 		 try {
 			arrayDps= jobjectDpsCleaned.split(",");
-			//TIME variable test
+			//TIME variable
 			v = writer.findVariable("TIME");
 			shape = v.getShape();
 			datas_T = new ArrayInt.D1(shape[0]);
