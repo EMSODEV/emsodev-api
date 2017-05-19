@@ -693,8 +693,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 			shape = v.getShape();
 			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
 			//Loop for writing values in 4D test variable
-			//for(String rep:jobjectDpsCleaned.split(",")){
-				//f=rep.split(":");
+			
 			for (int record = 0; record < shape[0]; record++) {
 		        for (int lvl = 0; lvl < shape[1]; lvl++)
 		          for (int lat = 0; lat < shape[2]; lat++)
@@ -705,7 +704,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		              testing++;
 		            }
 		      }
-			//}
+			
 			origin = new int[4];
 			writer.write(v, origin, datass);
 			//For each dataset I write the values into variable described by parameters in this API
@@ -716,15 +715,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					v = writer.findVariable(metricName);
 					shape = v.getShape();
 				 	dataD1=new ArrayDouble.D1(shape[0]);
-				 	//for(String rep:jobjectDpsCleaned.split(",")){
-					//	f=rep.split(":");
+				 	
 					 	for (int lon = 0; lon < shape[0]; lon++) {
 					 		repi=jobjectDpsCleaned.split(",");
 			            	f=repi[testing].split(":");
 					 		dataD1.set(lon, Double.parseDouble(f[1]));
 					 		testing++;
 					 		}
-	            		//}
+	            		
 	            		origin = new int[1];
 	            		writer.write(v, origin, dataD1);
 				}
@@ -733,8 +731,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					v = writer.findVariable(metricName);
 					shape = v.getShape();
 				 	dataD2=new ArrayDouble.D2(shape[0], shape[1]);
-				 	//for(String rep:jobjectDpsCleaned.split(",")){
-					//	f=rep.split(":");
+				 	
 						for (int lat = 0; lat < shape[0]; lat++){
 						for (int lon = 0; lon < shape[1]; lon++) {
 							repi=jobjectDpsCleaned.split(",");
@@ -743,7 +740,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					 		testing++;
 					 		}
 				 		}
-	            		//}
+	            		
 	            		origin = new int[2];
 	            		writer.write(v, origin, dataD2);
 				}
@@ -753,8 +750,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					v = writer.findVariable(metricName);
 					shape = v.getShape();
 				 	dataD3=new ArrayDouble.D3(shape[0], shape[1], shape[2]);
-				 	//for(String rep:jobjectDpsCleaned.split(",")){
-					//	f=rep.split(":");
+				 	
 						for (int lvl = 0; lvl < shape[0]; lvl++){
 						for (int lat = 0; lat < shape[1]; lat++)
 						for (int lon = 0; lon < shape[2]; lon++) {
@@ -764,7 +760,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					 		testing++;
 					 		}
 							}
-	            		//}
+	            		
 	            		origin = new int[3];
 	            		writer.write(v, origin, dataD3);
 				}
@@ -773,8 +769,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					v = writer.findVariable(metricName);
 					shape = v.getShape();
 				 	dataD4=new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
-				 	//for(String rep:jobjectDpsCleaned.split(",")){
-					//	f=rep.split(":");
+				 	
 						
 						for (int record = 0; record < shape[0]; record++) {
 					        for (int lvl = 0; lvl < shape[1]; lvl++)
@@ -787,7 +782,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 					            }
 					      }			
 						
-				//}
+				
 				 	origin = new int[4];
 					writer.write(v, origin, dataD4);	
 			
@@ -801,15 +796,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataF1=new ArrayFloat.D1(shape[0]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 						 	for (int lon = 0; lon < shape[0]; lon++) {
 						 		repi=jobjectDpsCleaned.split(",");
 				            	f=repi[testing].split(":");
 						 		dataF1.set(lon, Float.parseFloat(f[1]));
 						 		testing++;
 						 		}
-		            		//}
+		            		
 		            		origin = new int[1];
 		            		writer.write(v, origin, dataF1);
 					}
@@ -818,8 +812,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataF2=new ArrayFloat.D2(shape[0], shape[1]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lat = 0; lat < shape[0]; lat++){
 							for (int lon = 0; lon < shape[1]; lon++) {
 								repi=jobjectDpsCleaned.split(",");
@@ -828,7 +821,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 					 		}
-		            		//}
+		            		
 		            		origin = new int[2];
 		            		writer.write(v, origin, dataF2);
 					}
@@ -838,8 +831,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataF3=new ArrayFloat.D3(shape[0], shape[1], shape[2]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lvl = 0; lvl < shape[0]; lvl++){
 							for (int lat = 0; lat < shape[1]; lat++)
 							for (int lon = 0; lon < shape[2]; lon++) {
@@ -849,7 +841,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 								}
-		            		//}
+		            		
 		            		origin = new int[3];
 		            		writer.write(v, origin, dataF3);
 					}
@@ -858,9 +850,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataF4=new ArrayFloat.D4(shape[0], shape[1], shape[2], shape[3]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//f=rep.split(":");
-							
+					 								
 							for (int record = 0; record < shape[0]; record++) {
 						        for (int lvl = 0; lvl < shape[1]; lvl++)
 						          for (int lat = 0; lat < shape[2]; lat++)
@@ -872,7 +862,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						            }
 						      }			
 							
-					//}
+					
 					 	origin = new int[4];
 						writer.write(v, origin, dataF4);	
 				
@@ -887,15 +877,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						shape = v.getShape();
 					 	dataC2=new ArrayChar.D2(shape[0], shape[1]);
 					    ima = dataC2.getIndex();
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lat = 0; lat < shape[0]; lat++){
 								repi=jobjectDpsCleaned.split(",");
 				            	f=repi[testing].split(":");
 						 		dataC2.setString(ima.set(lat), f[1]);
 						 		testing++;
 					 		}
-		            		//}
+		            		
 		            		writer.write(v, dataC2);
 					}
 				}
@@ -908,15 +897,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataB1=new ArrayByte.D1(shape[0]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 						 	for (int lon = 0; lon < shape[0]; lon++) {
 						 		repi=jobjectDpsCleaned.split(",");
 				            	f=repi[testing].split(":");
 						 		dataB1.set(lon, Byte.parseByte(f[1]));
 						 		testing++;
 						 		}
-		            		//}
+		            		
 		            		origin = new int[1];
 		            		writer.write(v, origin, dataB1);
 					}
@@ -925,8 +913,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataB2=new ArrayByte.D2(shape[0], shape[1]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lat = 0; lat < shape[0]; lat++){
 							for (int lon = 0; lon < shape[1]; lon++) {
 								repi=jobjectDpsCleaned.split(",");
@@ -935,7 +922,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 					 		}
-		            		//}
+		            		
 		            		origin = new int[2];
 		            		writer.write(v, origin, dataB2);
 					}
@@ -945,8 +932,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataB3=new ArrayByte.D3(shape[0], shape[1], shape[2]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lvl = 0; lvl < shape[0]; lvl++){
 							for (int lat = 0; lat < shape[1]; lat++)
 							for (int lon = 0; lon < shape[2]; lon++) {
@@ -956,7 +942,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 								}
-		            		//}
+		            		
 		            		origin = new int[3];
 		            		writer.write(v, origin, dataB3);
 					}
@@ -965,9 +951,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataB4=new ArrayByte.D4(shape[0], shape[1], shape[2], shape[3]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
-							
+					 	
 							for (int record = 0; record < shape[0]; record++) {
 						        for (int lvl = 0; lvl < shape[1]; lvl++)
 						          for (int lat = 0; lat < shape[2]; lat++)
@@ -979,7 +963,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						            }
 						      }			
 							
-					//}
+					
 					 	origin = new int[4];
 						writer.write(v, origin, dataB4);	
 				
@@ -992,15 +976,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataI1=new ArrayInt.D1(shape[0]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 						 	for (int lon = 0; lon < shape[0]; lon++) {
 						 		repi=jobjectDpsCleaned.split(",");
 				            	f=repi[testing].split(":");
 						 		dataI1.set(lon, Integer.parseInt(f[1]));
 						 		testing++;
 						 		}
-		            		//}
+		            		
 		            		origin = new int[1];
 		            		writer.write(v, origin, dataI1);
 					}
@@ -1009,8 +992,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataI2=new ArrayInt.D2(shape[0], shape[1]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lat = 0; lat < shape[0]; lat++){
 							for (int lon = 0; lon < shape[1]; lon++) {
 								repi=jobjectDpsCleaned.split(",");
@@ -1019,7 +1001,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 					 		}
-		            		//}
+		            		
 		            		origin = new int[2];
 		            		writer.write(v, origin, dataI2);
 					}
@@ -1029,8 +1011,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataI3=new ArrayInt.D3(shape[0], shape[1], shape[2]);
-					 	//for(String rep:jobjectDpsCleaned.split(",")){
-						//	f=rep.split(":");
+					 	
 							for (int lvl = 0; lvl < shape[0]; lvl++){
 							for (int lat = 0; lat < shape[1]; lat++)
 							for (int lon = 0; lon < shape[2]; lon++) {
@@ -1040,7 +1021,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						 		testing++;
 						 		}
 								}
-		            		//}
+		            		
 		            		origin = new int[3];
 		            		writer.write(v, origin, dataI3);
 					}
@@ -1049,8 +1030,6 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						v = writer.findVariable(metricName);
 						shape = v.getShape();
 					 	dataI4=new ArrayInt.D4(shape[0], shape[1], shape[2], shape[3]);
-					 //	for(String rep:jobjectDpsCleaned.split(",")){
-					//		f=rep.split(":");
 							
 							for (int record = 0; record < shape[0]; record++) {
 						        for (int lvl = 0; lvl < shape[1]; lvl++)
@@ -1063,7 +1042,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 						            }
 						      }			
 							
-					//}
+				
 					 	origin = new int[4];
 						writer.write(v, origin, dataI4);	
 				
