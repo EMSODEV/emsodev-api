@@ -687,21 +687,25 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		  	writer.write(v, datas);
 		  	
 		  //Writing values into 4D test variable 
-		  	
+		  	String[] repi;
+		  	int testing=0;
 			v = writer.findVariable(metricName);
 			shape = v.getShape();
 			datass = new ArrayDouble.D4(shape[0], shape[1], shape[2], shape[3]);
 			//Loop for writing values in 4D test variable
-			for(String rep:jobjectDpsCleaned.split(",")){
-				f=rep.split(":");
+			//for(String rep:jobjectDpsCleaned.split(",")){
+				//f=rep.split(":");
 			for (int record = 0; record < shape[0]; record++) {
 		        for (int lvl = 0; lvl < shape[1]; lvl++)
 		          for (int lat = 0; lat < shape[2]; lat++)
 		            for (int lon = 0; lon < shape[3]; lon++) {
+		            	repi=jobjectDpsCleaned.split(",");
+		            	f=repi[testing].split(":");
 		              datass.set(record, lvl, lat, lon, Double.parseDouble(f[1]));
+		              testing++;
 		            }
 		      }
-			}
+			//}
 			origin = new int[4];
 			writer.write(v, origin, datass);
 			//For each dataset I write the values into variable described by parameters in this API
