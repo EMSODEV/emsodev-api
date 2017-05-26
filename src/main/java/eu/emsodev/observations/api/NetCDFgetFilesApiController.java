@@ -438,7 +438,7 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    TIME.addAttribute(new Attribute("units", "second since 1970-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
 	    TIME.addAttribute(new Attribute("long_name", "time"));
-	    // Comment this for NETCDF file-Start from
+	    // Comment this for NETCDF file-Starting from
 	    TIME.addAttribute(new Attribute("valid_min", (double) 0.0)); 
 		TIME.addAttribute(new Attribute("valid_max", (double) 1893456000.0)); 
 		TIME.addAttribute(new Attribute("QC_indicator", "good data")); 
@@ -459,6 +459,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    DEPTH.addAttribute(new Attribute("positive", "down")); 
 	    DEPTH.addAttribute(new Attribute("axis", "Z")); 
 	    DEPTH.addAttribute(new Attribute("reference", "sea_level"));
+	 // Comment this for NETCDF file-Starting from
+	    DEPTH.addAttribute(new Attribute("coordinate_reference_frame", "um:ogc:crs:EPSG::5113"));
+		DEPTH.addAttribute(new Attribute("long_name", "Depth of measurement")); 
+		DEPTH.addAttribute(new Attribute("_FillValue", (float) -99999.0)); 
+		DEPTH.addAttribute(new Attribute("valid_min", (double) 0.0)); 
+		DEPTH.addAttribute(new Attribute("valid_max", (double) 12000.0)); 
+		DEPTH.addAttribute(new Attribute("QC_indicator", "nominal value")); 
+		DEPTH.addAttribute(new Attribute("Processing_level", "Data manually reviewed")); 
+		DEPTH.addAttribute(new Attribute("comment", "This is depth for the instruments"));
+	  //to this-End-Comment this for NETCDF file
 	    
 	   //Uncomment this for NETCDF file
 	    //DEPTH.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_1));
@@ -478,6 +488,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    LATITUDE.addAttribute(new Attribute("axis", "Y")); 
 	    LATITUDE.addAttribute(new Attribute("long_name", "Latitude of measurement"));
 	    LATITUDE.addAttribute(new Attribute("reference", "WGS84"));
+	 // Comment this for NETCDF file-Starting from
+	    LATITUDE.addAttribute(new Attribute("coordinate_reference_frame", "um:ogc:crs:EPSG::4326"));
+	    LATITUDE.addAttribute(new Attribute("valid_min", (double) -90.0)); 
+		LATITUDE.addAttribute(new Attribute("valid_max", (double) 90.0)); 
+		LATITUDE.addAttribute(new Attribute("QC_indicator", "good data")); 
+		LATITUDE.addAttribute(new Attribute("Processing_level", "Data manually reviewed")); 
+		LATITUDE.addAttribute(new Attribute("uncertainty", (double) 0.0019345041778915737)); 
+		LATITUDE.addAttribute(new Attribute("comment", "LATITUDE for seafloor observatory"));
+	     //to this-End-Comment this for NETCDF file 
+		
 	    //Uncomment this for NETCDF File
 	    //LATITUDE.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_2));
 	    //LATITUDE.addAttribute(new Attribute("valid_min", (double) valid_min_3)); 
@@ -494,7 +514,16 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    LONGITUDE.addAttribute(new Attribute("axis", "X")); 
 	    LONGITUDE.addAttribute(new Attribute("reference", "WGS84"));
 	    LONGITUDE.addAttribute(new Attribute("long_name", "Longitude of each location"));
-	    //Uncomment this for NETCDF file
+	 // Comment this for NETCDF file-Starting from
+	    LONGITUDE.addAttribute(new Attribute("coordinate_reference_frame", "um:ogc:crs:EPSG::4326"));
+	    LONGITUDE.addAttribute(new Attribute("valid_min", (double) -180.0)); 
+		LONGITUDE.addAttribute(new Attribute("valid_max", (double) 180.0)); 
+		LONGITUDE.addAttribute(new Attribute("QC_indicator", "good data")); 
+		LONGITUDE.addAttribute(new Attribute("Processing_level", "Data manually reviewed")); 
+		LONGITUDE.addAttribute(new Attribute("uncertainty", (double)0.0020668973790837946)); 
+		LONGITUDE.addAttribute(new Attribute("comment", "LONGITUDE for seafloor observatory"));
+	  //to this-End-Comment this for NETCDF file 
+	    
 	  //Uncomment this for NETCDF File
 	    //LONGITUDE.addAttribute(new Attribute("coordinate_reference_frame", coordinate_reference_frame_3));
 	    //LONGITUDE.addAttribute(new Attribute("valid_min", (double) valid_min_4)); 
@@ -587,7 +616,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	dimss.add(LA);
     	dimss.add(LO);
     	ts = writer.addVariable(null, metricName, DataType.DOUBLE, dimss);
-    	ts.addAttribute(new Attribute("standard_name", "testing"));
+    	ts.addAttribute(new Attribute("standard_name", metricName));
+    	ts.addAttribute(new Attribute("units", "Celsius degree"));
+    	ts.addAttribute(new Attribute("FillValue", (float)-99999.0));
+    	ts.addAttribute(new Attribute("valid_min", (double) -1.0));
+    	ts.addAttribute(new Attribute("valid_max", "testing"));
+    	ts.addAttribute(new Attribute("QC_indicator", "testing"));
+    	ts.addAttribute(new Attribute("long_name", "Variable: "+metricName));
+    	ts.addAttribute(new Attribute("sensor_name", instrument));
 		//Stop writing test variable
     	
     	writer.addGroupAttribute(null, new Attribute("site_code", "EMSODEV"));
@@ -595,8 +631,20 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
     	writer.addGroupAttribute(null, new Attribute("title", "Data_from_seafloor_observatory "+observatory+" related to this instrument "+instrument));
     	//I chose D because there aren't real-time data-sets. Otherwise choose R instead of D (check)
     	writer.addGroupAttribute(null, new Attribute("data_mode", "D"));
+    	//Comment this for NETCDF file Starting from
+    	writer.addGroupAttribute(null, new Attribute("principal_investigator", "Umberto Apponi"));
+		writer.addGroupAttribute(null, new Attribute("principal_investigator_email", "umberto.apponi@spacearth.net"));
+		writer.addGroupAttribute(null, new Attribute("institution", "INGV-SpacEarth"));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_min", (double) 41.1819));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lat_max", (double) 41.1819));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_min", (double) 1.7527));
+		writer.addGroupAttribute(null, new Attribute("geospatial_lon_max", (double) 1.7527));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_min", (double) -2000.0));
+		writer.addGroupAttribute(null, new Attribute("geospatial_vertical_max", (double) 0.0));   	
+    	////to this-End-Comment this for NETCDF file 
+		 
     	
-		 /* Uncomment this for NETCDF Compliant file
+    	/* Uncomment this for NETCDF Compliant file
 		
 		writer.addGroupAttribute(null, new Attribute("principal_investigator", principal_investigator));
 		writer.addGroupAttribute(null, new Attribute("principal_investigator_email", principal_investigator_email));
@@ -617,10 +665,22 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		
 		writer.addGroupAttribute(null, new Attribute("data_type", "OceanSITES time-series data"));
+		//Comment this for NETCDF file Starting from
+		writer.addGroupAttribute(null, new Attribute("area", "Mediterranean Sea"));
+		//to this-End-Comment this for NETCDF file
+		
 		//Uncomment this line for NETCDF file
 		//writer.addGroupAttribute(null, new Attribute("area", (short) 2));
 		writer.addGroupAttribute(null, new Attribute("format_version", (float) 1.3));
 		writer.addGroupAttribute(null, new Attribute("netcdf_version", (float) 3));
+		//Comment this for NETCDF file Starting from
+		writer.addGroupAttribute(null, new Attribute("publisher_name", "Umberto Apponi"));
+		writer.addGroupAttribute(null, new Attribute("publisher_email", "umberto.apponi@spacearth.net"));
+		writer.addGroupAttribute(null, new Attribute("publisher_url", "www.ingv.it"));
+		writer.addGroupAttribute(null, new Attribute("update_interval", "yearly"));
+		writer.addGroupAttribute(null, new Attribute("license", "Unless stated otherwise, a user must acknowledge use of OceanSITES data in all publications and products where such data are used"));
+		//to this-End-Comment this for NETCDF file 
+		
 		/* Uncomment this for NETCDF Compliant file
 		writer.addGroupAttribute(null, new Attribute("publisher_name", publisher_name));
 		writer.addGroupAttribute(null, new Attribute("publisher_email", publisher_email));
@@ -631,7 +691,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 		
 		String Current_DATE=dateformatyyyyMMdd.format(GregorianCalendar.getInstance().getTime());
 		writer.addGroupAttribute(null, new Attribute("date_created", Current_DATE));
-	    /*
+		//Comment this for NETCDF file Starting from
+		writer.addGroupAttribute(null, new Attribute("QC_indicator", "excellent"));
+        writer.addGroupAttribute(null, new Attribute("contributor_name", "Umberto Apponi"));
+	    writer.addGroupAttribute(null, new Attribute("contributor_role", "Researcher"));
+	    writer.addGroupAttribute(null, new Attribute("contributor_email", "umberto.apponi@spacearth.net"));
+	////to this-End-Comment this for NETCDF file 
+		
+		/*
 	    writer.addGroupAttribute(null, new Attribute("QC_indicator", QC_indicator));
         writer.addGroupAttribute(null, new Attribute("contributor_name", contributor_name));
 	    writer.addGroupAttribute(null, new Attribute("contributor_role", contributor_role));
