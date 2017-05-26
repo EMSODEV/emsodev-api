@@ -438,7 +438,14 @@ public class NetCDFgetFilesApiController implements NetCDFgetFilesApi {
 	    TIME.addAttribute(new Attribute("units", "second since 1970-01-01T00:00:00Z")); 
 	    TIME.addAttribute(new Attribute("axis", "T")); 
 	    TIME.addAttribute(new Attribute("long_name", "time"));
-	   //Uncomment this for NETCDF file
+	    // Comment this for NETCDF file-Start from
+	    TIME.addAttribute(new Attribute("valid_min", (double) 0.0)); 
+		TIME.addAttribute(new Attribute("valid_max", (double) 1893456000.0)); 
+		TIME.addAttribute(new Attribute("QC_indicator", "good data")); 
+		TIME.addAttribute(new Attribute("Processing_level", "Data manually reviewed")); 
+	    //to this-End-Comment this for NETCDF file
+	   
+	    //Uncomment this for NETCDF file
 	  //  TIME.addAttribute(new Attribute("valid_min", (double) valid_min_1)); 
 	   // TIME.addAttribute(new Attribute("valid_max", (double) valid_max_1)); 
 	   // TIME.addAttribute(new Attribute("QC_indicator", QC_indicator_1)); 
