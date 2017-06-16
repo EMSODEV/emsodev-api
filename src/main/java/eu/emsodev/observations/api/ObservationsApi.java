@@ -81,8 +81,28 @@ public interface ObservationsApi {
 
 			,
 			@ApiParam(value = "End date for the time series range. The date format is dd/MM/yyyy. If the end time is not supplied, the *current time* will be used.") @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate
-			,
-			@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false, defaultValue = "0") Integer limit
+			//,
+			
+			//@ApiParam(value = "The last x-measurements", required = false) @RequestParam(value = "limit", required = false, defaultValue = "0") Integer limit
 			);
 
+	
+	@ApiOperation(value = "Last X Time-series of a specific EGIM parameter.", notes = "Gets the last X time-series of a specific `EGIM parameter`  for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observations Time-series", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
+	,@ApiResponse(code = 400, message = "Fields are with validation errors")
+	})
+	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/limit/{limit}", produces = { "application/json" }, method = RequestMethod.GET)
+	ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet(
+			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory
+
+			,
+			@ApiParam(value = "EGIM instrument name.", required = true) @PathVariable("instrument") String instrument
+
+			,
+			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter
+
+			,
+			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limit
+			);
+	
 }
