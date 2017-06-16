@@ -490,7 +490,7 @@ public class ObservationsController implements ObservationsApi {
 				observatory, instrument, parameter, startEndDate, startEndDate
 				//,				limit
 				);
-
+        limit = 0;
 		return lastXTimeSerie;
 	}
 
