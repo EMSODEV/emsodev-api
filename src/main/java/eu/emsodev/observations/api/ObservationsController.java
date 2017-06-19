@@ -94,7 +94,7 @@ public class ObservationsController implements ObservationsApi {
 
 	protected RestTemplate restTemplate;
 
-	protected Integer limit;
+	//protected Integer limit;
 	
 	public ObservationsController() {
 	}
@@ -421,11 +421,11 @@ public class ObservationsController implements ObservationsApi {
 			ArrayList<Observation> observationsList = new ArrayList<Observation>();
 
 			int startIndex = 0;
-			if (limit != null && limit > 0) {
-				if (limit < arrayDps.length) {
-					startIndex = arrayDps.length - limit;
-				}
-			}
+//			if (limit != null && limit > 0) {
+//				if (limit < arrayDps.length) {
+//					startIndex = arrayDps.length - limit;
+//				}
+//			}
 
 			// For each array item extract the key and value to set to a new
 			// Observation object in the loop
@@ -450,16 +450,31 @@ public class ObservationsController implements ObservationsApi {
 		return new ResponseEntity<Observations>(observations, HttpStatus.OK);
 	}
 
+	
 	public ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory,
 			@ApiParam(value = "EGIM instrument name.", required = true) @PathVariable("instrument") String instrument,
 			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter,
 			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limitParam) {
 
-		String sensorTemplateId = null;
-		//set the general variable limit to extract only the x measuraments from the api time series call.
-		limit = limitParam;
-		sensorTemplateId = getSensorTemplateID(observatory, instrument);
+ 
+		Date startEndDate = getLastDate(observatory, instrument, parameter);
+		
+		Date startDate = startEndDate;
+		Date endDate = startEndDate;
+		
+		if (endDate != null) {
+			if (startDate.equals(endDate)) {
+				LocalDateTime endDateToIncrement = endDate.toInstant()
+						.atZone(ZoneId.systemDefault()).toLocalDateTime();
+				endDateToIncrement = endDateToIncrement.plusDays(1)
+						.minusMinutes(1);
+				endDate = Date.from(endDateToIncrement.atZone(
+						ZoneId.systemDefault()).toInstant());
+			}
+		}
+		
+		String uom = getUom(observatory, instrument, parameter);
 		// Create the restTemplate object with or without proxy
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
 				username, password, proxyUrl, proxyPort);
@@ -468,47 +483,181 @@ public class ObservationsController implements ObservationsApi {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("EGIMNode", observatory);
 		params.put("SensorID", instrument);
-		params.put("SensorTemplateID", sensorTemplateId);
 
-		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
-				+ parameter + "{params}" + "&back_scan=2400&resolve=true";
-
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet
+				+ EmsodevUtility.getDateAsStringTimestampFormat(startDate)
+				+ "&m=sum:"
+				+ parameter
+				+ "{params}"
+				+ "&end="
+				+ EmsodevUtility.getDateAsStringTimestampFormat(endDate);
 		// The response as string of the urlToCall - This Url do not allows
 		// blanck spaces beetwen the params, for this reason is trimmed
 		Object response = restTemplate.getForObject(compositeUrl, Object.class,
 				params.toString().replace(" ", ""));
+		// Declare the final response object outside the loop
+		Observations observations = new Observations();
 
-		// Gson google object is used insteaf og JSONObject becouse let the
-		// result sorted by timestamp
-		Gson gson = new Gson();
-		// Create a jelement that contains the response
-		JsonElement jelement = gson.fromJson(response.toString(),
-				JsonElement.class);
-		// The response is an array. Create an jsonArray that contain the
-		// response
-		JsonArray jsonarray = jelement.getAsJsonArray();
-		// Get the first and last item of the array
-		JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
-		// The value of metric attribute
-		JsonObject jobject = jarrayItem.getAsJsonObject();
-		String lastTimestamp = jobject.get("timestamp").getAsString();
-		// To get the correct xLastTimeSeries the last date is setted to the
-		// midnight
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(Long.valueOf(lastTimestamp));
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date startEndDate = calendar.getTime();
+		try {
+			// Properties to pass to the outpout object
+			String egimNodeName = "";
+			String sensorIdName = "";
+			String metricName = "";
+			// Property that contain the readed timeseries without brackets and
+			// quotes and that will be used to create an array of timeseries
+			String jobjectDpsCleaned = null;
+			// Gson google object is used insteaf og JSONObject becouse let the
+			// result sorted by timestamp
+			Gson gson = new Gson();
+			// Create a jelement that contains the response
+			JsonElement jelement = gson.fromJson(response.toString(),
+					JsonElement.class);
+			// The response is an array. Create an jsonArray that contain the
+			// response
+			JsonArray jsonarray = jelement.getAsJsonArray();
+			// Get the first and last item of the array
+			JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+			// The value of metric attribute
+			JsonObject jobject = jarrayItem.getAsJsonObject();
+			metricName = jobject.get("metric").getAsString();
+			// Get the an jsonObject with that rapresent the "tags" branche
+			jobject = jobject.getAsJsonObject("tags");
+			// Get the value of attribute of SensorID and EGIMNode of the "tags"
+			// branche
+			sensorIdName = jobject.get("SensorID").getAsString();
+			egimNodeName = jobject.get("EGIMNode").getAsString();
+			// set the instrument name with the previous extract value
+			Instrument inst = new Instrument();
+			HashMap<String, String> sensorDetails = getInstrumentDetails(
+					observatory, instrument);
+			String sensorLongName = sensorDetails.get("sensorLongName");
+			String sensorType = sensorDetails.get("sensorType");
+			String sn = sensorDetails.get("sn");
+			inst.setName(sensorIdName);
+			inst.setSensorLongName(sensorLongName);
+			inst.setSensorType(sensorType);
+			inst.setSn(sn);
+			// set the parameter name with with the previous extract value
+			Parameter par = new Parameter();
+			par.setName(metricName);
+			par.setUom(uom);
+			// set the observatory name with with the previous extract value
+			Observatory observ = new Observatory();
+			observ.setName(egimNodeName);
 
-		ResponseEntity<Observations> lastXTimeSerie = observatoriesObservatoryInstrumentsInstrumentParametersParameterGet(
-				observatory, instrument, parameter, startEndDate, startEndDate
-				//,				limit
-				);
-        limit = 0;
-		return lastXTimeSerie;
+			// Get the an jsonObject with that rapresent the "dps" branche
+			JsonObject jobjectDps = jarrayItem.getAsJsonObject();
+			jobjectDps = jobjectDps.getAsJsonObject("dps");
+			jobjectDpsCleaned = jobjectDps.toString().replace("\"", "")
+					.replace("{", "").replace("}", "");
+			// Array of timeseries key: timestamp, value: value
+			String[] arrayDps = jobjectDpsCleaned.split(",");
+			// Declare a List of Observation
+			ArrayList<Observation> observationsList = new ArrayList<Observation>();
+
+			int startIndex = 0;
+			if (limitParam != null && limitParam > 0) {
+				if (limitParam < arrayDps.length) {
+					startIndex = arrayDps.length - limitParam;
+				}
+			}
+
+			// For each array item extract the key and value to set to a new
+			// Observation object in the loop
+			for (int index = startIndex, n = arrayDps.length; index < n; index++) {
+				String item = arrayDps[index];
+				Observation obs = new Observation();
+				obs.setPhenomenonTime(Long.valueOf(item.substring(0,
+						item.indexOf(":"))));
+				obs.setValue(Double.valueOf(item.substring(
+						(item.indexOf(":") + 1), item.length())));
+				observationsList.add(obs);
+			}
+			// Compose the final bean to return
+			observations.setObservations(observationsList);
+			observations.setParameter(par);
+			observations.setInstrument(inst);
+			observations.setObservatory(observ);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		return new ResponseEntity<Observations>(observations, HttpStatus.OK);		
+		
+		
+		
+		
+		
+//		
+//		ResponseEntity<Observations> lastXTimeSerie = observatoriesObservatoryInstrumentsInstrumentParametersParameterGet(
+//				observatory, instrument, parameter, startEndDate, startEndDate
+//				//,				limit
+//				);
+//        limit = 0;
+//		return lastXTimeSerie;
 	}
+
+	
+	
+//	public ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet(
+//			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory,
+//			@ApiParam(value = "EGIM instrument name.", required = true) @PathVariable("instrument") String instrument,
+//			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter,
+//			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limitParam) {
+//
+//		String sensorTemplateId = null;
+//		//set the general variable limit to extract only the x measuraments from the api time series call.
+//		limit = limitParam;
+//		sensorTemplateId = getSensorTemplateID(observatory, instrument);
+//		// Create the restTemplate object with or without proxy
+//		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+//				username, password, proxyUrl, proxyPort);
+//		// Create a map of params to pass add as placeholder after parameter
+//		// value in the following compositeUrl
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put("EGIMNode", observatory);
+//		params.put("SensorID", instrument);
+//		params.put("SensorTemplateID", sensorTemplateId);
+//
+//		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
+//				+ parameter + "{params}" + "&back_scan=2400&resolve=true";
+//
+//		// The response as string of the urlToCall - This Url do not allows
+//		// blanck spaces beetwen the params, for this reason is trimmed
+//		Object response = restTemplate.getForObject(compositeUrl, Object.class,
+//				params.toString().replace(" ", ""));
+//
+//		// Gson google object is used insteaf og JSONObject becouse let the
+//		// result sorted by timestamp
+//		Gson gson = new Gson();
+//		// Create a jelement that contains the response
+//		JsonElement jelement = gson.fromJson(response.toString(),
+//				JsonElement.class);
+//		// The response is an array. Create an jsonArray that contain the
+//		// response
+//		JsonArray jsonarray = jelement.getAsJsonArray();
+//		// Get the first and last item of the array
+//		JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+//		// The value of metric attribute
+//		JsonObject jobject = jarrayItem.getAsJsonObject();
+//		String lastTimestamp = jobject.get("timestamp").getAsString();
+//		// To get the correct xLastTimeSeries the last date is setted to the
+//		// midnight
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.setTimeInMillis(Long.valueOf(lastTimestamp));
+//		calendar.set(Calendar.HOUR, 0);
+//		calendar.set(Calendar.MINUTE, 0);
+//		calendar.set(Calendar.SECOND, 0);
+//		calendar.set(Calendar.MILLISECOND, 0);
+//		Date startEndDate = calendar.getTime();
+//
+//		ResponseEntity<Observations> lastXTimeSerie = observatoriesObservatoryInstrumentsInstrumentParametersParameterGet(
+//				observatory, instrument, parameter, startEndDate, startEndDate
+//				//,				limit
+//				);
+//        limit = 0;
+//		return lastXTimeSerie;
+//	}
 
 	// Method to retrieve the uom (unit of measuament) for a given parameter
 	// The uom value is retrieved from a specific file into the HDFS of the DMP
@@ -615,4 +764,54 @@ public class ObservationsController implements ObservationsApi {
 		return instrumentDetails;
 	}
 
+	public Date getLastDate(String observatory, String instrument, String parameter) {
+		
+		String sensorTemplateId = null;
+		//set the general variable limit to extract only the x measuraments from the api time series call.
+		sensorTemplateId = getSensorTemplateID(observatory, instrument);
+		// Create the restTemplate object with or without proxy
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+				username, password, proxyUrl, proxyPort);
+		// Create a map of params to pass add as placeholder after parameter
+		// value in the following compositeUrl
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("EGIMNode", observatory);
+		params.put("SensorID", instrument);
+		params.put("SensorTemplateID", sensorTemplateId);
+
+		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
+				+ parameter + "{params}" + "&back_scan=2400&resolve=true";
+
+		// The response as string of the urlToCall - This Url do not allows
+		// blanck spaces beetwen the params, for this reason is trimmed
+		Object response = restTemplate.getForObject(compositeUrl, Object.class,
+				params.toString().replace(" ", ""));
+
+		// Gson google object is used insteaf og JSONObject becouse let the
+		// result sorted by timestamp
+		Gson gsonFromResponse = new Gson();
+		// Create a jelement that contains the response
+		JsonElement jelementForTimestamp = gsonFromResponse.fromJson(response.toString(),
+				JsonElement.class);
+		// The response is an array. Create an jsonArray that contain the
+		// response
+		JsonArray jsonarrayForTimestamp = jelementForTimestamp.getAsJsonArray();
+		// Get the first and last item of the array
+		JsonObject jarrayItemForTimestamp = jsonarrayForTimestamp.get(0).getAsJsonObject();
+		// The value of metric attribute
+		JsonObject jobjectForTimestamp = jarrayItemForTimestamp.getAsJsonObject();
+		String lastTimestamp = jobjectForTimestamp.get("timestamp").getAsString();
+		// To get the correct xLastTimeSeries the last date is setted to the
+		// midnight
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.valueOf(lastTimestamp));
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date startEndDate = calendar.getTime();
+		
+		return startEndDate;
+	}
+	
 }
