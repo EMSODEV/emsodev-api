@@ -181,14 +181,28 @@ public class ObservationsController implements ObservationsApi {
 			e.printStackTrace();
 		}
 
+		
+		HashMap<String, String> sensorDetails = new HashMap<String, String>();  
+		
+		
 		// Istantiate the Observatories object
 		Instruments instrs = new Instruments();
 		// For each value of the list create an Observatory object to add to the
 		// Observatoriers object
 		for (String s : set) {
+			
+			sensorDetails =	getInstrumentDetails(observatory, s);
+			String sensorLongName = sensorDetails.get("sensorLongName");
+			String sensorType = sensorDetails.get("sensorType");
+			String sn = sensorDetails.get("sn");
+			
 			Instrument instrument = new Instrument();
 			instrument.setName(s);
+			instrument.setSensorLongName(sensorLongName);
+			instrument.setSensorType(sensorType);
+			instrument.setSn(sn);
 			instrs.addInstrumentsItem(instrument);
+			sensorDetails.clear();
 		}
 
 		return new ResponseEntity<Instruments>(instrs, HttpStatus.OK);
@@ -207,7 +221,7 @@ public class ObservationsController implements ObservationsApi {
 				+ observatory + "/" + instrument;
 		String response = restTemplate.getForObject(url + "?op=LISTSTATUS",
 				String.class);
-		System.out.println(response);
+		//System.out.println(response);
 
 		String type = "";
 		String nameDir = "";
@@ -233,7 +247,7 @@ public class ObservationsController implements ObservationsApi {
 					String resp = restTemplate.getForObject(url + "/" + nameDir
 							+ "/metadata/metadata.json" + "?op=OPEN",
 							String.class);
-					System.out.println(resp);
+					//System.out.println(resp);
 					InstrumentMetadata instrMetadata = new InstrumentMetadata();
 					instrMetadata.setValidityDate(dateValidity);
 					ObjectMapper mapper = new ObjectMapper();
@@ -291,8 +305,10 @@ public class ObservationsController implements ObservationsApi {
 			// For each value of the list create an Observatory object to add to
 			// the Observatoriers object
 			for (String s : set) {
+				String uom = getUom(observatory, instrument, s);
 				Parameter parameter = new Parameter();
 				parameter.setName(s);
+				parameter.setUom(uom);
 				parameters.addParametersItem(parameter);
 			}
 		} catch (JSONException e) {
