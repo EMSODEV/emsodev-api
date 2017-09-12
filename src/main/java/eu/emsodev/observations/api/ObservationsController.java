@@ -40,6 +40,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import eu.emsodev.observations.model.AcousticObservationList;
 import eu.emsodev.observations.model.Instrument;
 import eu.emsodev.observations.model.InstrumentMetadata;
 import eu.emsodev.observations.model.InstrumentMetadataList;
@@ -149,7 +150,7 @@ public class ObservationsController implements ObservationsApi {
 
 		return new ResponseEntity<Observatories>(obs, HttpStatus.OK);
 	}
-
+/*
 	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGet(
 			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
 
@@ -207,6 +208,87 @@ public class ObservationsController implements ObservationsApi {
 
 		return new ResponseEntity<Instruments>(instrs, HttpStatus.OK);
 	}
+	*/
+	
+	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGet(
+			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
+
+	) {
+	
+		// Create the restTemplate object with or without proxy
+		// istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+				username, password, proxyUrl, proxyPort);
+		
+		String url = "";
+		url = urlToCallObservatoriesObservatoryInstrumentsInstrumentGet
+				+ observatory;
+		String response = restTemplate.getForObject(url + "?op=LISTSTATUS",
+				String.class);
+		//System.out.println(response);
+
+		String type = "";
+		String nameDir = "";
+		String nameJasonPart = ""; 
+//		String dateValidity = "";
+		
+		// Istantiate the OInstruments object
+		Instruments instrs = new Instruments();
+		try {
+			JSONObject obj = new JSONObject(response);
+			// Create a JSONArray that rapresent the "FileStatus" tag nested
+			// into the JSON
+			JSONArray arr = obj.getJSONObject("FileStatuses").getJSONArray(
+					"FileStatus");
+
+
+			
+			
+			for (int i = 0; i < arr.length(); i++) {
+				type = arr.getJSONObject(i).getString("type");
+				nameDir = arr.getJSONObject(i).getString("pathSuffix");
+//				dateValidity = arr.getJSONObject(i).getString(
+//						"modificationTime");
+				
+				if (nameDir != null && nameDir.startsWith("acoustic_")){
+					nameJasonPart = nameDir.replace("acoustic_", "");
+				}else{
+					nameJasonPart = nameDir;
+				}
+				
+
+				if (type != null && "DIRECTORY".equals(type)) {
+					String resp = restTemplate.getForObject(url + "/" + nameDir
+							+ "/sensor_"+nameJasonPart+".json" + "?op=OPEN",
+							String.class);
+					//System.out.println(resp);
+					
+					JSONObject objFinal = new JSONObject(resp);
+					
+					String egimNode = objFinal.getString("EGIMNode");
+					String sensorId = objFinal.getString("sensorID");
+					String sensorLongName = objFinal.getString("sensorLongName");
+					String sn = objFinal.getString("sn");
+					String sensorType = objFinal.getString("sensorType");
+					
+					Instrument instrument = new Instrument();
+					instrument.setName(sensorId);
+					instrument.setSensorLongName(sensorLongName);
+					instrument.setSensorType(sensorType);
+					instrument.setSn(sn);
+					instrs.addInstrumentsItem(instrument);
+										
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+	
+		return new ResponseEntity<Instruments>(instrs, HttpStatus.OK);
+	}
+	
+	
 
 	public ResponseEntity<InstrumentMetadataList> observatoriesObservatoryInstrumentsInstrumentGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory,
