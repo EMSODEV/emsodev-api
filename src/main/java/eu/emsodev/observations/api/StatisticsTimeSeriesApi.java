@@ -21,7 +21,7 @@ import eu.emsodev.observations.model.ObservationsStats;
 @Api(value = "observatories", description = "the observatories API")
 public interface StatisticsTimeSeriesApi {
 
-	@ApiOperation(value = "Minimum values of time-series of a specific parameter.", notes = "Gets the minimum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observations Time-series statistics", })
+	@ApiOperation(value = "Minimum values of time-series of a specific parameter.", notes = "Gets the minimum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observation Time-series statistics", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/min", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMinsGet(
@@ -34,7 +34,7 @@ public interface StatisticsTimeSeriesApi {
 
 	
 	
-	@ApiOperation(value = "Maximum values of time-series of a specific parameter.", notes = "Gets the maximum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observations Time-series statistics", })
+	@ApiOperation(value = "Maximum values of time-series of a specific parameter.", notes = "Gets the maximum value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observation Time-series statistics", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/max", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterMaxsGet(
@@ -47,7 +47,7 @@ public interface StatisticsTimeSeriesApi {
 
 	
 	
-	@ApiOperation(value = "Average values of time-series of a specific parameter.", notes = "Gets the average value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observations Time-series statistics", })
+	@ApiOperation(value = "Average values of time-series of a specific parameter.", notes = "Gets the average value over a selected time range from the available time-series of an EGIM parameter measured at an EGIM instrument deployed in a specific observatory", response = ObservationsStats.class, tags = { "Observation Time-series statistics", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific parameter.", response = ObservationsStats.class) })
 	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/avg", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationsStats> observatoriesObservatoryInstrumentsInstrumentParametersParameterAvgsGet(

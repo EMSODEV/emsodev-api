@@ -62,7 +62,7 @@ public interface ObservationsApi {
 
 			);
 
-	@ApiOperation(value = "Time-series of a specific EGIM parameter.", notes = "Gets the time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observations Time-series", })
+	@ApiOperation(value = "Time-series of a specific EGIM parameter.", notes = "Gets the time-series of a specific `EGIM parameter` in a certain time range for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observation Time-series", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
 	,@ApiResponse(code = 400, message = "Fields are with validation errors")
 	})
@@ -87,7 +87,7 @@ public interface ObservationsApi {
 			);
 
 	
-	@ApiOperation(value = "Last X Time-series of a specific EGIM parameter.", notes = "Gets the last X time-series of a specific `EGIM parameter`  for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observations Time-series", })
+	@ApiOperation(value = "Last X Time-series of a specific EGIM parameter.", notes = "Gets the last X time-series of a specific `EGIM parameter`  for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observation Time-series", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
 	,@ApiResponse(code = 400, message = "Fields are with validation errors")
 	})
