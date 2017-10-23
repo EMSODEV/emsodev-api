@@ -862,7 +862,7 @@ public class ObservationsController implements ObservationsApi {
 		params.put("SensorTemplateID", sensorTemplateId);
 
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
-				+ parameter + "{params}" + "&back_scan=2400&resolve=true";
+				+ parameter + "{params}" + "&back_scan=22000&resolve=true";
 
 		// The response as string of the urlToCall - This Url do not allows
 		// blanck spaces beetwen the params, for this reason is trimmed
