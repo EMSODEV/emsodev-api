@@ -27,11 +27,11 @@ public class AcousticObservationList  {
 
 	  private Instrument instrument = null;
 
-	  private List<AcousticObservationDate> acousticOobservationDate = new ArrayList<AcousticObservationDate>();
+	  private List<AcousticObservationDate> acousticObservationDate = new ArrayList<AcousticObservationDate>();
 
 	  
 	  public AcousticObservationList addAcousticObservationItem(AcousticObservationDate acousticObservationDateItem) {
-		    this.acousticOobservationDate.add(acousticObservationDateItem);
+		    this.acousticObservationDate.add(acousticObservationDateItem);
 		    return this;
 		  }
 	  
@@ -64,18 +64,18 @@ public class AcousticObservationList  {
 	}
 
 	/**
-	 * @return the acousticOobservationDate
+	 * @return the acousticObservationDate
 	 */
-	public List<AcousticObservationDate> getAcousticOobservationDate() {
-		return acousticOobservationDate;
+	public List<AcousticObservationDate> getAcousticObservationDate() {
+		return acousticObservationDate;
 	}
 
 	/**
-	 * @param acousticOobservationDate the acousticOobservationDate to set
+	 * @param acousticObservationDate the acousticObservationDate to set
 	 */
-	public void setAcousticOobservationDate(
-			List<AcousticObservationDate> acousticOobservationDate) {
-		this.acousticOobservationDate = acousticOobservationDate;
+	public void setAcousticObservationDate(
+			List<AcousticObservationDate> acousticObservationDate) {
+		this.acousticObservationDate = acousticObservationDate;
 	}
 
 	/* (non-Javadoc)
@@ -87,8 +87,8 @@ public class AcousticObservationList  {
 		int result = 1;
 		result = prime
 				* result
-				+ ((acousticOobservationDate == null) ? 0
-						: acousticOobservationDate.hashCode());
+				+ ((acousticObservationDate == null) ? 0
+						: acousticObservationDate.hashCode());
 		result = prime * result
 				+ ((instrument == null) ? 0 : instrument.hashCode());
 		result = prime * result
@@ -108,11 +108,11 @@ public class AcousticObservationList  {
 		if (getClass() != obj.getClass())
 			return false;
 		AcousticObservationList other = (AcousticObservationList) obj;
-		if (acousticOobservationDate == null) {
-			if (other.acousticOobservationDate != null)
+		if (acousticObservationDate == null) {
+			if (other.acousticObservationDate != null)
 				return false;
-		} else if (!acousticOobservationDate
-				.equals(other.acousticOobservationDate))
+		} else if (!acousticObservationDate
+				.equals(other.acousticObservationDate))
 			return false;
 		if (instrument == null) {
 			if (other.instrument != null)
@@ -136,10 +136,16 @@ public class AcousticObservationList  {
 				+ (observatory != null ? "observatory=" + observatory + ", "
 						: "")
 				+ (instrument != null ? "instrument=" + instrument + ", " : "")
-				+ (acousticOobservationDate != null ? "acousticOobservationDate="
-						+ acousticOobservationDate
-						: "") + "]";
+				+ (acousticObservationDate != null ? "acousticObservationDate="
+						+ acousticObservationDate : "") + "]";
 	}
+
+
+
+	
+
+	
+
 	  
 	  
 

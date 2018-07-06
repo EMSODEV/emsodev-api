@@ -91,7 +91,8 @@ public interface ObservationsApi {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
 	,@ApiResponse(code = 400, message = "Fields are with validation errors")
 	})
-	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/limit/{limit}", produces = { "application/json" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/last", produces = { "application/json" }, method = RequestMethod.GET)
+	//@RequestMapping(value = "/observatories/{observatory}/instruments/{instrument}/parameters/{parameter}/limit/{limit}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<Observations> observatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet(
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory
 
@@ -101,8 +102,10 @@ public interface ObservationsApi {
 			,
 			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter
 
+//			,
+//			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limit
 			,
-			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limit
+			@ApiParam(value = "The last x-measurements", required = true) @RequestParam(value = "limit") Integer limit
 			);
 	
 }

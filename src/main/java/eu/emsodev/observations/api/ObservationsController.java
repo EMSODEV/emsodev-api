@@ -537,8 +537,9 @@ public class ObservationsController implements ObservationsApi {
 			@ApiParam(value = "EGIM observatory name.", required = true) @PathVariable("observatory") String observatory,
 			@ApiParam(value = "EGIM instrument name.", required = true) @PathVariable("instrument") String instrument,
 			@ApiParam(value = "EGIM parameter name.", required = true) @PathVariable("parameter") String parameter,
-			@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limitParam) {
-
+			@ApiParam(value = "The last x-measurements", required = true) @RequestParam(value = "limit", required = true) Integer limitParam) {
+			//@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limitParam) {
+		     
  
 		Date startEndDate = getLastDate(observatory, instrument, parameter);
 		
@@ -862,7 +863,7 @@ public class ObservationsController implements ObservationsApi {
 		params.put("SensorTemplateID", sensorTemplateId);
 
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
-				+ parameter + "{params}" + "&back_scan=22000&resolve=true";
+				+ parameter + "{params}" + "&back_scan=44000&resolve=true";
 
 		// The response as string of the urlToCall - This Url do not allows
 		// blanck spaces beetwen the params, for this reason is trimmed
