@@ -87,7 +87,7 @@ public interface ObservationsApi {
 			);
 
 	
-	@ApiOperation(value = "Last X Time-series of a specific EGIM parameter.", notes = "Gets the last X time-series of a specific `EGIM parameter`  for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observation Time-series", })
+	@ApiOperation(value = "Last X Time-series for the last day of observations of a specific EGIM parameter.", notes = "Gets the last X time-series for the last day of observatins of a specific `EGIM parameter`  for an `EGIM instrument` of an `EGIM observatory`.", response = Observations.class, tags = { "Observation Time-series", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Time-series of a specific EGIM parameter.", response = Observations.class)
 	,@ApiResponse(code = 400, message = "Fields are with validation errors")
 	})

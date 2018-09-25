@@ -2,15 +2,18 @@ package eu.emsodev.observations.api;
 
 import io.swagger.annotations.ApiParam;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +31,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.MetaAnnotationUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -335,9 +339,19 @@ public class ObservationsController implements ObservationsApi {
 					ObjectMapper mapper = new ObjectMapper();
 					mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,
 							false);
+					//String metadatatoclear = null;
 					try {
 						Object json = mapper.readValue(resp, Object.class);
+						//issue #1 json format output
+						//if (json != null){
+						//	metadatatoclear = json.toString();
+						//	metadatatoclear = metadatatoclear.replaceFirst(Pattern.quote("{"), "{\"");
+						//	metadatatoclear = metadatatoclear.replace("=", "\":\"");
+						//	metadatatoclear = metadatatoclear.replace(", ", "\",\"");							
+						//	metadatatoclear = metadatatoclear.replaceAll("\"", "\u201d");
+						//}
 						instrMetadata.setMetadata(json.toString());
+						//instrMetadata.setMetadata(metadatatoclear);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -541,7 +555,7 @@ public class ObservationsController implements ObservationsApi {
 			//@ApiParam(value = "The last x-measurements", required = true) @PathVariable(value = "limit") Integer limitParam) {
 		     
  
-		Date startEndDate = getLastDate(observatory, instrument, parameter);
+		Date startEndDate = getLastDateFromDps(observatory, instrument, parameter);
 		
 		Date startDate = startEndDate;
 		Date endDate = startEndDate;
@@ -846,7 +860,7 @@ public class ObservationsController implements ObservationsApi {
 		}
 		return instrumentDetails;
 	}
-
+   //Get the last date of stored observation for the input parameters by openTsdb last API with back_scan
 	public Date getLastDate(String observatory, String instrument, String parameter) {
 		
 		String sensorTemplateId = null;
@@ -863,7 +877,7 @@ public class ObservationsController implements ObservationsApi {
 		params.put("SensorTemplateID", sensorTemplateId);
 
 		String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterLimitGet
-				+ parameter + "{params}" + "&back_scan=44000&resolve=true";
+				+ parameter + "{params}" + "&back_scan=2400&resolve=true";
 
 		// The response as string of the urlToCall - This Url do not allows
 		// blanck spaces beetwen the params, for this reason is trimmed
@@ -896,5 +910,91 @@ public class ObservationsController implements ObservationsApi {
 		
 		return startEndDate;
 	}
+
+//Return the last date at midnight of stored observation for the specific input parameters	from the dps observation array
+public Date getLastDateFromDps(String observatory, String instrument, String parameter) {
+		
+	//Date startDate = new Date("01/01/2018");
+	
+	Calendar startDate = Calendar.getInstance();
+	startDate.set(2017,Calendar.JANUARY,01);
+	System.out.println("Data = " + startDate.getTime());
+
+	// Create the restTemplate object with or without proxy
+	restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+			username, password, proxyUrl, proxyPort);
+	// Create a map of params to pass add as placeholder after parameter
+	// value in the following compositeUrl
+	Map<String, String> params = new HashMap<String, String>();
+	params.put("EGIMNode", observatory);
+	params.put("SensorID", instrument);
+
+	String compositeUrl = urlToCallObservatoriesObservatoryInstrumentsInstrumentParametersParameterGet
+			+ EmsodevUtility.getDateAsStringTimestampFormat(startDate.getTime())
+			+ "&m=sum:"
+			+ parameter
+			+ "{params}"
+			+ "&end=";
+	// The response as string of the urlToCall - This Url do not allows
+	// blanck spaces beetwen the params, for this reason is trimmed
+	Object response = restTemplate.getForObject(compositeUrl, Object.class,
+			params.toString().replace(" ", ""));
+
+	Long lastTimestamp = new Long(0);
+	try {
+		String jobjectDpsCleaned = null;
+		// Gson google object is used insteaf og JSONObject becouse let the
+		// result sorted by timestamp
+		Gson gson = new Gson();
+		// Create a jelement that contains the response
+		JsonElement jelement = gson.fromJson(response.toString(),
+				JsonElement.class);
+		// The response is an array. Create an jsonArray that contain the
+		// response
+		JsonArray jsonarray = jelement.getAsJsonArray();
+		// Get the first and last item of the array
+		JsonObject jarrayItem = jsonarray.get(0).getAsJsonObject();
+		// The value of metric attribute
+		JsonObject jobject = jarrayItem.getAsJsonObject();
+
+		// Get the an jsonObject with that rapresent the "dps" branche
+		JsonObject jobjectDps = jarrayItem.getAsJsonObject();
+		jobjectDps = jobjectDps.getAsJsonObject("dps");
+		jobjectDpsCleaned = jobjectDps.toString().replace("\"", "")
+				.replace("{", "").replace("}", "");
+		// Array of timeseries key: timestamp, value: value
+		String[] arrayDps = jobjectDpsCleaned.split(",");
+		// Declare a List of Observation
+		int arrayLength = 0;
+		int startPoint = 0;
+		arrayLength = arrayDps.length;
+		startPoint = arrayLength - 1; 
+		
+		// For each array item extract the key and value to set to a new
+		// Observation object in the loop
+		//for (int index = startIndex, n = arrayDps.length; index < n; index++) {
+		for (int index = startPoint, n = arrayDps.length; index < n; index++) {
+			String item = arrayDps[index];
+			lastTimestamp = Long.valueOf(item.substring(0,item.indexOf(":")));
+		}
+
+	} catch (Exception e1) {
+		e1.printStackTrace();
+	}
+	
+		// To get the correct xLastTimeSeries the last date is setted to the
+		// midnight
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.setTimeInMillis(Long.valueOf(lastTimestamp*1000));
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date startEndDate = calendar.getTime();
+		
+		return startEndDate;
+	}
+	
 	
 }
