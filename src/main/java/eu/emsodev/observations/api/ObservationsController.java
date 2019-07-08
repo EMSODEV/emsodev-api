@@ -2,6 +2,8 @@ package eu.emsodev.observations.api;
 
 import io.swagger.annotations.ApiParam;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -14,6 +16,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +46,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -66,6 +78,9 @@ public class ObservationsController implements ObservationsApi {
 
 	@Value("${emsodev.global.setting.urlToCall.observatoriesGet}")
 	private String urlToCallObservatoriesGet;
+	
+	@Value("${emsodev.global.setting.exclude}")
+	private String exclude;
 
 	@Value("${emsodev.global.setting.urlToCall.observatoryInstrumentsGet}")
 	private String urlToCallObservatoryInstrumentsGet;
@@ -120,7 +135,7 @@ public class ObservationsController implements ObservationsApi {
 
 		String egimNode = "{EGIMNode=*}";
 		// The response as string of the urlToCall
-		String response = restTemplate.getForObject(urlToCallObservatoriesGet,
+		String response = restTemplate.getForObject(urlToCallObservatoriesGet + "&limit=0",
 				String.class, egimNode);
 		// Declare a list that not allow duplicate values
 		Set<String> set = new HashSet<String>();
@@ -142,14 +157,17 @@ public class ObservationsController implements ObservationsApi {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		
 		// Istantiate the Observatories object
 		Observatories obs = new Observatories();
 		// For each value of the list create an Observatory object to add to the
 		// Observatoriers object
 		for (String s : set) {
 			Observatory observatory = new Observatory();
-			observatory.setName(s);
-			obs.add(observatory);
+			if (s.compareTo(exclude)!=0){
+			    observatory.setName(s);
+			    obs.add(observatory);
+			}
 		}
 
 		return new ResponseEntity<Observatories>(obs, HttpStatus.OK);
@@ -214,7 +232,7 @@ public class ObservationsController implements ObservationsApi {
 	}
 	*/
 	
-	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGet(
+	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGetOld(  //*****************************************************************OLD 
 			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
 
 	) {
@@ -280,6 +298,75 @@ public class ObservationsController implements ObservationsApi {
 					instrument.setSensorLongName(sensorLongName);
 					instrument.setSensorType(sensorType);
 					instrument.setSn(sn);
+					instrs.addInstrumentsItem(instrument);
+										
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+	
+		return new ResponseEntity<Instruments>(instrs, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	public ResponseEntity<Instruments> observatoriesObservatoryInstrumentsGet(
+			@ApiParam(value = "EGIM observatory name", required = true) @PathVariable("observatory") String observatory
+
+	) {
+		// Create the restTemplate object with or without proxy
+		// istantiateRestTemplate();
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+				username, password, proxyUrl, proxyPort);
+		
+		String url = urlToCallObservatoriesObservatoryInstrumentsInstrumentGet + observatory;
+		String response = restTemplate.getForObject(url + "?op=LISTSTATUS",	String.class);
+		//System.out.println(response);
+
+		String type = "";
+		String nameDir = "";
+		 
+		// Istantiate the OInstruments object
+		Instruments instrs = new Instruments();
+		try {
+			JSONObject obj = new JSONObject(response);
+			// Create a JSONArray that rapresent the "FileStatus" tag nested
+			// into the JSON
+			JSONArray arr = obj.getJSONObject("FileStatuses").getJSONArray(
+					"FileStatus");
+
+			for (int i = 0; i < arr.length(); i++) {
+				type = arr.getJSONObject(i).getString("type");
+				nameDir = arr.getJSONObject(i).getString("pathSuffix");
+
+				if (type != null && "DIRECTORY".equals(type)) {
+					
+					HashMap<String, String> sensorDetails = getInstrumentDetailsFromInsertSensor(observatory, nameDir);
+					
+					String egimNode = sensorDetails.get("egimNode");
+					String sensorId = sensorDetails.get("instrumentUUID"); 
+					String sensorLongName = sensorDetails.get("sensorLongName");
+					String sn = sensorDetails.get("sn");
+					String sensorType = sensorDetails.get("sensorType");
+					//
+					String sensorShortName = sensorDetails.get("sensorShortName");
+					String sensorModelName = sensorDetails.get("sensorModelName");
+					String sensorManifacturerName = sensorDetails.get("sensorManifacturerName");
+					
+					Instrument instrument = new Instrument();
+					instrument.setName(sensorId);
+					instrument.setSensorLongName(sensorLongName);
+					instrument.setSensorType(sensorType);
+					instrument.setSn(sn);
+					//
+					instrument.setSensorShortName(sensorShortName);
+					instrument.setSensorManifacturerName(sensorManifacturerName);
+					instrument.setSensorModelName(sensorModelName);
+					instrument.setSensorUUID(sensorId);
+					
 					instrs.addInstrumentsItem(instrument);
 										
 				}
@@ -435,7 +522,10 @@ public class ObservationsController implements ObservationsApi {
 						ZoneId.systemDefault()).toInstant());
 			}
 		}
-		String uom = getUom(observatory, instrument, parameter);
+		
+	
+		String uom = "";
+		uom = getUom(observatory, instrument, parameter);
 		// Create the restTemplate object with or without proxy
 		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
 				username, password, proxyUrl, proxyPort);
@@ -489,8 +579,16 @@ public class ObservationsController implements ObservationsApi {
 			egimNodeName = jobject.get("EGIMNode").getAsString();
 			// set the instrument name with the previous extract value
 			Instrument inst = new Instrument();
-			HashMap<String, String> sensorDetails = getInstrumentDetails(
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//			HashMap<String, String> sensorDetails = getInstrumentDetails(
+			//					observatory, instrument);
+			
+			HashMap<String, String> sensorDetails = getInstrumentDetailsFromInsertSensor(
 					observatory, instrument);
+			
+			
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			String sensorLongName = sensorDetails.get("sensorLongName");
 			String sensorType = sensorDetails.get("sensorType");
 			String sn = sensorDetails.get("sn");
@@ -860,7 +958,101 @@ public class ObservationsController implements ObservationsApi {
 		}
 		return instrumentDetails;
 	}
-   //Get the last date of stored observation for the input parameters by openTsdb last API with back_scan
+	
+	
+	public HashMap<String, String> getInstrumentDetailsFromInsertSensor(String observatory,	String instrument) {
+		String type = "";
+		String nameFileDir = "";
+		String egimNode = "";
+		String instrumentUUID = "";
+		String instrumentShortName = "";
+		String instrumentLongName = "";
+		String instrumentModelName = "";
+		String InstrumentManifacturerName = "";
+		String InstrumentSerialNumber = "";
+		// Create the restTemplate object with or without proxy
+		restTemplate = EmsodevUtility.istantiateRestTemplate(enableProxy,
+				username, password, proxyUrl, proxyPort);
+		String url = urlToCallObservatoriesObservatoryInstrumentsInstrumentGet + observatory + "/" + instrument;
+
+		String response = restTemplate.getForObject(url + "?op=LISTSTATUS",	String.class);
+
+		try {
+			JSONObject obj = new JSONObject(response);
+			// Create a JSONArray that rapresent the "FileStatus" tag nested into the JSON
+			JSONArray arr = obj.getJSONObject("FileStatuses").getJSONArray("FileStatus");
+		
+			for (int i = 0; i < arr.length(); i++) {
+				type = arr.getJSONObject(i).getString("type");
+				nameFileDir = arr.getJSONObject(i).getString("pathSuffix");
+
+				if (type != null && "FILE".equals(type)) {
+					if (nameFileDir !=null && nameFileDir.toUpperCase().contains("INSERTSENSOR")){
+						InputStream pippo = null;
+						String resp = restTemplate.getForObject(url + "/" + nameFileDir + "?op=OPEN", String.class);
+					
+						if (resp!= null){
+							try{
+								InputStream in = null;
+								in = org.apache.commons.io.IOUtils.toInputStream(resp, "UTF-8");
+								DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+								DocumentBuilder db = dbf.newDocumentBuilder();		
+	
+								XPathFactory xpf = XPathFactory.newInstance();
+								XPath xpath = xpf.newXPath();
+								Document xml = db.parse(in);
+								
+								String xEgimNode = "/*/*/*/*[local-name()='attachedTo']/@*[local-name() = 'title']";
+								egimNode = (String) xpath.evaluate(xEgimNode, xml, XPathConstants.STRING);
+															
+								String xInstrumentShortName = "/*/*/*/*/*[local-name()='IdentifierList']/*[name()='sml:identifier'][1]/*/*[name()='sml:value']";
+								instrumentShortName = (String) xpath.evaluate(xInstrumentShortName, xml, XPathConstants.STRING);							
+	
+								String xInstrumentLongName = "/*/*/*/*/*[local-name()='IdentifierList']/*[name()='sml:identifier'][2]/*/*[name()='sml:value']";
+								instrumentLongName = (String) xpath.evaluate(xInstrumentLongName, xml, XPathConstants.STRING);							
+	
+								String xInstrumentModelName = "/*/*/*/*/*[local-name()='IdentifierList']/*[name()='sml:identifier'][3]/*/*[name()='sml:value']";
+								instrumentModelName = (String) xpath.evaluate(xInstrumentModelName, xml, XPathConstants.STRING);							
+	
+								String xInstrumentManifacturerName = "/*/*/*/*/*[local-name()='IdentifierList']/*[name()='sml:identifier'][4]/*/*[name()='sml:value']";
+								InstrumentManifacturerName = (String) xpath.evaluate(xInstrumentManifacturerName, xml, XPathConstants.STRING);							
+	
+								String xInstrumentSerialNumber = "/*/*/*/*/*[local-name()='IdentifierList']/*[name()='sml:identifier'][5]/*/*[name()='sml:value']";
+								InstrumentSerialNumber = (String) xpath.evaluate(xInstrumentSerialNumber, xml, XPathConstants.STRING);	
+								
+								String xInstrumentUUID = "/*/*/*/*[local-name()='identifier']";
+								instrumentUUID = (String) xpath.evaluate(xInstrumentUUID, xml, XPathConstants.STRING);
+								
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}
+					
+					}
+					
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		
+		HashMap<String, String> instrumentDetails = new HashMap<String, String>();
+		instrumentDetails.put("egimNode", egimNode);
+		instrumentDetails.put("instrumentUUID", instrumentUUID);
+		instrumentDetails.put("sensorLongName", instrumentLongName);
+		instrumentDetails.put("sensorType", instrumentModelName);
+		instrumentDetails.put("sn", InstrumentSerialNumber);
+		//Last metadata final deployment
+		instrumentDetails.put("sensorShortName",instrumentShortName);
+		instrumentDetails.put("sensorModelName",instrumentModelName);
+		instrumentDetails.put("sensorManifacturerName", InstrumentManifacturerName);
+		
+		return instrumentDetails;
+	}
+
+	
+	//Get the last date of stored observation for the input parameters by openTsdb last API with back_scan
 	public Date getLastDate(String observatory, String instrument, String parameter) {
 		
 		String sensorTemplateId = null;

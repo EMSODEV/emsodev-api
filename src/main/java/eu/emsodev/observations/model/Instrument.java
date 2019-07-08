@@ -26,6 +26,11 @@ private String name = null;
 private String sensorLongName = null;
 private String sn = null;
 private String sensorType = null;
+
+private String sensorShortName = null;
+private String sensorModelName = null;
+private String sensorManifacturerName = null;
+private String sensorUUID = null;
 //private ArrayList<String> metadataList = null; 
   
  
@@ -100,6 +105,65 @@ public void setSensorType(String sensorType) {
 	this.sensorType = sensorType;
 }
 
+
+
+
+/**
+ * @return the sensorShortName
+ */
+public String getSensorShortName() {
+	return sensorShortName;
+}
+
+/**
+ * @param sensorShortName the sensorShortName to set
+ */
+public void setSensorShortName(String sensorShortName) {
+	this.sensorShortName = sensorShortName;
+}
+
+/**
+ * @return the sensorModelName
+ */
+public String getSensorModelName() {
+	return sensorModelName;
+}
+
+/**
+ * @param sensorModelName the sensorModelName to set
+ */
+public void setSensorModelName(String sensorModelName) {
+	this.sensorModelName = sensorModelName;
+}
+
+/**
+ * @return the sensorManifacturerName
+ */
+public String getSensorManifacturerName() {
+	return sensorManifacturerName;
+}
+
+/**
+ * @param sensorManifacturerName the sensorManifacturerName to set
+ */
+public void setSensorManifacturerName(String sensorManifacturerName) {
+	this.sensorManifacturerName = sensorManifacturerName;
+}
+
+/**
+ * @return the sensorUUID
+ */
+public String getSensorUUID() {
+	return sensorUUID;
+}
+
+/**
+ * @param sensorUUID the sensorUUID to set
+ */
+public void setSensorUUID(String sensorUUID) {
+	this.sensorUUID = sensorUUID;
+}
+
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
  */
@@ -110,13 +174,28 @@ public int hashCode() {
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result
 			+ ((sensorLongName == null) ? 0 : sensorLongName.hashCode());
+	result = prime
+			* result
+			+ ((sensorManifacturerName == null) ? 0 : sensorManifacturerName
+					.hashCode());
+	result = prime * result
+			+ ((sensorModelName == null) ? 0 : sensorModelName.hashCode());
+	result = prime * result
+			+ ((sensorShortName == null) ? 0 : sensorShortName.hashCode());
 	result = prime * result
 			+ ((sensorType == null) ? 0 : sensorType.hashCode());
+	result = prime * result
+			+ ((sensorUUID == null) ? 0 : sensorUUID.hashCode());
 	result = prime * result + ((sn == null) ? 0 : sn.hashCode());
 	return result;
 }
 
-/* (non-Javadoc)
+
+ 
+
+ 
+
+  /* (non-Javadoc)
  * @see java.lang.Object#equals(java.lang.Object)
  */
 @Override
@@ -138,10 +217,30 @@ public boolean equals(Object obj) {
 			return false;
 	} else if (!sensorLongName.equals(other.sensorLongName))
 		return false;
+	if (sensorManifacturerName == null) {
+		if (other.sensorManifacturerName != null)
+			return false;
+	} else if (!sensorManifacturerName.equals(other.sensorManifacturerName))
+		return false;
+	if (sensorModelName == null) {
+		if (other.sensorModelName != null)
+			return false;
+	} else if (!sensorModelName.equals(other.sensorModelName))
+		return false;
+	if (sensorShortName == null) {
+		if (other.sensorShortName != null)
+			return false;
+	} else if (!sensorShortName.equals(other.sensorShortName))
+		return false;
 	if (sensorType == null) {
 		if (other.sensorType != null)
 			return false;
 	} else if (!sensorType.equals(other.sensorType))
+		return false;
+	if (sensorUUID == null) {
+		if (other.sensorUUID != null)
+			return false;
+	} else if (!sensorUUID.equals(other.sensorUUID))
 		return false;
 	if (sn == null) {
 		if (other.sn != null)
@@ -151,11 +250,7 @@ public boolean equals(Object obj) {
 	return true;
 }
 
- 
-
- 
-
-  /* (non-Javadoc)
+/* (non-Javadoc)
  * @see java.lang.Object#toString()
  */
 @Override
